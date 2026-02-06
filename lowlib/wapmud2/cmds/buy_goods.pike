@@ -24,14 +24,14 @@ int main(string arg)
 			return 1;
 		}
 	
-	if(me->if_over_load(ob)){
-		string tmp = "你的背包已满，无法执行此操作，请返回。\n";       
-		tmp+="[返回:look]\n";
-		write(tmp);
-		return 1;
-	}
+		if(me->if_over_load(ob)){
+			string tmp = "你的背包已满，无法执行此操作，请返回。\n";       
+			tmp+="[返回:look]\n";
+			write(tmp);
+			return 1;
+		}
 
-		int need_money = (int)ob->query_item_canLevel()*50;
+		int need_money = ob->query_item_canLevel? (int)ob->query_item_canLevel()*50:10000*50;
 		if(me->pay_money(need_money)==0)
 			s += "你身上的钱不够支付费用，请返回。\n";
 		else{

@@ -45,3 +45,24 @@
      OK, after doing all above,you have create a new game of xiandII.
 
 	 【Evan 2009.01.07 at Dogstart】
+
+
+Update on April 12 2025:
+
+All front end codes are under the frontjsp folder, you can just copy them to yout tomcat/webapps/, then you are good to go.
+frontjsp/xd/includes/config.inc this file is the key file you need to modify and configure your server ip here
+we use 3rd party js package bootstrap
+frontjsp/xd/images: all the initial game images are stored under this folder
+main.jsp: this jsp will connect to backend server and generate the html back to frontend
+pc.jsp: this is then entry point, generally users can login from this page
+entrycheck.jsp is in charge of checking and validating the user password
+
+Pike env setup:
+The Stardard of version is 8.0, but you can use 7.8 as well.
+you can setup on your macos, or your test linux centos, 8.0 support the most latest OS.
+
+We recommend centos 7 for 8.0, but if you can not find the centos7 you can use centos 8, 
+the difference is you have to rebuild the pike, which is a really pain to rebuild pike from src.
+
+But I can write a walk through to demo how to install pike with mysql supports.
+

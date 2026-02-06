@@ -239,7 +239,9 @@ void fight_die()
 							///////////////////////////////////////////////////////////////////////////////////////
 							exp_gain = last_exp;
 							//大于20级，必须付费
+							
 							int melevel = termer->query_level();//player等级
+							/*
 							if(melevel>=21){
 								if(termer->all_fee>=20)
 									;
@@ -249,11 +251,18 @@ void fight_die()
 									tell_object(termer,tipsvip);
 									exp_gain = 0;
 								}
+							}*/
+							
+							if(melevel>=query_level_limit()){
+								string tipsvip = "";
+								tipsvip += "您的等级已经满级了，获取经验为0，赶紧去做其他任务吧\n";
+								tell_object(termer,tipsvip);
+								exp_gain = 0;								
 							}
 							int szx=0;                                                                                                                  
 							string bs_tips = "";
 							int extra_dh=0;
-							if(termer->all_fee>=200){
+							if(termer->all_fee>=200 && GAME_AREA=="xd01"){
 								szx = termer->all_fee;
 								if(szx>=200 && szx<400){
 									extra_dh += exp_gain*2;
@@ -299,7 +308,10 @@ void fight_die()
 									extra_dh += exp_gain*50;
 									bs_tips += "<font style=\"color:DARKORANGE\">经验倍速开启：50倍，额外获得 "+extra_dh+" 点经验值</font>";	
 								}
-							}
+							}	
+							
+							extra_dh += exp_gain*2;
+							bs_tips += "<font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";	
 							if(exp_gain>0){
 								exp_gain += extra_dh;
 								termer->exp += exp_gain;
@@ -679,6 +691,7 @@ void fight_die_single(object env)
 		}
 		///////////////////////////////////////////////////////////////////////////////////////
 		//大于20级，必须付费 目前支持20-100级 等到200级以后得玩家再加
+		/*
 		if(melevel>=21 && melevel<30){
 			if(first->all_fee>=20)
 				;
@@ -760,7 +773,7 @@ void fight_die_single(object env)
 				tell_object(first,tipsvip);
 				exp_gain = 0;
 			}			
-		}
+		}*/
 		int szx=0;                                                                                                                  
 		string bs_tips = "";
 		int extra_dh=0;
@@ -811,6 +824,8 @@ void fight_die_single(object env)
 				bs_tips += "<font style=\"color:DARKORANGE\">经验倍速开启：50倍，额外获得 "+extra_dh+" 点经验值</font>";	
 			}
 		}
+		extra_dh += exp_gain*2;
+		bs_tips += "<br><font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";	
 		if(exp_gain>0){
 			//这里添加经验特药的加成，由liaocheng于07/11/21添加
 			//int te_eff = (int)first->query_buff("te_exp",1);
@@ -1106,4 +1121,19 @@ string query_npc_links(void|int count)
 		}
 	}
 	return out;
+}
+int query_level_limit(){
+	mapping(string:int) level_limit = ([
+		"xd01":120,
+		"xd02":70,
+		"xd03":70,
+		"xd04":70,
+		"xd05":70,
+		"xd06":70,
+		"xd07":70,
+		"xd08":70,
+		"xd09":70,
+		"xd10":70
+	]);
+	return level_limit[GAME_AREA] != 0 ? level_limit[GAME_AREA] : 70;
 }

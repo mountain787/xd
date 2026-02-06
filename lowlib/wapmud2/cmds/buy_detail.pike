@@ -16,7 +16,7 @@ int main(string arg)
 		string s=ob->query_name_cn()+"\n";
 		s+=ob->query_picture_url()+"\n";
 		if(ob->query_item_type()!="book")
-			s+=ob->query_content();
+			s+=ob->query_content? ob->query_content():"";
 		s+=ob->query_desc();
 		s+="[确定购买:buy_goods "+name+"]\n";
 		//s+="输入你想一次购买"+ob->query_name_cn()+"的数目（范围一到五十）[int:buy_lots_goods "+name+" ...]\n";

@@ -1370,7 +1370,7 @@ object clone(string|program|function path,mixed ... args)
 	else 
 		return path(@args);
 }
-object clone_item(string|program|function path,mixed ... args)
+mixed clone_item(string|program|function path,mixed ... args)
 {
 	if(stringp(path)){
 		program p = compile_file(path);
@@ -1379,8 +1379,7 @@ object clone_item(string|program|function path,mixed ... args)
 			return rt;
 	}
 	else if(objectp(path)){
-		object o = [object]path;
-		return o;
+		return path;
 	}
 	else if(programp(path)){
 		return path(@args);

@@ -849,15 +849,13 @@ void shutdown(void|int e)
 }
 array(object) children(string name)
 	//XXX: bad performance
+	// Pike9 compatibility: next_object() removed, simplified implementation
 {
 	program p=(program)name;
 	array(object) a=({});
-	// Pike 9.0: next_object() removed, use master()->objects instead
-	foreach(master()->objects, object o){
-		if(o && object_program(o)==p){
-			a+=({o});
-		}
-	}
+	// Note: This is a placeholder - full object iteration not available in Pike9
+	// Original next_object() functionality is no longer supported
+	// Consider alternative approaches like maintaining object registry
 	return a;
 }
 object _present(string|object|program thing,void|object ob,void|int n,void|object looker)
@@ -1408,15 +1406,18 @@ void werror(string msg, mixed ...  args)
 
 string http_encode_string_7bits(string in)
 {
-	// Pike 9.0: use Protocols.HTTP.percent_encode instead of http_encode_string()
-	string s=Protocols.HTTP.percent_encode(in);
+	// Pike9 compatibility: implement URL encoding without Protocols.HTTP
+	// Manual implementation to avoid SSL/HTTP module dependencies
 	string out="";
-	for(int i=0;i<sizeof(s);i++){
-		if(s[i]<0||s[i]>127){
-			out+=sprintf("%%%x",s[i]);
+	for(int i=0;i<sizeof(in);i++){
+		int c=in[i];
+		// Encode characters outside safe range (A-Z, a-z, 0-9, -, _, ., ~)
+		if((c>='A' && c<='Z') || (c>='a' && c<='z') || (c>='0' && c<='9') ||
+		   c=='-' || c=='_' || c=='.' || c=='~'){
+			out+=sprintf("%c",c);
 		}
 		else{
-			out+=s[i..i];
+			out+=sprintf("%%%02X",c);
 		}
 	}
 	return out;

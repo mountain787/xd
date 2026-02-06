@@ -8,7 +8,7 @@ String read(InputStream reader) throws IOException
 {
     /*
 	//BufferedReader r = new BufferedReader(new InputStreamReader(reader,"UTF-8"));
-    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"gb2312"));
+    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"UTF-8"));
 	String ret ="";
 	int n;
 	try{
@@ -24,7 +24,7 @@ String read(InputStream reader) throws IOException
 	}
 	return ret;
 	*/
-    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"gb2312"));
+    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"UTF-8"));
     String ret ="";
     String s = "";
 	int n;
@@ -56,7 +56,7 @@ String read(InputStream reader) throws IOException
 long startTime = System.currentTimeMillis(); 
 try{
 	//request.setCharacterEncoding("UTF-8");
-	request.setCharacterEncoding("gbk");
+	request.setCharacterEncoding("UTF-8");
 }catch(Exception uae){
     //com.lj.bbs.tools.setDefaultCharSet(request);
     //System.out.println("[ua exception]"+uae+"\n");
@@ -124,25 +124,25 @@ if(first_login){
 	///////新手注册/////////////////
 	if(_reg!=null&&_reg.equals("1")){
 		String _sid = (String)request.getParameter("_sid");
-		send(writer,("login_check "+projname+" "+userid+" "+passwd+" "+_sid).getBytes());
+		send(writer,("login_check "+projname+" "+userid+" "+passwd+" "+_sid).getBytes("UTF-8"));
 	}
 	else{
 		//////////老用户登录////////////////
 		String userSessionID = (String)isession.getId();
-		send(writer,("login_check "+projname+" "+userid+" "+passwd+" "+userSessionID).getBytes());
+		send(writer,("login_check "+projname+" "+userid+" "+passwd+" "+userSessionID).getBytes("UTF-8"));
 	}
 }
 else{
-	send(writer,("login "+projname+" "+uid+" "+pid+" "+usid).getBytes());
+	send(writer,("login "+projname+" "+uid+" "+pid+" "+usid).getBytes("UTF-8"));
 }	
 if(first_login){
 	String sid="tmpUser";
-	send(writer,("set_sid "+sid).getBytes());
+	send(writer,("set_sid "+sid).getBytes("UTF-8"));
 
 	String m_key=(String)request.getParameter("_mkey");
 	if(m_key != null)
-		send(writer,("set_mkey "+m_key).getBytes());
-	send(writer,("set_game_fg "+game_fg).getBytes());//合区调用
+		send(writer,("set_mkey "+m_key).getBytes("UTF-8"));
+	send(writer,("set_game_fg "+game_fg).getBytes("UTF-8"));//合区调用
 }
 if(cmd==null)
 	cmd="init";
@@ -190,13 +190,13 @@ else if(have_space)
 	cmd=cmd.trim();
 
 if(_arg!=null){
-	//_arg = new String((_arg).getBytes("gb2312"));
+	//_arg = new String((_arg).getBytes("UTF-8"));
 	cmd=cmd+_arg;
 }
 	
 	//send(writer,cmd.getBytes("UTF-8"));
-send(writer,cmd.getBytes("gb2312"));
-send(writer,"flush_filter".getBytes());//flush_filter.pike->关闭该conn对象
+send(writer,cmd.getBytes("UTF-8"));
+send(writer,"flush_filter".getBytes("UTF-8"));//flush_filter.pike->关闭该conn对象
 socket.shutdownOutput();
 data=read(reader);
 try{

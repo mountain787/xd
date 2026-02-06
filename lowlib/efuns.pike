@@ -852,8 +852,8 @@ array(object) children(string name)
 {
 	program p=(program)name;
 	array(object) a=({});
-	// Pike 9.0: next_object() removed, use objects() instead
-	foreach(objects(object), object o){
+	// Pike 9.0: next_object() removed, use master()->objects instead
+	foreach(master()->objects, object o){
 		if(o && object_program(o)==p){
 			a+=({o});
 		}

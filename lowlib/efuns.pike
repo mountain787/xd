@@ -1376,15 +1376,13 @@ object clone_item(string|program|function path,mixed ... args)
 		program p = compile_file(path);
 		object rt = p();
 		if(rt)
-			return rt; 
+			return rt;
 	}
-	else{
-		if(objectp(path)){
-			return path;
-		}
-		else if(programp(path)){
-			return path(@args);
-		}
+	else if(objectp(path)){
+		return path;
+	}
+	else if(programp(path)){
+		return path(@args);
 	}
 	return 0;
 }
@@ -1410,8 +1408,8 @@ void werror(string msg, mixed ...  args)
 
 string http_encode_string_7bits(string in)
 {
-	// Pike 9.0: use Pike.encode_url() instead of Protocols.HTTP.http_encode_string()
-	string s=Pike.encode_url(in);
+	// Pike 9.0: use Protocols.HTTP.percent_encode instead of http_encode_string()
+	string s=Protocols.HTTP.percent_encode(in);
 	string out="";
 	for(int i=0;i<sizeof(s);i++){
 		if(s[i]<0||s[i]>127){

@@ -1,13 +1,13 @@
 #include <globals.h>
 inherit LOW_FILTER;
 
-static private string headerU=
+protected private string headerU=
 "<wml> <head> <meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/> </head>";
 //static private string headerG="ContentType=text/vnd.wap.wml; charset=gb2312\nCharset=gb2312\n\n"
 //"<?xml version=\"1.0\" encoding=\"gb2312\"?> <!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\"> <wml> <head> <meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/> </head>";
-static private string headerG="ContentType=text/vnd.wap.wml; charset=utf-8\nCharset=utf-8\n\n"
+protected private string headerG="ContentType=text/vnd.wap.wml; charset=utf-8\nCharset=utf-8\n\n"
 "<?xml version=\"1.0\" encoding=\"utf-8\"?> <!DOCTYPE wml PUBLIC \"-//WAPFORUM//DTD WML 1.1//EN\" \"http://www.wapforum.org/DTD/wml_1.1.xml\"> <wml> <head> <meta forua=\"true\" http-equiv=\"Cache-Control\" content=\"max-age=0\"/> </head>";
-static private string footer=
+protected private string footer=
 "</wml>";
 
 array(string) input;

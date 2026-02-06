@@ -3,7 +3,7 @@
 #include <globals.h>
 inherit LOW_F_ACCESS;
 
-static multiset(string) ids=(<>);
+protected multiset(string) ids=(<>);
 string name;
 //add for password by calvin 2006-12-08
 string password;

@@ -132,7 +132,7 @@ int query_cangku_size()
 
 
 ////////////////////// =========     （二）【展示环境中npc/物品/玩家 详细信息】 Start  =========///////////////////
-static private string view_something_items(function filter_func,string list,string arg)
+protected private string view_something_items(function filter_func,string list,string arg)
 {
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
@@ -185,7 +185,7 @@ string view_chars_player(){
 	return s;
 }
 //查看 人（玩家、NPC）
-static private string view_something_charact(function filter_func,string list,void|int showPrice){
+protected private string view_something_charact(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -219,7 +219,7 @@ static private string view_something_charact(function filter_func,string list,vo
 
 ////////////////////// ================     (三)【展示环境中的npc/物品/玩家】   Start  ===================///////////////////
 //展示环境中的 npc\玩家\物品
-static private string have_something(function filter_func,string look,string list,string verb_name,string target_name){
+protected private string have_something(function filter_func,string look,string list,string verb_name,string target_name){
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	if(items&&sizeof(items)){
 		if(sizeof(items)==1){
@@ -312,7 +312,7 @@ string view_inventory_daoju(void|string cmd,void|int notShowMoney,void|int showP
 	return  mymoney + myyushi + s;
 }
 //查看装备
-static private string view_something_zhuangbei(function filter_func,string list,void|int showPrice){
+protected private string view_something_zhuangbei(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -368,7 +368,7 @@ static private string view_something_zhuangbei(function filter_func,string list,
 	return out+out_no_equip;
 }
 //查看道具
-static private string view_something_daoju(function filter_func,string list,void|int showPrice){
+protected private string view_something_daoju(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -492,7 +492,7 @@ string view_inventory_daoju_package(void|string cmd,void|int notShowMoney,void|i
 		return "没有可存储的物品。\n";
 	return  s;
 }
-static private string view_something_zhuangbei_sell(function filter_func,string list,void|int showPrice){
+protected private string view_something_zhuangbei_sell(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -569,7 +569,7 @@ static private string view_something_zhuangbei_sell(function filter_func,string 
 	}
 	return out+out_no_equip;
 }
-static private string view_something_daoju_sell(function filter_func,string list,void|int showPrice){
+protected private string view_something_daoju_sell(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -703,7 +703,7 @@ string view_inventory_home_shop_daoju(void|string cmd,void|int notShowMoney,void
 		s = mymoney + myyushi + s;
 	return  s;
 }
-static private string view_something_home_shop(function filter_func,string list,void|int showPrice,void|int shopId){
+protected private string view_something_home_shop(function filter_func,string list,void|int showPrice,void|int shopId){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -752,7 +752,7 @@ static private string view_something_home_shop(function filter_func,string list,
 	}
 	return out+out_no_equip;
 }
-static private string view_something_home_shop_daoju(function filter_func,string list,void|int showPrice,void|int shopId){
+protected private string view_something_home_shop_daoju(function filter_func,string list,void|int showPrice,void|int shopId){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
@@ -870,7 +870,7 @@ string view_inventory_send_daoju(void|string cmd,void|int notShowMoney,void|int 
 	s += view_something_trade_daoju(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice,"sendother");
 	return  s;
 }
-static private string view_something_trade_daoju(function filter_func,string list,void|int showPrice,string cmd)
+protected private string view_something_trade_daoju(function filter_func,string list,void|int showPrice,string cmd)
 {
 	//将装备交易的对方name取得
 	string cmdtype,user_name;
@@ -958,7 +958,7 @@ static private string view_something_trade_daoju(function filter_func,string lis
 		out+="(物品：0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
-static private string view_something_trade_zhuangbei(function filter_func,string list,void|int showPrice,string cmd)
+protected private string view_something_trade_zhuangbei(function filter_func,string list,void|int showPrice,string cmd)
 {
 	//将装备交易的对方name取得
 	string cmdtype,user_name;
@@ -1017,7 +1017,7 @@ static private string view_something_trade_zhuangbei(function filter_func,string
 	return out+out_no_equip;
 }
 /*5、赠送物品
-static private string view_something_send_daoju(function filter_func,string list,void|int showPrice)
+protected private string view_something_send_daoju(function filter_func,string list,void|int showPrice)
 {
 	//将装备交易的对方name取得
 	string cmdtype,user_name;
@@ -1078,7 +1078,7 @@ static private string view_something_send_daoju(function filter_func,string list
 		out+="(物品：0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
-static private string view_something_send_item(function filter_func,string list,void|int showPrice)
+protected private string view_something_send_item(function filter_func,string list,void|int showPrice)
 {
 	//将装备交易的对方name取得
 	string cmdtype,user_name;

@@ -1,0 +1,25 @@
+#~/gamelib/clone/user.pike
+get_once_day ([])
+msgs ([])
+inbox ({})
+data ([])
+name "xd2a8130612"
+material_m ([])
+baoshi_add ([])
+follow_me ({})
+toolbar_key ({})
+f_skills ([])
+ronglian_list ([])
+skills_enable ""
+skills ([])
+vice_skills ([])
+targets ([])
+follow ""
+qqlist ({})
+inventory ({})
+packaged_goods ([])
+groupList ([])
+inventory_data ({})
+packaged_items ({})
+vip_history ([])
+spy_info ([])

@@ -1,6 +1,6 @@
 #include <globals.h>
-static object SQL;
-static string TABLE;
+protected object SQL;
+protected string TABLE;
 array(string) inventory;
 array(string) inventory_data;
 object load_player(string _name)

@@ -1,10 +1,10 @@
 #define HIDDEN_SIZE 2000
 #include <globals.h>
-static array(string) hidden=allocate(HIDDEN_SIZE);
+protected array(string) hidden=allocate(HIDDEN_SIZE);
 read_write(hidden);
-static int hidden_pos;
+protected int hidden_pos;
 read_write(hidden_pos);
-static int reset_flag=1;
+protected int reset_flag=1;
 read_write(reset_flag);
 string hide(string s)
 {

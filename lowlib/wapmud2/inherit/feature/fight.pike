@@ -7,7 +7,7 @@ private int tmp_heart_beat;
 private int in_combat;
 private mapping items;
 //影射取种族职业类型表
-static mapping(string:int) profe_fight=([
+protected mapping(string:int) profe_fight=([
 		"jianxian":0,
 		"yushi":1,
 		"zhuxian":2,
@@ -30,7 +30,7 @@ private mapping(string:int) skills_hate=([
 
 //战斗描述//////////////////////////////////
 //由liaocheng于07/1/11添加，用于战斗描述
-static mapping(string:array(string)) m_fight_desc=([
+protected mapping(string:array(string)) m_fight_desc=([
 		"jian"  :({"一个直刺","一个横扫","一阵乱舞","一个斜砍"}),
 		"dao"   :({"一个顺势斩","一顿猛砍","一个突进","一个单刀劈马"}),
 		"qiang" :({"一个直刺","一个跟进","一个上挑","秋风扫落叶","一个回马枪"}),
@@ -67,8 +67,8 @@ string query_fight_type() {
 			break;
 	}
 }
-static string fight_desc_arg_main="";//为空时表示不是人形，不为空时记录主手武器的所属类型
-static string fight_desc_arg_other="";//在fight_desc_arg_main为空时，记录副手武器的所属类型
+protected string fight_desc_arg_main="";//为空时表示不是人形，不为空时记录主手武器的所属类型
+protected string fight_desc_arg_other="";//在fight_desc_arg_main为空时，记录副手武器的所属类型
 
 
 // 战斗伤害////////////////////////////////
@@ -84,15 +84,15 @@ private int killing;
 private int autoPerforming;//自动释放技能第一次标示
 object enemy;
 private string action;//"escape"|"perform ..."
-static string accept_fight_msg="$N接受了$p的挑战。";
+protected string accept_fight_msg="$N接受了$p的挑战。";
 read_only(accept_fight_msg);
-static string deny_fight_msg="$N不愿意和$p过招。";
+protected string deny_fight_msg="$N不愿意和$p过招。";
 read_only(deny_fight_msg);
-static string success_msg="$N对$p拱手道：“承让了。”";
+protected string success_msg="$N对$p拱手道：“承让了。”";
 read_only(success_msg);
-static string surrender_msg="$N向$p大声求饶道：“别打了别打了，我投降了。”";
+protected string surrender_msg="$N向$p大声求饶道：“别打了别打了，我投降了。”";
 read_only(surrender_msg);
-static string killing_msg="$N看起来想杀了$p。";
+protected string killing_msg="$N看起来想杀了$p。";
 read_only(killing_msg);
 int query_killing(){
 	return killing;

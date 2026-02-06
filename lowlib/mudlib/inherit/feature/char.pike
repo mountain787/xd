@@ -245,7 +245,7 @@ int spec_add;
 //				  ])
 //格式是固定的
 //以后可以扩展几个curse或者dot状态
-static mapping(string:array(mixed)) debuff=([
+protected mapping(string:array(mixed)) debuff=([
 		"dot":({"none",0,0}),
 		"curse":({"none",0,0}),
 		"curse2":({"none",0,0}),
@@ -270,7 +270,7 @@ void clean_debuff(string s){
 //格式: buff = ([
 //					"buff":({string type,int value,int time_record})
 //			   ])
-static mapping(string:array(mixed)) buff = ([
+protected mapping(string:array(mixed)) buff = ([
 		"buff":({"none",0,0}),
 		"buff2":({"none",0,0}),
 		"attri_base":({"none",0,0}),
@@ -494,9 +494,9 @@ void set_jingli(int value){
 //种族id:种族中文名(其实就是两个对立阵营)//////////////////////////
 string raceId;
 read_write(raceId);
-static array(string) raceKindList=({"human","monst","third"});
-static array(string) raceNameList=({"人类","妖魔","中立"});
-static mapping(string:string) races=([
+protected array(string) raceKindList=({"human","monst","third"});
+protected array(string) raceNameList=({"人类","妖魔","中立"});
+protected mapping(string:string) races=([
 		raceKindList[0]:raceNameList[0],
 		raceKindList[1]:raceNameList[1],
 		raceKindList[2]:raceNameList[2]
@@ -509,9 +509,9 @@ static mapping(string:string) races=([
 //鱼：fish 两栖动物：amphibian 昆虫：bugs
 string profeId;
 read_write(profeId);
-static array(string) profeKindList=({"jianxian","yushi","zhuxian","kuangyao","wuyao","yinggui","humanlike","beast","bird","fish","amphibian","bugs","dog"});
-static array(string) profeNameList=({"剑仙","羽士","诛仙","狂妖","巫妖","影鬼","人形","野兽","飞禽","鱼","两栖动物","昆虫","狗"});
-static mapping(string:string) profes=([
+protected array(string) profeKindList=({"jianxian","yushi","zhuxian","kuangyao","wuyao","yinggui","humanlike","beast","bird","fish","amphibian","bugs","dog"});
+protected array(string) profeNameList=({"剑仙","羽士","诛仙","狂妖","巫妖","影鬼","人形","野兽","飞禽","鱼","两栖动物","昆虫","狗"});
+protected mapping(string:string) profes=([
 		profeKindList[0]:profeNameList[0],
 		profeKindList[1]:profeNameList[1],
 		profeKindList[2]:profeNameList[2],
@@ -535,13 +535,13 @@ string query_profe_cn(string pid){
 	return profes[pid]; 
 }
 //武器种类定义
-static mapping(string:int) rnt_wield = ([
+protected mapping(string:int) rnt_wield = ([
 		"double_main_weapon" : 2,
 		"single_main_weapon" : 3,
 		"single_other_weapon": 4
 		]);
 //防具，首饰，饰物种类定义
-static mapping(string:int) rnt = ([
+protected mapping(string:int) rnt = ([
 		"armor_head" : 2,
 		"armor_cloth" : 3,
 		"armor_waste" : 4,
@@ -1687,11 +1687,11 @@ int unwear(void|object ob)
 	return 0;
 }
 //角色昏迷,休息状态处理///////////////////////////////////////
-static string unconscious_msg;
+protected string unconscious_msg;
 private string wake_up_msg;
-static multiset(string) status=(<>);
+protected multiset(string) status=(<>);
 read_write(status);
-static string doing_status;
+protected string doing_status;
 read_write(doing_status);
 
 int is_item(){

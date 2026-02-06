@@ -4,12 +4,12 @@
 inherit MUD_ITEM;
 //具有书的属性方法和继承
 inherit MUD_F_READ;
-static string peifang_type = "";
-static int need_money = 0;
-static int need_yushi = 0;
+protected string peifang_type = "";
+protected int need_money = 0;
+protected int need_yushi = 0;
 void set_peifang_type(string s){peifang_type = s;}
 string query_peifang_type(){return peifang_type;}
-static string peifang_kind = "";
+protected string peifang_kind = "";
 void set_peifang_kind(string s){peifang_kind = s;}
 string query_peifang_kind(){return peifang_kind;}
 

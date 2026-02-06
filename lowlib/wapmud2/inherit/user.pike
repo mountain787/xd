@@ -22,7 +22,7 @@ string query_LOGIN_MSG(){
 	return "登录信息已经过期，请重新进入游戏\n[url 狗go首页:http://dogstart.com]\n[url wap天下:http://tx.com.cn]\n";
 }
 string sid;
-static int living_time=10*60;
+protected int living_time=10*60;
 void create(){
 }
 array(string) query_command_prefix(){

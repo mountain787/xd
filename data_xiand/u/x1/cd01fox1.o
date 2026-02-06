@@ -1,0 +1,26 @@
+#~/gamelib/clone/user.pike
+data ([])
+get_once_day ([])
+msgs ([])
+inbox ({})
+name "cd01fox1"
+material_m ([])
+baoshi_add ([])
+vice_skills ([])
+toolbar_key ({})
+skills_enable ""
+follow_me ({})
+skills ([])
+f_skills ([])
+ronglian_list ([])
+follow ""
+targets ([])
+jingli 100
+spy_info ([])
+inventory_data ({})
+vip_history ([])
+packaged_items ({})
+groupList ([])
+inventory ({})
+qqlist ({})
+packaged_goods ([])

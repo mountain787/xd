@@ -1,5 +1,5 @@
 #include <gamelib/include/gamelib.h> 
-static string picture;
+protected string picture;
 string user_pic;
 string query_picture_url(void|string pic_name)
 {

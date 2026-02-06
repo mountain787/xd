@@ -33,7 +33,7 @@ int write(string s)
 	//werror("========write end==========\n");
 	return s?sizeof(s):1;
 }
-static void tryclose()
+protected void tryclose()
 {
 	//werror("========tryclose call==========\n");
 	if(closing&&in==""&&out==""){
@@ -52,7 +52,7 @@ static void tryclose()
 	}
 	//werror("========tryclose end==========\n");
 }
-static void write_callback(mixed id)
+protected void write_callback(mixed id)
 {
 	//werror("========write_callback call==========\n");
 	int n=conn->write(out);
@@ -63,7 +63,7 @@ static void write_callback(mixed id)
 	tryclose();
 	//werror("========write_callback end==========\n");
 }
-static void read_callback(mixed id,string data)
+protected void read_callback(mixed id,string data)
 {
 	//werror("========read_callback call==========\n");
 	if(!user){
@@ -157,7 +157,7 @@ void close()
 	tryclose();
 	//werror("========close end==========\n");
 }
-static void close_callback(mixed id)
+protected void close_callback(mixed id)
 {
 	//werror("========close_callback call==========\n");
 	close();

@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <mudlib/include/mudlib.h>
 //”∞…‰±Ì£¨
-static mapping(string:int) m_profe = ([
+protected mapping(string:int) m_profe = ([
 	"jianxian" : 1,
 	"yushi" : 2,
 	"zhuxian" : 3, 

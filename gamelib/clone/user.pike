@@ -155,8 +155,8 @@ void add_vip_history(int endtime,int level){  //向历史记录中添加相关信息
  *  2、query_spy_info()将得到spy_info中的所有信息，展示在页面上，从而实现关注功能 
  */
 mapping(string:int) spy_info =([]);       //记录关注列表  结构："玩家名:开始关注时间"
-static int spy_flush_time = 3600;         //每次关注的持续时间
-static int spy_max_num =10;               //每个玩家可以关注的最大数量
+protected int spy_flush_time = 3600;         //每次关注的持续时间
+protected int spy_max_num =10;               //每个玩家可以关注的最大数量
 
 /*  【功能】  将玩家添加到关注列表中
     【变量】  id:玩家ID

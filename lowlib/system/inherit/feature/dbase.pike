@@ -1,6 +1,6 @@
 mapping data=([]);
-static mapping data_tmp=([]);
-static string tmp;
+protected mapping data_tmp=([]);
+protected string tmp;
 
 mixed `[](string key,void|int n)
 {

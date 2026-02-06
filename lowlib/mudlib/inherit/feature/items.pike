@@ -1,4 +1,4 @@
-static array(array) items=({});//({program,object,_flushtime,last_time=time()});
+protected array(array) items=({});//({program,object,_flushtime,last_time=time()});
 void add_items(array(string|program) _items){
 	foreach(_items,string|program s){
 		object ob=new(s);

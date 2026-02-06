@@ -3,7 +3,7 @@
 inherit LOW_BASE;
 inherit LOW_F_DBASE;
 inherit MUD_F_HEARTBEAT;
-static mapping(int:string) m_rareLevel = ([
+protected mapping(int:string) m_rareLevel = ([
 	0:"",
 	1:"【优良】",
 	2:"【优良】",
@@ -108,11 +108,11 @@ int item_TimewhoCanGet;//增加玩家打怪掉落物品时间控制，用于掉装保护 2007-0302 by
 
 int amount=1;//数量
 int max_count=STACK_NUM;//该种物品每组数量上限
-static string unit="个";//单位
+protected string unit="个";//单位
 string query_unit(){ return unit;}
 
 
-static int value;//价值
+protected int value;//价值
 int query_value(){return value;}
 void set_value(int a){ value= a;}
 
@@ -120,11 +120,11 @@ private int weight;//重量
 int query_weight(){return weight;}
 void set_weight(int s){ weight= s;}
 
-static string status;//状态
+protected string status;//状态
 string query_status(){return status;}
 void set_status(string s){ status= s;}
 
-static int add_luck = 0;//增加的幸运值，锻造时宝石需用这个
+protected int add_luck = 0;//增加的幸运值，锻造时宝石需用这个
 int query_add_luck(){return add_luck;}
 void set_add_luck(int s){ add_luck = s;}
 

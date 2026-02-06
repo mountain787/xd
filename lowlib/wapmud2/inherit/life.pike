@@ -5,7 +5,7 @@ inherit MUD_ITEM;
 inherit WAP_F_VIEW_LINKS;
 inherit WAP_F_VIEW_VALUE;
 inherit WAP_F_VIEW_PICTURE;
-static mapping(int:string) rareLevel = ([
+protected mapping(int:string) rareLevel = ([
 	0:"¡¾ÆÕÍ¨¡¿",
 	1:"¡¾Ò»°ã¡¿",
 	2:"¡¾Ï¡ÓÐ¡¿",

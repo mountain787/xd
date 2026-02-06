@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <mudlib/include/mudlib.h>
 inherit MUD_ITEM;
-static string group_unit="些";
+protected string group_unit="些";
 string query_group_unit()
 {
 	return group_unit;
@@ -75,7 +75,7 @@ int is_combine_item()
 }
 
 //作为锻造和炼金的材料，将设置这一位
-static string for_material="";
+protected string for_material="";
 void set_for_material(string a)
 {
 	for_material = a;

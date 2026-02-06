@@ -4,7 +4,7 @@
 inherit MUD_ITEM;
 //属性方法和继承关系
 //inherit MUD_F_EQUIP;
-static string source_type;
+protected string source_type;
 void set_source_type(string s){source_type = s;}
 string query_source_type(){return source_type;}
 private string initer=((set_item_type("source")),"");

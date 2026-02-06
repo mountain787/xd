@@ -6,7 +6,7 @@ string query_picture_url(void|string pic_name)
 	object me = this_player();
 	object ob = this_object();
 	if(pic_name && me->pic_flag["decrate"]=="open"){
-		//瑁呴グ鐐圭紑
+		//鐟佸懘銈伴悙鍦磻
 		return "[imgurl picture:"+"/"+GAME_NAME+"/images/"+pic_name+".gif]";
 	}
 	if(picture&&picture!=""){
@@ -20,7 +20,7 @@ string query_mini_picture_url(void|string pic_name)
 	object me = this_player();
 	object ob = this_object();
 	if(pic_name && me->pic_flag["decrate"]=="open"){
-		//瑁呴グ鐐圭紑
+		//鐟佸懘銈伴悙鍦磻
 		return "[miniimg minipicture:"+"/"+GAME_NAME+"/images/"+pic_name+".gif]";
 	}
 	if(picture&&picture!=""){

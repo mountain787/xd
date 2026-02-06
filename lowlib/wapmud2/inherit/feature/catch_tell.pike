@@ -23,7 +23,7 @@ void catch_tell(string str,string channel) {
 		msgs[channel]=msgs[channel][1..];
 	}
 }
-//第二个参数指定读取的条数
+//绗簩涓弬鏁版寚瀹氳鍙栫殑鏉℃暟
 string drain_catch_tell(void|string channel,void|int num){
 	string out="";
 	if(arrayp(msgs)){

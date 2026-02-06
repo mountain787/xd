@@ -4,22 +4,22 @@ int main(string arg)
 {
 	string path,user_name,args,userip;//add by qianglee 0125
 	string title = "";
-	title += "=游客试玩=\n";
+	title += "=娓稿璇曠帺=\n";
 	if(arg&&(sscanf(arg,"%s %s %s %s",path,user_name,args,userip)==4))
 	{
 		if(!user_name || !args || !userip)
 		{
-			title += "登陆过期\n";
-			title += "您的游客登陆已经过期，请返回首页注册帐号。\n";
-			title += "[url 注册帐号:http://"+REG_URL+"]\n";
+			title += "鐧婚檰杩囨湡\n";
+			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
+			title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
 			write(title);
 			return 1;
 		}
 		else if( sizeof(user_name)<2 || sizeof(args)<2 )
 		{
-			title += "登陆过期\n";
-			title += "您的游客登陆已经过期，请返回首页注册帐号。\n";
-			title += "[url 注册帐号:http://"+REG_URL+"]\n";
+			title += "鐧婚檰杩囨湡\n";
+			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
+			title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
 			write(title);
 			return 1;
 		}
@@ -31,23 +31,23 @@ int main(string arg)
 			}
 			else
 			{
-				title += "登陆过期\n";
-				title += "您的游客登陆已经过期，请返回首页注册帐号。\n";
-				title += "[url 注册帐号:http://"+REG_URL+"]\n";
+				title += "鐧婚檰杩囨湡\n";
+				title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
+				title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
 				write(title);
 				return 1;
 			}
 		}
-		//找到用户档案，并取出该用户name，并对比
+		//鎵惧埌鐢ㄦ埛妗ｆ锛屽苟鍙栧嚭璇ョ敤鎴穘ame锛屽苟瀵规瘮
 		string user=Stdio.read_file(DATA_ROOT+"u/"+user_name[sizeof(user_name)-2..]+"/"+user_name+".o");
-		//没有此用户档案，是新用户，不允许在这里进行登录注册，直接返回
+		//娌℃湁姝ょ敤鎴锋。妗堬紝鏄柊鐢ㄦ埛锛屼笉鍏佽鍦ㄨ繖閲岃繘琛岀櫥褰曟敞鍐岋紝鐩存帴杩斿洖
 		if(!user)
 		{
 			object user_in_momery = find_player(user_name);
-			//内存里有，也是正常登陆，可以登入游戏
+			//鍐呭瓨閲屾湁锛屼篃鏄甯哥櫥闄嗭紝鍙互鐧诲叆娓告垙
 			if(user_in_momery)
 			{
-				//这里进行用户自动注册过程
+				//杩欓噷杩涜鐢ㄦ埛鑷姩娉ㄥ唽杩囩▼
 				program u;
 				object m;
 				catch
@@ -63,7 +63,7 @@ int main(string arg)
 					u=(program)(ROOT+"/"+path+"/clone/user.pike");
 				}
 				object me = find_player(user_name);
-				//两个验证，sessionid和password
+				//涓や釜楠岃瘉锛宻essionid鍜宲assword
 				if( userip&&userip==me->query_userip() && args&&args==me->password )
 				{
 					if(me->query_project()==path&&me["reconnect"]&&me->reconnect(user_name))
@@ -74,16 +74,16 @@ int main(string arg)
 				}
 				else
 				{
-					title += "登陆过期\n";
-					title += "您的游客登陆已经过期，请返回首页注册帐号。\n";
-					title += "[url 注册帐号:http://"+REG_URL+"]\n";
+					title += "鐧婚檰杩囨湡\n";
+					title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
+					title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
 					write(title);
 					return 1;
 				}
 			}
-			else//内存里也没有这个帐号
+			else//鍐呭瓨閲屼篃娌℃湁杩欎釜甯愬彿
 			{
-				//这里进行用户自动注册过程
+				//杩欓噷杩涜鐢ㄦ埛鑷姩娉ㄥ唽杩囩▼
 				program u;
 				object m;
 				catch{
@@ -114,9 +114,9 @@ int main(string arg)
 	}
 	else
 	{
-		title += "登陆过期\n";
-		title += "您的游客登陆已经过期，请返回首页注册帐号。\n";
-		title += "[url 注册帐号:http://"+REG_URL+"]\n";
+		title += "鐧婚檰杩囨湡\n";
+		title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
+		title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
 		write(title);
 		return 1;
 	}

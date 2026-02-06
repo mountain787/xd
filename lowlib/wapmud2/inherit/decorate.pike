@@ -9,9 +9,9 @@ inherit WAP_F_VIEW_PICTURE;
 string query_inventory_links(void|int count)
 {
 	if(!equiped){
-		return ::query_inventory_links(count)+"[穿上:wear "+name+" "+count+"]";
+		return ::query_inventory_links(count)+"[绌夸笂:wear "+name+" "+count+"]";
 	}
 	else{
-		return ::query_inventory_links(count)+"[脱下:unwear "+name+" "+count+"]";
+		return ::query_inventory_links(count)+"[鑴变笅:unwear "+name+" "+count+"]";
 	}
 }

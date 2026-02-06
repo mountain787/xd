@@ -1379,7 +1379,8 @@ object clone_item(string|program|function path,mixed ... args)
 			return rt;
 	}
 	else if(objectp(path)){
-		return path;
+		object o = [object]path;
+		return o;
 	}
 	else if(programp(path)){
 		return path(@args);

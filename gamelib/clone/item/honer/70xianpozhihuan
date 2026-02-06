@@ -3,8 +3,8 @@
 inherit WAP_JEWELRY;
 void create(){
 	name=object_name(this_object());
-	name_cn="¡¾ÏÉ¡¿ÏÉÆÇÖ¸»·";
-	unit="¸ö";
+	name_cn="ã€ä»™ã€‘ä»™é­„æŒ‡ç¯";
+	unit="ä¸ª";
 	picture=name;
 	desc="\n";
 	item_cur_dura=10000;

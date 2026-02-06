@@ -3,8 +3,8 @@
 inherit WAP_DECORATE;
 void create(){
 	name=object_name(this_object());
-	name_cn="¡¾ÏÉ¡¿ÏÉÆÇÅû·ç";
-	unit="¼ş";
+	name_cn="ã€ä»™ã€‘ä»™é­„æŠ«é£";
+	unit="ä»¶";
 	picture=name;
 	desc="\n";
 	item_cur_dura=10000;

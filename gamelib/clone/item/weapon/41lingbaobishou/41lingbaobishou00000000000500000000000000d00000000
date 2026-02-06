@@ -3,8 +3,8 @@
 inherit WAP_WEAPON;
 void create(){
 	name=object_name(this_object());
-	name_cn="Áé±¦Ø°Ê×";
-	unit="°Ñ";
+	name_cn="çµå®åŒ•é¦–";
+	unit="æŠŠ";
 picture="41lingbaobishou";
 	desc="\n";
 	item_cur_dura=420;
@@ -25,11 +25,11 @@ picture="41lingbaobishou";
 	set_item_profeLimit("zhuxian");
 	set_item_profeLimit("yinggui");
 	if(query_item_kind()=="single_main_weapon")
-		desc+="(Ö÷ÊÖ)\n";
+		desc+="(ä¸»æ‰‹)\n";
 	else if(query_item_kind()=="single_other_weapon")
-		desc+="(¸±ÊÖ)\n";
+		desc+="(å‰¯æ‰‹)\n";
 	else if(query_item_kind()=="double_main_weapon")
-		desc+="(Ë«ÊÖ)\n";
+		desc+="(åŒæ‰‹)\n";
     set_item_rareLevel(2);
     set_attack_bingshuang_add(13);
     set_weapon_attack_add(5);

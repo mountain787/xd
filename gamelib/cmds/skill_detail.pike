@@ -6,7 +6,7 @@ int main(string arg)
 	if(arg)
 		s += this_player()->view_performs(arg);
 	else
-		s += "浣犺鏌ョ湅鐨勬妧鑳戒笉瀛樺湪銆俓n";
+		s += "娴ｇ姾顩﹂弻銉ф箙閻ㄥ嫭濡ч懗鎴掔瑝鐎涙ê婀妴淇搉";
 	this_player()->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }

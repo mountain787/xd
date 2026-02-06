@@ -3,8 +3,8 @@
 inherit WAP_JEWELRY;
 void create(){
 	name=object_name(this_object());
-	name_cn="×ÏË®¾§ÏîÁ´";
-	unit="Ìõ";
+	name_cn="ç´«æ°´æ™¶é¡¹é“¾";
+	unit="æ¡";
 picture="44zishuijingxianglian";
 	desc="\n";
 	item_cur_dura=10000;
@@ -25,11 +25,11 @@ picture="44zishuijingxianglian";
 	set_item_profeLimit("wuyao");
 	set_item_profeLimit("yinggui");
 	if(query_item_kind()=="single_main_weapon")
-		desc+="(Ö÷ÊÖ)\n";
+		desc+="(ä¸»æ‰‹)\n";
 	else if(query_item_kind()=="single_other_weapon")
-		desc+="(¸±ÊÖ)\n";
+		desc+="(å‰¯æ‰‹)\n";
 	else if(query_item_kind()=="double_main_weapon")
-		desc+="(Ë«ÊÖ)\n";
+		desc+="(åŒæ‰‹)\n";
     set_item_rareLevel(7);
     set_hitte_add(2);
     set_fengren_defend_add(19);

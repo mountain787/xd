@@ -9,7 +9,7 @@ array(int) performs_mofa_attack=({});
 void create(){
 	name=object_name(this_object());
 	boss_skill = 1;
-	name_cn="¡¾Öñ½£±ÎÈÕ¡¿";
+	name_cn="ã€ç«¹å‰‘è”½æ—¥ã€‘";
 	s_skill_type="huo_mofa_attack";
 	is_aoe=1;
 	s_delayTime=180;

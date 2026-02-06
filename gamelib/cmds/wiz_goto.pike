@@ -1,7 +1,7 @@
 /* wiz_qge74hye
  * @author hps
- * 可以瞬间移动
- * 指令格式 wiz_qge74hye [玩家|地图文件路径名|NPC文件路径名]
+ * 鍙互鐬棿绉诲姩
+ * 鎸囦护鏍煎紡 wiz_qge74hye [鐜╁|鍦板浘鏂囦欢璺緞鍚峾NPC鏂囦欢璺緞鍚峕
  */
 #include <command.h>
 #include <gamelib/include/gamelib.h>
@@ -23,7 +23,7 @@ int main(string arg)
 	if(!ob) ob=find_object(arg);
 	if(!ob) ob=load_object(arg);
 	if(!ob){
-		write("不存在指定的物件.\n");
+		write("涓嶅瓨鍦ㄦ寚瀹氱殑鐗╀欢.\n");
 		return 1;
 	}
 	if(ob->is_room){

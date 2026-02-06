@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-//复数物品分组
+//澶嶆暟鐗╁搧鍒嗙粍
 int main(string arg)
 {
 	object me = this_player();
@@ -22,16 +22,16 @@ int main(string arg)
 			object ob_new = clone((file_path/"#")[0]);
 			ob_new->amount = num;
 			ob_new->move(me);
-			s += "您已经成功将该物品分组\n";
+			s += "鎮ㄥ凡缁忔垚鍔熷皢璇ョ墿鍝佸垎缁刓n";
 		}
 		else{
-			s += "输入的数字不正确\n";
+			s += "杈撳叆鐨勬暟瀛椾笉姝ｇ‘\n";
 		}
 	}
 	else{
-		s += "你包里没有这样的物品\n";
+		s += "浣犲寘閲屾病鏈夎繖鏍风殑鐗╁搧\n";
 	}
-	s += "[返回游戏:look]\n";
+	s += "[杩斿洖娓告垙:look]\n";
 	write(s);
 	return 1;
 }

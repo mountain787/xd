@@ -3,9 +3,9 @@
 inherit WAP_LIFE;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÌÒÊ÷";
-	desc="ÕâÊÇÒ»¿ÅÌÒÊ÷\n";
-	unit="Öê";
+	name_cn="æ¡ƒæ ‘";
+	desc="è¿™æ˜¯ä¸€é¢—æ¡ƒæ ‘\n";
+	unit="æ ª";
 //	amount = 1;
 //	value=100;
 	//picture=name;
@@ -18,6 +18,6 @@ void create(){
 	set_final_life(1000);
 	set_current_life(200);
 	set_grow_speed(100);
-	desc += "µ±Ç°ÉúÃü£º"+ query_current_life()+"\n";
-	desc += "³ÉÊìĞèÒª: "+ query_final_life();
+	desc += "å½“å‰ç”Ÿå‘½ï¼š"+ query_current_life()+"\n";
+	desc += "æˆç†Ÿéœ€è¦: "+ query_final_life();
 }

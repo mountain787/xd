@@ -6,13 +6,13 @@ int main(string arg)
 	string s = "";
 	if(!HOMED->if_have_home(me->query_name()))
 	{
-		s += "你还没有地产，空手套白狼在这里可行不通\n";
+		s += "浣犺繕娌℃湁鍦颁骇锛岀┖鎵嬪鐧界嫾鍦ㄨ繖閲屽彲琛屼笉閫歕n";
 	}
 	else
 	{
 		s += HOMED->get_sell_functionroom_list(arg);
 	}
-	s += "\n[返回游戏:look]\n"; 
+	s += "\n[杩斿洖娓告垙:look]\n"; 
 	write(s);
 	return 1;
 }

@@ -3,10 +3,10 @@
 inherit WAP_JEWELRY;
 void create(){
 	name=object_name(this_object());
-	name_cn="¡¾Çì¡¿ĞÒ¸£ÊÖ»·";
-	unit="¶Ô";
+	name_cn="ã€åº†ã€‘å¹¸ç¦æ‰‹ç¯";
+	unit="å¯¹";
 	picture=name;
-	desc="½ÚÈÕ¿ìÀÖ!\n";
+	desc="èŠ‚æ—¥å¿«ä¹!\n";
 	item_cur_dura=10000;
 	item_dura=10000;
 	set_item_type("jewelry");

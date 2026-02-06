@@ -41,11 +41,11 @@ void try_top(string name,string namecn,string key,int value)
 	}
 	object player=find_player(name);
 	if(player)
-		_update_grade(find_player(name));//更新vip彩色名字系统字典
+		_update_grade(find_player(name));//鏇存柊vip褰╄壊鍚嶅瓧绯荤粺瀛楀吀
 	return;
 }
 
-//更新vip彩色名字系统字典
+//鏇存柊vip褰╄壊鍚嶅瓧绯荤粺瀛楀吀
 void _update_grade(object ob)
 {	
 	int my_grade = ob->query_vip_flag();
@@ -57,7 +57,7 @@ void _update_grade(object ob)
 mapping(string:int) get_grade_mapping(){
 	return grade_mapping;
 }
-//更新vip彩色名字系统字典
+//鏇存柊vip褰╄壊鍚嶅瓧绯荤粺瀛楀吀
 
 array get_top(string key,int range)
 {
@@ -70,7 +70,7 @@ void create()
 	remove_call_out(auto_save);
 	call_out(auto_save,60);
 }
-void auto_save()//存储进程
+void auto_save()//瀛樺偍杩涚▼
 {
 	save();
 	call_out(auto_save,600);

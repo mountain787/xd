@@ -3,10 +3,10 @@
 int main(string arg)
 {
 	object player=this_player();
-	string s = "你已经成功将该房间设置成为复活点，请返回。\n";
+	string s = "浣犲凡缁忔垚鍔熷皢璇ユ埧闂磋缃垚涓哄娲荤偣锛岃杩斿洖銆俓n";
 	if(arg)
 		player->relife=arg;
-	s += "[返回游戏:look]\n";
+	s += "[杩斿洖娓告垙:look]\n";
 	write(s);
 	return 1;
 }

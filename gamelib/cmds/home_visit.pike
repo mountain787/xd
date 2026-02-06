@@ -12,8 +12,8 @@ int main(string arg)
 		return 1;
 	}
 	else{
-		s += "他家好像还在装修，稍后再来吧\n";
-		s += "\n[确定:look]\n";
+		s += "浠栧濂藉儚杩樺湪瑁呬慨锛岀◢鍚庡啀鏉ュ惂\n";
+		s += "\n[纭畾:look]\n";
 		write(s);
 		return 1;
 	}

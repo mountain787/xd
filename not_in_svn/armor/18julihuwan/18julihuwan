@@ -3,8 +3,8 @@
 inherit WAP_ARMOR;
 void create(){
 	name=object_name(this_object());
-	name_cn="¾ŞÁ¦»¤Íó";
-	unit="Ë«";
+	name_cn="å·¨åŠ›æŠ¤è…•";
+	unit="åŒ";
 picture="18julihuwan";
 	desc="\n";
 	item_cur_dura=368;
@@ -22,9 +22,9 @@ picture="18julihuwan";
 	set_item_profeLimit("jianxian");
 	set_item_profeLimit("kuangyao");
 	if(query_item_kind()=="single_main_weapon")
-		desc+="(Ö÷ÊÖ)\n";
+		desc+="(ä¸»æ‰‹)\n";
 	else if(query_item_kind()=="single_other_weapon")
-		desc+="(¸±ÊÖ)\n";
+		desc+="(å‰¯æ‰‹)\n";
 	else if(query_item_kind()=="double_main_weapon")
-		desc+="(Ë«ÊÖ)\n";
+		desc+="(åŒæ‰‹)\n";
 }

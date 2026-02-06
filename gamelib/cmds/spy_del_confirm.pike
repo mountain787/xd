@@ -9,13 +9,13 @@ int main(string arg)
 	int result = me->delete_spy_info(uid);
 	switch(result){
 		case 0:
-			s += "删除关注信息失败，请重试。\n";
+			s += "鍒犻櫎鍏虫敞淇℃伅澶辫触锛岃閲嶈瘯銆俓n";
 			break;
 		case 1:
-			s += "该玩家不在你的关注列表中。\n";
+			s += "璇ョ帺瀹朵笉鍦ㄤ綘鐨勫叧娉ㄥ垪琛ㄤ腑銆俓n";
 			break;
 		case 2:
-			s += "删除关注信息成功，请返回。\n";
+			s += "鍒犻櫎鍏虫敞淇℃伅鎴愬姛锛岃杩斿洖銆俓n";
 			break;
 	}
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);

@@ -3,8 +3,8 @@
 inherit WAP_ARMOR;
 void create(){
 	name=object_name(this_object());
-	name_cn="¡¾ÏÉ¡¿ÏÉÄı³¤¿ã";
-	unit="Ìõ";
+	name_cn="ã€ä»™ã€‘ä»™å‡é•¿è£¤";
+	unit="æ¡";
 	picture=name;
 	desc="\n";
 	item_cur_dura=1500;

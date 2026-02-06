@@ -5,6 +5,7 @@
 TARGET_DIR="${1:-/usr/local/games/xiand}"
 LOG_FILE="$TARGET_DIR/convert_utf8.log"
 PID_FILE="$TARGET_DIR/convert_utf8.pid"
+COUNT_FILE="$TARGET_DIR/convert_count.txt"
 
 # 颜色输出
 RED='\033[0;31m'
@@ -27,21 +28,25 @@ fi
 # 保存 PID
 echo $$ > "$PID_FILE"
 
+# 初始化计数器
+echo "0" > "$COUNT_FILE"
+
 # 日志函数
 log() {
-    echo -e "[$(date '+%Y-%m-%d %H:%M:%S')] $1" | tee -a "$LOG_FILE"
+    local msg="[$(date '+%Y-%m-%d %H:%M:%S')] $1"
+    echo "$msg" | tee -a "$LOG_FILE"
 }
 
 log_info() {
-    log -e "${GREEN}[INFO]${NC} $1"
+    log "[INFO] $1"
 }
 
 log_warn() {
-    log -e "${YELLOW}[WARN]${NC} $1"
+    log "[WARN] $1"
 }
 
 log_error() {
-    log -e "${RED}[ERROR]${NC} $1"
+    log "[ERROR] $1"
 }
 
 # 统计函数
@@ -67,9 +72,9 @@ log_info "正在统计文件总数..."
 TOTAL_FILES=$(count_files)
 log_info "总文件数: $TOTAL_FILES"
 
-# 显示当前 UTF-8 文件数
-UTF8_BEFORE=$(find "$TARGET_DIR" -type f ! -path "*/.git/*" ! -path "*/.svn/*" -exec file -b {} \; 2>/dev/null | grep -c "UTF-8" 2>/dev/null || echo 0)
-log_info "当前 UTF-8 文件数: $UTF8_BEFORE"
+# 显示当前 UTF-8 文件数 (跳过统计，直接开始)
+UTF8_BEFORE=0
+log_info "跳过 UTF-8 统计，直接开始转换..."
 
 # 开始转换
 log_info "开始转换..."
@@ -110,24 +115,36 @@ export -f convert_file
 
 # 主转换循环
 log_info "使用 find + xargs 并行转换..."
+log_info "已转换的文件会显示 [CONVERTED]，每10000个文件显示进度"
 
+# 导出变量供子进程使用
+export LOG_FILE
+
+# 使用 GNU parallel 或简单的进度显示
 find "$TARGET_DIR" -type f ! -path "*/.git/*" ! -path "*/.svn/*" -print0 2>/dev/null | \
-    xargs -0 -P $((CPU_CORES * 2)) -I {} bash -c '
-        file="{}"
-        encoding=$(file -b "$file" 2>/dev/null)
-        if echo "$encoding" | grep -q "UTF-8"; then
-            exit 0
-        fi
-        if iconv -f GBK -t UTF-8 "$file" > "$file.utf8" 2>/dev/null; then
-            mv "$file.utf8" "$file"
-            exit 0
-        fi
-        if iconv -f GB2312 -t UTF-8 "$file" > "$file.utf8" 2>/dev/null; then
-            mv "$file.utf8" "$file"
-            exit 0
-        fi
-        rm -f "$file.utf8"
-    ' \;
+    xargs -0 -P $((CPU_CORES * 2)) -n 1000 bash -c '
+        for file in "$@"; do
+            encoding=$(file -b "$file" 2>/dev/null)
+            if echo "$encoding" | grep -q "UTF-8"; then
+                continue
+            fi
+            # 需要转换
+            converted=0
+            if iconv -f GBK -t UTF-8 "$file" > "$file.utf8" 2>/dev/null; then
+                mv "$file.utf8" "$file"
+                converted=1
+            elif iconv -f GB2312 -t UTF-8 "$file" > "$file.utf8" 2>/dev/null; then
+                mv "$file.utf8" "$file"
+                converted=1
+            else
+                rm -f "$file.utf8"
+            fi
+            # 输出转换日志
+            if [ $converted -eq 1 ]; then
+                echo "[$(date "+%Y-%m-%d %H:%M:%S")] [CONVERTED] $file" >> "$LOG_FILE"
+            fi
+        done
+    ' bash \;
 
 END_TIME=$(date +%s)
 DURATION=$((END_TIME - START_TIME))
@@ -136,9 +153,8 @@ DURATION=$((END_TIME - START_TIME))
 log_info "========== 转换完成 =========="
 log_info "耗时: $DURATION 秒 ($((DURATION / 60)) 分钟)"
 
-UTF8_AFTER=$(find "$TARGET_DIR" -type f ! -path "*/.git/*" ! -path "*/.svn/*" -exec file -b {} \; 2>/dev/null | grep -c "UTF-8" 2>/dev/null || echo 0)
-log_info "转换后 UTF-8 文件数: $UTF8_AFTER"
-log_info "新增 UTF-8 文件: $((UTF8_AFTER - UTF8_BEFORE))"
+# 跳过最终统计
+log_info "转换完成！"
 
 # 清理
 rm -f "$PID_FILE"

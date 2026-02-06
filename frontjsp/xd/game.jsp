@@ -66,7 +66,7 @@ if(!cmd.equals("null")&&cmd!=null){
 else
 	cmd = "init";
 String arg=request.getParameter("arg");
-String temptitle=new String(title.getBytes("ISO8859-1"),"UTF-8");
+String temptitle=title;
 Socket socket;
 InputStream reader;
 OutputStream writer;

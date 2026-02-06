@@ -108,7 +108,7 @@ if(cmd!=null){
 }
 */
 String arg=request.getParameter("_arg");
-String temptitle=new String(title.getBytes("ISO8859-1"),"UTF-8");
+String temptitle=title;
 //这里再进行socket的初始化
 Socket socket;
 InputStream reader;
@@ -117,7 +117,7 @@ socket = new Socket(ip,port);
 reader = socket.getInputStream();
 writer = socket.getOutputStream();
 //第一条，也是每次都要发送的指令
-send(writer,("set_filter "+filter_type+" "+response.encodeURL("/"+jspname)+" "+temptitle).getBytes("gb2312"));
+send(writer,("set_filter "+filter_type+" "+response.encodeURL("/"+jspname)+" "+temptitle).getBytes("UTF-8"));
 //send(writer,("set_filter "+filter_type+" "+response.encodeURL("/"+jspname)+" "+"xdtest").getBytes("utf-8"));
 if(first_login){
 	String _reg = (String)request.getParameter("_reg");

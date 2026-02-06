@@ -1,20 +1,20 @@
 #define ROOTDIR "./"
 int main(int argc, array(string) argv){
-	//ÅĞ¶ÏÊäÈë²ÎÊıºÏ·¨ĞÔ///////////////////////////////////////
+	//åˆ¤æ–­è¾“å…¥å‚æ•°åˆæ³•æ€§///////////////////////////////////////
 	if(argc==2){
 		if(search(argv[argc-1],".csv")!=-1)
-			write("ĞèÒª´¦ÀíµÄÎÄµµÃû³ÆÎª£º"+argv[argc-1]+"\n");	
+			write("éœ€è¦å¤„ç†çš„æ–‡æ¡£åç§°ä¸ºï¼š"+argv[argc-1]+"\n");	
 		else{
-			write("ĞèÒª´¦ÀíµÄÎÄµµÃû³ÆÎª£º"+argv[argc-1]+"\n");	
-			write("µ«ÊÇ¸ÃÎÄ¼ş²¢·ÇÒ»¸öºÏ·¨µÄcsv´¦ÀíÎÄµµ£¬Çë·µ»Ø¼ì²é!\n");
+			write("éœ€è¦å¤„ç†çš„æ–‡æ¡£åç§°ä¸ºï¼š"+argv[argc-1]+"\n");	
+			write("ä½†æ˜¯è¯¥æ–‡ä»¶å¹¶éä¸€ä¸ªåˆæ³•çš„csvå¤„ç†æ–‡æ¡£ï¼Œè¯·è¿”å›æ£€æŸ¥!\n");
 			return 0;
 		}
 	}
 	else{
-		write("²ÎÊı´íÎó£¬Çë·µ»Ø¼ì²é£¡\n");	
+		write("å‚æ•°é”™è¯¯ï¼Œè¯·è¿”å›æ£€æŸ¥ï¼\n");	
 		return 0;
 	}
-	//ÅĞ¶ÏÊäÈë²ÎÊıºÏ·¨ĞÔ///////////////////////////////////////
+	//åˆ¤æ–­è¾“å…¥å‚æ•°åˆæ³•æ€§///////////////////////////////////////
 	array(string) all_lines;
 	array(string) line_values;
 	mapping (int:string) item_level_index=([]);
@@ -28,9 +28,9 @@ int main(int argc, array(string) argv){
 		string writeFile="";
 		tempArray = all_lines[i]/",";
 		
-		writeFile += "#include <globals.h>\n#include <gamelib/include/gamelib.h>\ninherit GAMELIB_ROOM;\nstring room_race=\"third\";\n";//Í·ÎÄ¼şĞÅÏ¢
-		writeFile += "void create(){\n\tobject room = this_object();\n\tname=object_name(this_object());\n";//ÎïÆ·create()·½·¨Í·²¿
-		//ÎïÆ·ÖĞÎÄÃû³Æ/////////////////////////
+		writeFile += "#include <globals.h>\n#include <gamelib/include/gamelib.h>\ninherit GAMELIB_ROOM;\nstring room_race=\"third\";\n";//å¤´æ–‡ä»¶ä¿¡æ¯
+		writeFile += "void create(){\n\tobject room = this_object();\n\tname=object_name(this_object());\n";//ç‰©å“create()æ–¹æ³•å¤´éƒ¨
+		//ç‰©å“ä¸­æ–‡åç§°/////////////////////////
 		writeFile += "\tname_cn=" + "\"" +tempArray[1]+"\";\n";
 		writeFile += "\tdesc=" + "\""+tempArray[2]+"\\n\";\n";
 		writeFile += "\tset_level_limit("+tempArray[3]+");\n";
@@ -43,10 +43,10 @@ int main(int argc, array(string) argv){
 		writeFile += "\tset_wait_time("+ tempArray[10]+");\n";
 		writeFile += "\tset_oprate_desc(\""+ tempArray[13]+"\");\n";
 		writeFile += "}\n";
-		writeFile += "string query_links(){\n\tstring tmp=\"\";\n\tobject room = this_object();\n\ttmp += \"ÕâÀïÊÇ\"+room->query_roomNameCn()+\"\\n\\n\\n\\n\";\n";
+		writeFile += "string query_links(){\n\tstring tmp=\"\";\n\tobject room = this_object();\n\ttmp += \"è¿™é‡Œæ˜¯\"+room->query_roomNameCn()+\"\\n\\n\\n\\n\";\n";
 		writeFile += "\ttmp += \""+tempArray[11]+"\\n\";\n";
 		writeFile += "\ttmp += \"["+tempArray[12]+":exercise "+tempArray[0]+" 0]\\n\";\n";
-		writeFile += "\ttmp += \"[·µ»Ø:home_function_room_list]\\n\";\n\treturn tmp;\n}\n";
+		writeFile += "\ttmp += \"[è¿”å›:home_function_room_list]\\n\";\n\treturn tmp;\n}\n";
 		
 		array dir = tempArray[0]/"/";
 		if(!Stdio.exist(dir[0])) mkdir(ROOTDIR+dir[0]);

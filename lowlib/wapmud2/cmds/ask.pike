@@ -10,7 +10,7 @@ int main(string arg)
 		this_player()->write_view(WAP_VIEWD["/ask_notfound"],ob);
 	}
 	else{
-		//加上阵营判断
+		//鍔犱笂闃佃惀鍒ゆ柇
 
 		//if(ob->is("npc")){
 		//	this_player()->write_view_tmp(WAP_VIEWD["/ask"],ob,this_player(),count);

@@ -5,7 +5,7 @@ String filter_type = "html";
 String title = gamename_cn;
 String read(InputStream reader) throws IOException
 {
-    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"gb2312"));
+    BufferedReader r = new BufferedReader(new InputStreamReader(reader,"UTF-8"));
     String ret ="";
     String s = "";
 	int n;
@@ -34,7 +34,7 @@ String read(InputStream reader) throws IOException
 %> 
 <%
 try{
-	request.setCharacterEncoding("gbk");
+	request.setCharacterEncoding("UTF-8");
 }catch(Exception uae){
     	System.out.println("[ua exception]"+uae+"\n");
 }
@@ -73,11 +73,11 @@ OutputStream writer;
 socket = new Socket(ip,port);
 reader = socket.getInputStream();
 writer = socket.getOutputStream();
-send(writer,("set_filter "+filter_type+" "+response.encodeURL("./"+jspname)+" "+temptitle).getBytes("gb2312"));
-send(writer,("login_des_p "+projname+" "+txd).getBytes());
+send(writer,("set_filter "+filter_type+" "+response.encodeURL("./"+jspname)+" "+temptitle).getBytes("UTF-8"));
+send(writer,("login_des_p "+projname+" "+txd).getBytes("UTF-8"));
 if(cmd.equals("init")){
-	send(writer,("set_sid okay").getBytes());
-	send(writer,("set_game_fg "+area).getBytes());
+	send(writer,("set_sid okay").getBytes("UTF-8"));
+	send(writer,("set_game_fg "+area).getBytes("UTF-8"));
 }
 boolean have_space=false;
 String _arg="";
@@ -123,8 +123,8 @@ else if(have_space)
 if(_arg!=null){
 	cmd=cmd+_arg;
 }
-send(writer,cmd.getBytes("gb2312"));
-send(writer,"flush_filter".getBytes());
+send(writer,cmd.getBytes("UTF-8"));
+send(writer,"flush_filter".getBytes("UTF-8"));
 socket.shutdownOutput();
 data=read(reader);
 try{
@@ -134,5 +134,5 @@ if(socket!=null) socket.close();
 }catch(Exception e){
        System.out.println("[socket exception]"+e+"\n");
 } 
-response.setContentType("text/html; charset=gb2312");
+response.setContentType("text/html; charset=UTF-8");
 %><%=data%>

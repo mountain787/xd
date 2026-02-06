@@ -1,8 +1,8 @@
 #include <globals.h>
 #include <mudlib/include/mudlib.h>
-//物品中的饮料
+//鐗╁搧涓殑楗枡
 inherit MUD_COMBINE_ITEM;
 //inherit MUD_ITEM;
-//具有饮料的属性方法和继承关系
+//鍏锋湁楗枡鐨勫睘鎬ф柟娉曞拰缁ф壙鍏崇郴
 inherit MUD_F_DRINKED;
 private string initer=((set_item_type("water")),"");

@@ -1,27 +1,27 @@
 #include <wapmud2/include/wapmud2.h>
-#define PRE_LIST_SIZE 5        //Ò³ÃæÉÏÏÔÊ¾"ÕâÀïÓĞxx¡¢xx¡¢xxxµÈÎïÆ·"Ê±£¬"µÈ"Ç°ÃæµÄÎïÆ·ÊıÄ¿
-//int ite_count;                 //ÓÃ»§ËæÉíÎïÆ·¸ñ×ÓÊıÄ¿
+#define PRE_LIST_SIZE 5        //é¡µé¢ä¸Šæ˜¾ç¤º"è¿™é‡Œæœ‰xxã€xxã€xxxç­‰ç‰©å“"æ—¶ï¼Œ"ç­‰"å‰é¢çš„ç‰©å“æ•°ç›®
+//int ite_count;                 //ç”¨æˆ·éšèº«ç‰©å“æ ¼å­æ•°ç›®
 /*
-	´ËÎÄ¼şÖĞÖ÷Òª°üÀ¨ÁËÒÔÏÂ¼¸Àà·½·¨£º
-	£¨Ò»£©¶Ô°ü¹üµÄÏà¹ØÅĞ¶Ï£¬´ËÀà·½·¨°üÀ¨:
-	         if_over_easy_load()           //ÅĞ¶ÏÍæ¼Ò°ü¹üÖĞÎïÆ·ÊıÄ¿ÊÇ·ñÒÑ¾­´ïµ½ÉÏÏŞ
-		 if_over_load(object ob)       //ÅĞ¶ÏÔÚ·ÅÈëobºó£¬Íæ¼Ò°ü¹üÖĞÎïÆ·ÊıÄ¿ÊÇ·ñ»á³¬¹ıÉÏÏŞ
-                 query_beibao_size()           //²éÑ¯ÓÃ»§±³°üµÄÈİÁ¿
-		 query_cangku_size()           //²éÑ¯ÓÃ»§²Ö¿âµÄÈİÁ¿
-	£¨¶ş£©Õ¹Ê¾»·¾³ÖĞnpc/ÎïÆ·/Íæ¼Ò µÄÏêÏ¸ĞÅÏ¢£¬´ËÀà·½·¨ÒÔ "view_"ÎªÇ°×º£¬°üÀ¨
-		 view_items()                  //Õ¹Ê¾ ÎïÆ· µÄ½Ó¿Ú
-		 view_chars()                  //Õ¹Ê¾ Íæ¼Ò+npc µÄ½Ó¿Ú
-		 view_chars_npc()              //Õ¹Ê¾ npc µÄ½Ó¿Ú
-		 view_chars_player()           //Õ¹Ê¾ Íæ¼Ò µÄ½Ó¿Ú
-		 view_something_charact()      //ºËĞÄ·½·¨Ò»£¬Íê³ÉÍæ¼ÒºÍnpcµÄÕ¹Ê¾
-		 view_something_items()        //ºËĞÄ·½·¨¶ş£¬Íê³ÉÎïÆ·µÄÕ¹Ê¾
-	£¨Èı£©Õ¹Ê¾»·¾³ÖĞµÄnpc/ÎïÆ·/Íæ¼Ò£¬´ËÀà·½·¨ÒÔ "have_"ÎªÇ°×º£¬°üÀ¨£º
-	         have_chracter()  //Í¬Ê±Õ¹Ê¾npcºÍÍæ¼ÒµÄ½Ó¿Ú
-		 have_npc()       //Õ¹Ê¾npcµÄ½Ó¿Ú
-		 have_player()    //Õ¹Ê¾Íæ¼ÒµÄ½Ó¿Ú
-		 have_item()      //Õ¹Ê¾ÎïÆ·µÄ½Ó¿Ú
-		 have_something   //ºËĞÄ·½·¨£¬ÊµÏÖÁËÉÏÊöËùÓĞ·½·¨ÖĞĞèÒªµÄ¹¦ÄÜ
-  	£¨ËÄ£©Íæ¼Ò²é¿´×Ô¼ºÎïÆ·µÄ·½·¨£¬´ËÀà·½·¨°üÀ¨£º
+	æ­¤æ–‡ä»¶ä¸­ä¸»è¦åŒ…æ‹¬äº†ä»¥ä¸‹å‡ ç±»æ–¹æ³•ï¼š
+	ï¼ˆä¸€ï¼‰å¯¹åŒ…è£¹çš„ç›¸å…³åˆ¤æ–­ï¼Œæ­¤ç±»æ–¹æ³•åŒ…æ‹¬:
+	         if_over_easy_load()           //åˆ¤æ–­ç©å®¶åŒ…è£¹ä¸­ç‰©å“æ•°ç›®æ˜¯å¦å·²ç»è¾¾åˆ°ä¸Šé™
+		 if_over_load(object ob)       //åˆ¤æ–­åœ¨æ”¾å…¥obåï¼Œç©å®¶åŒ…è£¹ä¸­ç‰©å“æ•°ç›®æ˜¯å¦ä¼šè¶…è¿‡ä¸Šé™
+                 query_beibao_size()           //æŸ¥è¯¢ç”¨æˆ·èƒŒåŒ…çš„å®¹é‡
+		 query_cangku_size()           //æŸ¥è¯¢ç”¨æˆ·ä»“åº“çš„å®¹é‡
+	ï¼ˆäºŒï¼‰å±•ç¤ºç¯å¢ƒä¸­npc/ç‰©å“/ç©å®¶ çš„è¯¦ç»†ä¿¡æ¯ï¼Œæ­¤ç±»æ–¹æ³•ä»¥ "view_"ä¸ºå‰ç¼€ï¼ŒåŒ…æ‹¬
+		 view_items()                  //å±•ç¤º ç‰©å“ çš„æ¥å£
+		 view_chars()                  //å±•ç¤º ç©å®¶+npc çš„æ¥å£
+		 view_chars_npc()              //å±•ç¤º npc çš„æ¥å£
+		 view_chars_player()           //å±•ç¤º ç©å®¶ çš„æ¥å£
+		 view_something_charact()      //æ ¸å¿ƒæ–¹æ³•ä¸€ï¼Œå®Œæˆç©å®¶å’Œnpcçš„å±•ç¤º
+		 view_something_items()        //æ ¸å¿ƒæ–¹æ³•äºŒï¼Œå®Œæˆç‰©å“çš„å±•ç¤º
+	ï¼ˆä¸‰ï¼‰å±•ç¤ºç¯å¢ƒä¸­çš„npc/ç‰©å“/ç©å®¶ï¼Œæ­¤ç±»æ–¹æ³•ä»¥ "have_"ä¸ºå‰ç¼€ï¼ŒåŒ…æ‹¬ï¼š
+	         have_chracter()  //åŒæ—¶å±•ç¤ºnpcå’Œç©å®¶çš„æ¥å£
+		 have_npc()       //å±•ç¤ºnpcçš„æ¥å£
+		 have_player()    //å±•ç¤ºç©å®¶çš„æ¥å£
+		 have_item()      //å±•ç¤ºç‰©å“çš„æ¥å£
+		 have_something   //æ ¸å¿ƒæ–¹æ³•ï¼Œå®ç°äº†ä¸Šè¿°æ‰€æœ‰æ–¹æ³•ä¸­éœ€è¦çš„åŠŸèƒ½
+  	ï¼ˆå››ï¼‰ç©å®¶æŸ¥çœ‹è‡ªå·±ç‰©å“çš„æ–¹æ³•ï¼Œæ­¤ç±»æ–¹æ³•åŒ…æ‹¬ï¼š
 	         
 */
 
@@ -38,26 +38,26 @@ string view_npc_action(){
 	return "";
 }*/
 
-////////////////////// ================        ¡¾¶Ô°ü¹üµÄÏà¹ØÅĞ¶Ï¡¿   Start  ===================///////////////////
+////////////////////// ================        ã€å¯¹åŒ…è£¹çš„ç›¸å…³åˆ¤æ–­ã€‘   Start  ===================///////////////////
 
-//ÅĞ¶ÏÉíÉÏ¼òµ¥ÎïÆ·(Ò»°ãÊÇÖ¸µ¥ÊıÎïÆ·)ÊıÄ¿ÊÇ·ñ´ïµ½ÉÏÏŞ
+//åˆ¤æ–­èº«ä¸Šç®€å•ç‰©å“(ä¸€èˆ¬æ˜¯æŒ‡å•æ•°ç‰©å“)æ•°ç›®æ˜¯å¦è¾¾åˆ°ä¸Šé™
 int if_over_easy_load(){
 	int rst=0;
 	array(object) items=all_inventory(this_object());
 	if(items&&sizeof(items)){
 		int count = sizeof(items);
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 		if(count>=count_max)
 			rst = 1;
 	}
 	return rst;
 }
 
-//ÅĞ¶Ï¼ÓÉÏ²ÎÊıÖĞµÄobÖ®ºó£¬ÎïÆ·ÊıÄ¿ÊÇ·ñ´ïµ½ÉÏÏŞ
+//åˆ¤æ–­åŠ ä¸Šå‚æ•°ä¸­çš„obä¹‹åï¼Œç‰©å“æ•°ç›®æ˜¯å¦è¾¾åˆ°ä¸Šé™
 int if_over_load(object ob){
 	int rst=0;
 	array(object) items=all_inventory(this_object());
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(ob->is("combine_item")){
 		int count = sizeof(items);
 		if(count>=count_max){
@@ -86,52 +86,52 @@ int if_over_load(object ob){
 	}
 	return rst;
 }
-//²éÑ¯ÓÃ»§±³°üµÄÈİÁ¿ added by caijie 08/10/08
+//æŸ¥è¯¢ç”¨æˆ·èƒŒåŒ…çš„å®¹é‡ added by caijie 08/10/08
 int query_beibao_size()
 {
 	object me = this_object();
-	int pac_size = 60;//²»×öÈÎºÎÀ©³äÖ®Ç°±³°üµÄ×î´óÈİÁ¿Îª60
+	int pac_size = 60;//ä¸åšä»»ä½•æ‰©å……ä¹‹å‰èƒŒåŒ…çš„æœ€å¤§å®¹é‡ä¸º60
 	if(!me->package_expand||!me->package_expand["beibao"]){
 		return pac_size;
 	}
 	else if(me->package_expand["beibao"]){
 		mapping tmp = me->package_expand["beibao"];
-		int pac_num = sizeof(tmp);//²éÑ¯±³°üµÄÖÖÀà
+		int pac_num = sizeof(tmp);//æŸ¥è¯¢èƒŒåŒ…çš„ç§ç±»
 		if(pac_num){
-		//ÓĞÀ©³ä±³°ü
+		//æœ‰æ‰©å……èƒŒåŒ…
 			array pac_type = indices(tmp);
 			for(int i=0;i<pac_num;i++){
-				pac_size += pac_type[i]*tmp[pac_type[i]];//Ë÷ÒıÎª±³°üÖÖÀàÈç£º5¸ñ£¬10¸ñ£¬¶ÔÓ¦µÄÔªËØÎªÓµÓĞ¸Ã±³°üµÄ¸öÊı
+				pac_size += pac_type[i]*tmp[pac_type[i]];//ç´¢å¼•ä¸ºèƒŒåŒ…ç§ç±»å¦‚ï¼š5æ ¼ï¼Œ10æ ¼ï¼Œå¯¹åº”çš„å…ƒç´ ä¸ºæ‹¥æœ‰è¯¥èƒŒåŒ…çš„ä¸ªæ•°
 			}
 		}
 	}
 	return pac_size;
 }
-//²éÑ¯ÓÃ»§²Ø±¦ÏäµÄÈİÁ¿ added by caijie 08/10/08 
+//æŸ¥è¯¢ç”¨æˆ·è—å®ç®±çš„å®¹é‡ added by caijie 08/10/08 
 int query_cangku_size()
 {
 	object me = this_object();
-	int pac_size = me->packageLevel;//²Ø±¦ÏäµÄ³õÊ¼ÈİÁ¿
+	int pac_size = me->packageLevel;//è—å®ç®±çš„åˆå§‹å®¹é‡
 	if(!me->package_expand||!me->package_expand["cangku"]){
 		return pac_size;
 	}
 	else if(me->package_expand["cangku"]){
 		array tmp = me->package_expand["cangku"];
-		int pac_num = sizeof(tmp);//²éÑ¯±³°üµÄÖÖÀà
+		int pac_num = sizeof(tmp);//æŸ¥è¯¢èƒŒåŒ…çš„ç§ç±»
 		if(pac_num){
-		//ÓĞÀ©³ä±³°ü
+		//æœ‰æ‰©å……èƒŒåŒ…
 			array pac_type = indices(tmp);
 			for(int i=0;i<pac_num;i++){
-				pac_size += pac_type[i]*tmp[pac_type[i]];//Ë÷ÒıÎª±³°üÖÖÀàÈç£º5¸ñ£¬10¸ñ£¬¶ÔÓ¦µÄÔªËØÎªÓµÓĞ¸Ã±³°üµÄ¸öÊı
+				pac_size += pac_type[i]*tmp[pac_type[i]];//ç´¢å¼•ä¸ºèƒŒåŒ…ç§ç±»å¦‚ï¼š5æ ¼ï¼Œ10æ ¼ï¼Œå¯¹åº”çš„å…ƒç´ ä¸ºæ‹¥æœ‰è¯¥èƒŒåŒ…çš„ä¸ªæ•°
 			}
 		}
 	}
 	return pac_size;
 }
-////////////////////// ================        ¡¾¶Ô°ü¹üµÄÏà¹ØÅĞ¶Ï¡¿   End  ===================///////////////////
+////////////////////// ================        ã€å¯¹åŒ…è£¹çš„ç›¸å…³åˆ¤æ–­ã€‘   End  ===================///////////////////
 
 
-////////////////////// =========     £¨¶ş£©¡¾Õ¹Ê¾»·¾³ÖĞnpc/ÎïÆ·/Íæ¼Ò ÏêÏ¸ĞÅÏ¢¡¿ Start  =========///////////////////
+////////////////////// =========     ï¼ˆäºŒï¼‰ã€å±•ç¤ºç¯å¢ƒä¸­npc/ç‰©å“/ç©å®¶ è¯¦ç»†ä¿¡æ¯ã€‘ Start  =========///////////////////
 protected private string view_something_items(function filter_func,string list,string arg)
 {
 	mapping(string:int) name_count=([]);
@@ -151,7 +151,7 @@ protected private string view_something_items(function filter_func,string list,s
 string view_items(){
 	string s=view_something_items(lambda(object ob){return ob->is("item");},"item","checkitem");
 	if(s=="")
-		s="ÕâÀïÃ»ÓĞÈÎºÎ¶«Î÷¡£\n";
+		s="è¿™é‡Œæ²¡æœ‰ä»»ä½•ä¸œè¥¿ã€‚\n";
 	return s;
 }
 string view_chars(){
@@ -161,7 +161,7 @@ string view_chars(){
 	else
 		s=view_something_charact(lambda(object ob){return ob->is("character");},"char");
 	if(s=="")
-		s="ÏÖÔÚÕâÀïÃ»ÓĞÈÎºÎÈË¡£\n";
+		s="ç°åœ¨è¿™é‡Œæ²¡æœ‰ä»»ä½•äººã€‚\n";
 	return s;
 }
 string view_chars_npc(){
@@ -171,7 +171,7 @@ string view_chars_npc(){
 	else
 		s=view_something_charact(lambda(object ob){return ob->is("character")&&ob->is("npc");},"char_npc");
 	if(s=="")
-		s="ÏÖÔÚÕâÀïÃ»ÓĞÈÎºÎ¹Ö\n";
+		s="ç°åœ¨è¿™é‡Œæ²¡æœ‰ä»»ä½•æ€ª\n";
 	return s;
 }
 string view_chars_player(){
@@ -181,16 +181,16 @@ string view_chars_player(){
 	else
 		s=view_something_charact(lambda(object ob){return ob->is("character")&&ob->is("player");},"char");
 	if(s=="")
-		s="ÏÖÔÚÕâÀïÃ»ÓĞÈÎºÎÈË¡£\n";
+		s="ç°åœ¨è¿™é‡Œæ²¡æœ‰ä»»ä½•äººã€‚\n";
 	return s;
 }
-//²é¿´ ÈË£¨Íæ¼Ò¡¢NPC£©
+//æŸ¥çœ‹ äººï¼ˆç©å®¶ã€NPCï¼‰
 protected private string view_something_charact(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	if(items&&sizeof(items)){
-		out+="(ÈËÊı£º"+sizeof(items)+" ÈË)\n"; 
+		out+="(äººæ•°ï¼š"+sizeof(items)+" äºº)\n"; 
 		for(int i=0;i<sizeof(items);i++){
 			if(items[i] && items[i]->hind == 0){
 					string honerdesc = "";
@@ -198,7 +198,7 @@ protected private string view_something_charact(function filter_func,string list
 					if(!items[i]->is("npc")){
 						string tmp = WAP_HONERD->query_honer_level_desc(items[i]->honerlv,items[i]->query_raceId());
 						if(tmp&&sizeof(tmp))
-							honerdesc += "¡¸"+tmp+"¡¹";	
+							honerdesc += "ã€Œ"+tmp+"ã€";	
 						if(items[i]->bangid)
 							bangname += "<"+BANGD->query_bang_name(items[i]->bangid)+">*"+BANGD->query_level_cn(items[i]->query_name(),items[i]->bangid);
 					}
@@ -211,14 +211,14 @@ protected private string view_something_charact(function filter_func,string list
 		}
 	}
 	else
-		out+="(ÈËÊı£º0 ÈË)\n"; 
+		out+="(äººæ•°ï¼š0 äºº)\n"; 
 	return out;
 }
-////////////////////// ================        ¡¾Õ¹Ê¾»·¾³ÖĞnpc/ÎïÆ·/Íæ¼Ò ÏêÏ¸ĞÅÏ¢¡¿   End  ===================///////////////////
+////////////////////// ================        ã€å±•ç¤ºç¯å¢ƒä¸­npc/ç‰©å“/ç©å®¶ è¯¦ç»†ä¿¡æ¯ã€‘   End  ===================///////////////////
 
 
-////////////////////// ================     (Èı)¡¾Õ¹Ê¾»·¾³ÖĞµÄnpc/ÎïÆ·/Íæ¼Ò¡¿   Start  ===================///////////////////
-//Õ¹Ê¾»·¾³ÖĞµÄ npc\Íæ¼Ò\ÎïÆ·
+////////////////////// ================     (ä¸‰)ã€å±•ç¤ºç¯å¢ƒä¸­çš„npc/ç‰©å“/ç©å®¶ã€‘   Start  ===================///////////////////
+//å±•ç¤ºç¯å¢ƒä¸­çš„ npc\ç©å®¶\ç‰©å“
 protected private string have_something(function filter_func,string look,string list,string verb_name,string target_name){
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	if(items&&sizeof(items)){
@@ -226,7 +226,7 @@ protected private string have_something(function filter_func,string look,string 
 			if(items[0]->is("npc"))
 				return items[0]->query_mini_picture_url()+verb_name+"["+items[0]->query_short()+":char_npc "+items[0]->query_name()+"]\n";
 			else{
-				if(items[0]->hind == 0)//ÔİÊ±´æÔÚÒÉÎÊ20070523
+				if(items[0]->hind == 0)//æš‚æ—¶å­˜åœ¨ç–‘é—®20070523
 					return verb_name+items[0]->query_mini_user_picture_url()+"["+items[0]->query_short()+":"+look+" "+items[0]->query_name()+"]\n";
 				else 
 					return "";
@@ -249,10 +249,10 @@ protected private string have_something(function filter_func,string look,string 
 				}
 			}
 			if(sizeof(items)>PRE_LIST_SIZE)
-				s=a*"¡¢"+"µÈ"+target_name;
+				s=a*"ã€"+"ç­‰"+target_name;
 			else{
 				if(sizeof(a)>=2)
-					s=a[0..sizeof(a)-2]*"¡¢"+"ºÍ"+a[sizeof(a)-1];
+					s=a[0..sizeof(a)-2]*"ã€"+"å’Œ"+a[sizeof(a)-1];
 				else
 					s = a[0];
 			}
@@ -263,24 +263,24 @@ protected private string have_something(function filter_func,string look,string 
 }
 
 string have_item(){
-	return have_something(lambda(object ob){return ob->is("item");},"item","items","ÕâÀïÓĞ","ÎïÆ·");
+	return have_something(lambda(object ob){return ob->is("item");},"item","items","è¿™é‡Œæœ‰","ç‰©å“");
 }
 string have_character(){
 	return have_npc()+"\n"+have_player();
 }
 string have_npc(){
-	return have_something(lambda(object ob){return ob->is("character")&&ob->is("npc");},"char_npc","chars npc","ÕâÀïÓĞ","");
+	return have_something(lambda(object ob){return ob->is("character")&&ob->is("npc");},"char_npc","chars npc","è¿™é‡Œæœ‰","");
 }
 string have_player(){
-	return have_something(lambda(object ob){return ob->is("character")&&ob->is("player");},"char","chars player","ÄãÓöµ½ÁË","Íæ¼Ò");
+	return have_something(lambda(object ob){return ob->is("character")&&ob->is("player");},"char","chars player","ä½ é‡åˆ°äº†","ç©å®¶");
 }
-////////////////////// ================     ¡¾Õ¹Ê¾»·¾³ÖĞµÄnpc/ÎïÆ·/Íæ¼Ò¡¿   Start  ===================///////////////////
+////////////////////// ================     ã€å±•ç¤ºç¯å¢ƒä¸­çš„npc/ç‰©å“/ç©å®¶ã€‘   Start  ===================///////////////////
 
 
 
-////////////////////// ================     (ËÄ) ¡¾Íæ¼Ò²é¿´×Ô¼ºÎïÆ·¡¿   Start  ===================///////////////////
-// 1¡¢²é¿´ËæÉíÎïÆ·
-//²é¿´ËæÉíÎïÆ·-×°±¸
+////////////////////// ================     (å››) ã€ç©å®¶æŸ¥çœ‹è‡ªå·±ç‰©å“ã€‘   Start  ===================///////////////////
+// 1ã€æŸ¥çœ‹éšèº«ç‰©å“
+//æŸ¥çœ‹éšèº«ç‰©å“-è£…å¤‡
 string view_inventory_zhuangbei(void|string cmd,void|int notShowMoney,void|int showPrice){
 	if(cmd==0)
 		cmd="inv";
@@ -293,10 +293,10 @@ string view_inventory_zhuangbei(void|string cmd,void|int notShowMoney,void|int s
 	else
 		s+=view_something_zhuangbei(objectp,cmd,showPrice);
 	if(s=="")
-		return "ÄãÉíÉÏÊ²Ã´¶«Î÷Ò²Ã»ÓĞ¡£\n";
+		return "ä½ èº«ä¸Šä»€ä¹ˆä¸œè¥¿ä¹Ÿæ²¡æœ‰ã€‚\n";
 	return  mymoney + myyushi + s;
 }
-//²é¿´ËæÉíÎïÆ·-µÀ¾ß
+//æŸ¥çœ‹éšèº«ç‰©å“-é“å…·
 string view_inventory_daoju(void|string cmd,void|int notShowMoney,void|int showPrice){
 	if(cmd==0)
 		cmd="inv";
@@ -308,18 +308,18 @@ string view_inventory_daoju(void|string cmd,void|int notShowMoney,void|int showP
 	else
 		s+=view_something_daoju(objectp,cmd,showPrice);
 	if(s=="")
-		return "ÄãÉíÉÏÊ²Ã´¶«Î÷Ò²Ã»ÓĞ¡£\n";
+		return "ä½ èº«ä¸Šä»€ä¹ˆä¸œè¥¿ä¹Ÿæ²¡æœ‰ã€‚\n";
 	return  mymoney + myyushi + s;
 }
-//²é¿´×°±¸
+//æŸ¥çœ‹è£…å¤‡
 protected private string view_something_zhuangbei(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -328,12 +328,12 @@ protected private string view_something_zhuangbei(function filter_func,string li
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry"){
 					inv_count++;	
 					if(items[i]["equiped"]){
-						strlist+="¡õ";
+						strlist+="â–¡";
 						strlist+="["+items[i]->query_short();
 						if(showPrice)
 							strlist+="("+MUD_MONEYD->query_store_money_cn(items[i]->query_item_canLevel()*50/4)+")";
 						else if(items[i]->query_item_canLevel())
-							strlist+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"ÎŞµÈ")+"¼¶)";
+							strlist+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"æ— ç­‰")+"çº§)";
 						strlist+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
 						name_count[items[i]->query_name()]++;
 					}
@@ -342,7 +342,7 @@ protected private string view_something_zhuangbei(function filter_func,string li
 						if(showPrice)
 							out_no_equip += "("+MUD_MONEYD->query_store_money_cn(items[i]->query_item_canLevel()*50/4)+")";
 						else if(items[i]->query_item_canLevel())
-							out_no_equip += "("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"ÎŞµÈ")+"¼¶)";
+							out_no_equip += "("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"æ— ç­‰")+"çº§)";
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
 						name_count[items[i]->query_name()]++;
 					}
@@ -354,37 +354,37 @@ protected private string view_something_zhuangbei(function filter_func,string li
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):inventory]";
+			howitem += "[è£…å¤‡("+inv_count+"):inventory]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju]";
+			howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
-//²é¿´µÀ¾ß
+//æŸ¥çœ‹é“å…·
 protected private string view_something_daoju(function filter_func,string list,void|int showPrice){
 	mapping(string:int) name_count=([]);
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n";
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n";
 		int inv_count = 0;
 		int daoju_count = 0;
-		//out+="[×°±¸:inventory] [µÀ¾ß:inventory_daoju]\n";
+		//out+="[è£…å¤‡:inventory] [é“å…·:inventory_daoju]\n";
 		for(int i=0;i<sizeof(items);i++){
 			if(items[i]){
-				//µÀ¾ß-×°±¸ÎïÆ·²»×ö´¦Àí
+				//é“å…·-è£…å¤‡ç‰©å“ä¸åšå¤„ç†
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry")
 				inv_count++;
-				//µÀ¾ß-¿ÉÊ³ÓÃÎïÆ·
+				//é“å…·-å¯é£Ÿç”¨ç‰©å“
 				else if(items[i]->query_item_type()=="food"||items[i]->query_item_type()=="water"){
 					out_no_equip+="["+items[i]->query_short();
 					if(showPrice)
@@ -399,16 +399,16 @@ protected private string view_something_daoju(function filter_func,string list,v
 					{
 						switch(items[i]->query_peifang_kind()){
 							case "caifeng":
-								out_no_equip+="(²Ã·ì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(è£ç¼"+items[i]->query_viceskill_level()+")";
 							break;
 							case "duanzao":
-								out_no_equip+="(¶ÍÔì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(é”»é€ "+items[i]->query_viceskill_level()+")";
 							break;
 							case "liandan":
-								out_no_equip+="(Á¶µ¤"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(ç‚¼ä¸¹"+items[i]->query_viceskill_level()+")";
 							break;
 							case "zhijia":
-								out_no_equip+="(ÖÆ¼×"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(åˆ¶ç”²"+items[i]->query_viceskill_level()+")";
 							break;
 							default:
 							break;
@@ -418,7 +418,7 @@ protected private string view_something_daoju(function filter_func,string list,v
 					name_count[items[i]->query_name()]++;
 					daoju_count++;
 				}
-				//µÀ¾ß-Ò»°ãÎïÆ·£ºÈÎÎñÎïÆ·ºÍÌØÊâÎïÆ·µÈ,ÎŞ¼Û¸ñÏÔÊ¾
+				//é“å…·-ä¸€èˆ¬ç‰©å“ï¼šä»»åŠ¡ç‰©å“å’Œç‰¹æ®Šç‰©å“ç­‰,æ— ä»·æ ¼æ˜¾ç¤º
 				else{
 					out_no_equip+="["+items[i]->query_short();
 					out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
@@ -430,24 +430,24 @@ protected private string view_something_daoju(function filter_func,string list,v
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):inventory]";
+			howitem += "[è£…å¤‡("+inv_count+"):inventory]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju]";
+			howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n";	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n";
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n";
 	return out+out_no_equip;
 }
 
 
 
 
-//2¡¢³öÊÛ/´æ´¢/ÅÄÂô ÎïÆ·ÁĞ±í
+//2ã€å‡ºå”®/å­˜å‚¨/æ‹å– ç‰©å“åˆ—è¡¨
 string view_inventory_zhuangbei_sell(void|string cmd,void|int notShowMoney,void|int showPrice){
 	if(cmd==0)
 		cmd="sell";
@@ -456,7 +456,7 @@ string view_inventory_zhuangbei_sell(void|string cmd,void|int notShowMoney,void|
 	string myyushi = this_player()->query_yushi_cn()+"\n"; 
 	s += view_something_zhuangbei_sell(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice);
 	if(s=="")
-		return "ÄãÉíÉÏÃ»Ê²Ã´¶«Î÷¿É³öÊÛµÄ¡£\n";
+		return "ä½ èº«ä¸Šæ²¡ä»€ä¹ˆä¸œè¥¿å¯å‡ºå”®çš„ã€‚\n";
 	else
 		s = mymoney + myyushi + s;
 	return  s;
@@ -469,7 +469,7 @@ string view_inventory_daoju_sell(void|string cmd,void|int notShowMoney,void|int 
 	string myyushi = this_player()->query_yushi_cn()+"\n"; 
 	s += view_something_daoju_sell(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice);
 	if(s=="")
-		return "ÄãÉíÉÏÃ»Ê²Ã´¶«Î÷¿É³öÊÛµÄ¡£\n";
+		return "ä½ èº«ä¸Šæ²¡ä»€ä¹ˆä¸œè¥¿å¯å‡ºå”®çš„ã€‚\n";
 	else
 		s = mymoney + myyushi + s;
 	return  s;
@@ -480,7 +480,7 @@ string view_inventory_zhuangbei_package(void|string cmd,void|int notShowMoney,vo
 	string s="";
 	s += view_something_zhuangbei_sell(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice);
 	if(s=="")
-		return "Ã»ÓĞ¿É´æ´¢µÄÎïÆ·¡£\n";
+		return "æ²¡æœ‰å¯å­˜å‚¨çš„ç‰©å“ã€‚\n";
 	return  s;
 }
 string view_inventory_daoju_package(void|string cmd,void|int notShowMoney,void|int showPrice){
@@ -489,7 +489,7 @@ string view_inventory_daoju_package(void|string cmd,void|int notShowMoney,void|i
 	string s="";
 	s += view_something_daoju_sell(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice);
 	if(s=="")
-		return "Ã»ÓĞ¿É´æ´¢µÄÎïÆ·¡£\n";
+		return "æ²¡æœ‰å¯å­˜å‚¨çš„ç‰©å“ã€‚\n";
 	return  s;
 }
 protected private string view_something_zhuangbei_sell(function filter_func,string list,void|int showPrice){
@@ -497,9 +497,9 @@ protected private string view_something_zhuangbei_sell(function filter_func,stri
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -509,7 +509,7 @@ protected private string view_something_zhuangbei_sell(function filter_func,stri
 					inv_count++;	
 					if(items[i]["equiped"]){
 						/*
-						strlist+="¡õ";
+						strlist+="â–¡";
 						strlist+="["+items[i]->query_short();
 						if(showPrice)
 							strlist+="("+MUD_MONEYD->query_store_money_cn(items[i]->query_item_canLevel()*50/4)+")";
@@ -524,7 +524,7 @@ protected private string view_something_zhuangbei_sell(function filter_func,stri
 						if(showPrice)
 							out_no_equip+="("+MUD_MONEYD->query_store_money_cn(items[i]->query_item_canLevel()*50/4)+")";
 						else if(items[i]->query_item_canLevel())
-							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"ÎŞµÈ")+"¼¶)";
+							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"æ— ç­‰")+"çº§)";
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
 						name_count[items[i]->query_name()]++;
 					}
@@ -537,33 +537,33 @@ protected private string view_something_zhuangbei_sell(function filter_func,stri
 		string howdaoju = "";
 		if(list=="sell"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_sell]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_sell]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_sell]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_sell]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		else if(list=="vendue"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_vendue]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_vendue]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_vendue]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_vendue]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		else if(list=="user_package"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_package]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_package]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_package]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_package]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
@@ -574,17 +574,17 @@ protected private string view_something_daoju_sell(function filter_func,string l
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n";
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n";
 		int inv_count = 0;
 		int daoju_count = 0;
 		for(int i=0;i<sizeof(items);i++){
 			if(items[i]&&(!items[i]->query_toVip())){
-				//µÀ¾ß-×°±¸ÎïÆ·²»×ö´¦Àí
+				//é“å…·-è£…å¤‡ç‰©å“ä¸åšå¤„ç†
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry")
 				inv_count++;
-				//µÀ¾ß-¿ÉÊ³ÓÃÎïÆ·
+				//é“å…·-å¯é£Ÿç”¨ç‰©å“
 				else if(items[i]->query_item_type()=="food"||items[i]->query_item_type()=="water"){
 					out_no_equip+="["+items[i]->query_short();
 					if(showPrice)
@@ -593,7 +593,7 @@ protected private string view_something_daoju_sell(function filter_func,string l
 					name_count[items[i]->query_name()]++;
 					daoju_count++;
 				}
-				//×÷Îª¶ÍÔì£¬Á¶½ğÔ­²ÄÁÏµÄÎïÆ·³öÊÛ,¼Û¸ñ=value*amount
+				//ä½œä¸ºé”»é€ ï¼Œç‚¼é‡‘åŸææ–™çš„ç‰©å“å‡ºå”®,ä»·æ ¼=value*amount
 				else if(items[i]->is("combine_item") && items[i]->query_for_material() != ""){
 					out_no_equip+="["+items[i]->query_short();
 					if(showPrice)
@@ -608,16 +608,16 @@ protected private string view_something_daoju_sell(function filter_func,string l
 					{
 						switch(items[i]->query_peifang_kind()){
 							case "caifeng":
-								out_no_equip+="(²Ã·ì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(è£ç¼"+items[i]->query_viceskill_level()+")";
 							break;
 							case "duanzao":
-								out_no_equip+="(¶ÍÔì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(é”»é€ "+items[i]->query_viceskill_level()+")";
 							break;
 							case "liandan":
-								out_no_equip+="(Á¶µ¤"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(ç‚¼ä¸¹"+items[i]->query_viceskill_level()+")";
 							break;
 							case "zhijia":
-								out_no_equip+="(ÖÆ¼×"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(åˆ¶ç”²"+items[i]->query_viceskill_level()+")";
 							break;
 							default:
 							break;
@@ -627,9 +627,9 @@ protected private string view_something_daoju_sell(function filter_func,string l
 					name_count[items[i]->query_name()]++;
 					daoju_count++;
 				}
-				//µÀ¾ß-Ò»°ãÎïÆ·£ºÈÎÎñÎïÆ·ºÍÌØÊâÎïÆ·µÈ,ÎŞ¼Û¸ñÏÔÊ¾
+				//é“å…·-ä¸€èˆ¬ç‰©å“ï¼šä»»åŠ¡ç‰©å“å’Œç‰¹æ®Šç‰©å“ç­‰,æ— ä»·æ ¼æ˜¾ç¤º
 				else{
-					//²»¿ÉÂòÂôµÄ£¬²»ÓèÏÔÊ¾,¿ÉÒÔÂòÂôµÄ£¬¸ù¾İ²ß»®¶¨Òå¼Û¸ñ¹Ø¼üÔËËãÊôĞÔÀ´µÃµ½¼Û¸ñ
+					//ä¸å¯ä¹°å–çš„ï¼Œä¸äºˆæ˜¾ç¤º,å¯ä»¥ä¹°å–çš„ï¼Œæ ¹æ®ç­–åˆ’å®šä¹‰ä»·æ ¼å…³é”®è¿ç®—å±æ€§æ¥å¾—åˆ°ä»·æ ¼
 					if(!items[i]->query_item_task()){
 						out_no_equip+="["+items[i]->query_short();
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
@@ -643,40 +643,40 @@ protected private string view_something_daoju_sell(function filter_func,string l
 		string howdaoju = "";
 		if(list=="sell"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_sell]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_sell]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_sell]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_sell]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		else if(list=="vendue"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_vendue]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_vendue]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_vendue]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_vendue]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		else if(list=="user_package"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):inventory_package]";
+				howitem += "[è£…å¤‡("+inv_count+"):inventory_package]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):inventory_daoju_package]";
+				howdaoju += "[é“å…·("+daoju_count+"):inventory_daoju_package]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		out += howitem + " " + howdaoju+"\n";	
 	}
 	return out+out_no_equip;
 }
 
-// 3¡¢¼ÒÔ°ÖĞµÄ"Ğ¡µê"
+// 3ã€å®¶å›­ä¸­çš„"å°åº—"
 string view_inventory_home_shop(void|string cmd,void|int notShowMoney,void|int showPrice,void|int shopId){
 	if(cmd==0)
 		cmd="sell";
@@ -685,7 +685,7 @@ string view_inventory_home_shop(void|string cmd,void|int notShowMoney,void|int s
 	string myyushi = this_player()->query_yushi_cn()+"\n"; 
 	s += view_something_home_shop(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice,shopId);
 	if(s=="")
-		return "ÄãÉíÉÏÃ»Ê²Ã´¶«Î÷¿É³öÊÛµÄ¡£\n";
+		return "ä½ èº«ä¸Šæ²¡ä»€ä¹ˆä¸œè¥¿å¯å‡ºå”®çš„ã€‚\n";
 	else
 		s = mymoney + myyushi + s;
 	return  s;
@@ -698,7 +698,7 @@ string view_inventory_home_shop_daoju(void|string cmd,void|int notShowMoney,void
 	string myyushi = this_player()->query_yushi_cn()+"\n"; 
 	s += view_something_home_shop_daoju(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice,shopId);
 	if(s=="")
-		return "ÄãÉíÉÏÃ»Ê²Ã´¶«Î÷¿É³öÊÛµÄ¡£\n";
+		return "ä½ èº«ä¸Šæ²¡ä»€ä¹ˆä¸œè¥¿å¯å‡ºå”®çš„ã€‚\n";
 	else
 		s = mymoney + myyushi + s;
 	return  s;
@@ -708,9 +708,9 @@ protected private string view_something_home_shop(function filter_func,string li
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -727,7 +727,7 @@ protected private string view_something_home_shop(function filter_func,string li
 						if(showPrice)
 							out_no_equip+="("+MUD_MONEYD->query_store_money_cn(items[i]->query_item_canLevel()*50/4)+")";
 						else if(items[i]->query_item_canLevel())
-							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"ÎŞµÈ")+"¼¶)";
+							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"æ— ç­‰")+"çº§)";
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+" "+shopId+"]\n";
 						name_count[items[i]->query_name()]++;
 					}
@@ -740,13 +740,13 @@ protected private string view_something_home_shop(function filter_func,string li
 		string howdaoju = "";
 		if(list=="home_shop"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):home_add_shopItem]";
+				howitem += "[è£…å¤‡("+inv_count+"):home_add_shopItem]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):home_add_daoju_shopItem]";
+				howdaoju += "[é“å…·("+daoju_count+"):home_add_daoju_shopItem]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
@@ -757,17 +757,17 @@ protected private string view_something_home_shop_daoju(function filter_func,str
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n";
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n";
 		int inv_count = 0;
 		int daoju_count = 0;
 		for(int i=0;i<sizeof(items);i++){
 			if(items[i]&&(!items[i]->query_toVip())&&items[i]->query_item_type()=="yushi"){
-				//µÀ¾ß-×°±¸ÎïÆ·²»×ö´¦Àí
+				//é“å…·-è£…å¤‡ç‰©å“ä¸åšå¤„ç†
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry")
 				inv_count++;
-				//µÀ¾ß-¿ÉÊ³ÓÃÎïÆ·
+				//é“å…·-å¯é£Ÿç”¨ç‰©å“
 				else if(items[i]->query_item_type()=="food"||items[i]->query_item_type()=="water"){
 					out_no_equip+="["+items[i]->query_short();
 					if(showPrice)
@@ -776,7 +776,7 @@ protected private string view_something_home_shop_daoju(function filter_func,str
 					name_count[items[i]->query_name()]++;
 					daoju_count++;
 				}
-				//×÷Îª¶ÍÔì£¬Á¶½ğÔ­²ÄÁÏµÄÎïÆ·³öÊÛ,¼Û¸ñ=value*amount
+				//ä½œä¸ºé”»é€ ï¼Œç‚¼é‡‘åŸææ–™çš„ç‰©å“å‡ºå”®,ä»·æ ¼=value*amount
 				else if(items[i]->is("combine_item") && items[i]->query_for_material() != ""){
 					out_no_equip+="["+items[i]->query_short();
 					if(showPrice)
@@ -791,16 +791,16 @@ protected private string view_something_home_shop_daoju(function filter_func,str
 					{
 						switch(items[i]->query_peifang_kind()){
 							case "caifeng":
-								out_no_equip+="(²Ã·ì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(è£ç¼"+items[i]->query_viceskill_level()+")";
 							break;
 							case "duanzao":
-								out_no_equip+="(¶ÍÔì"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(é”»é€ "+items[i]->query_viceskill_level()+")";
 							break;
 							case "liandan":
-								out_no_equip+="(Á¶µ¤"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(ç‚¼ä¸¹"+items[i]->query_viceskill_level()+")";
 							break;
 							case "zhijia":
-								out_no_equip+="(ÖÆ¼×"+items[i]->query_viceskill_level()+")";
+								out_no_equip+="(åˆ¶ç”²"+items[i]->query_viceskill_level()+")";
 							break;
 							default:
 							break;
@@ -810,9 +810,9 @@ protected private string view_something_home_shop_daoju(function filter_func,str
 					name_count[items[i]->query_name()]++;
 					daoju_count++;
 				}
-				//µÀ¾ß-Ò»°ãÎïÆ·£ºÈÎÎñÎïÆ·ºÍÌØÊâÎïÆ·µÈ,ÎŞ¼Û¸ñÏÔÊ¾
+				//é“å…·-ä¸€èˆ¬ç‰©å“ï¼šä»»åŠ¡ç‰©å“å’Œç‰¹æ®Šç‰©å“ç­‰,æ— ä»·æ ¼æ˜¾ç¤º
 				else{
-					//²»¿ÉÂòÂôµÄ£¬²»ÓèÏÔÊ¾,¿ÉÒÔÂòÂôµÄ£¬¸ù¾İ²ß»®¶¨Òå¼Û¸ñ¹Ø¼üÔËËãÊôĞÔÀ´µÃµ½¼Û¸ñ
+					//ä¸å¯ä¹°å–çš„ï¼Œä¸äºˆæ˜¾ç¤º,å¯ä»¥ä¹°å–çš„ï¼Œæ ¹æ®ç­–åˆ’å®šä¹‰ä»·æ ¼å…³é”®è¿ç®—å±æ€§æ¥å¾—åˆ°ä»·æ ¼
 					if(!items[i]->query_item_task()){
 						out_no_equip+="["+items[i]->query_short();
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+" "+shopId+"]\n";
@@ -826,21 +826,21 @@ protected private string view_something_home_shop_daoju(function filter_func,str
 		string howdaoju = "";
 		if(list=="home_shop"){
 			if(inv_count)
-				howitem += "[×°±¸("+inv_count+"):home_add_shopItem]";
+				howitem += "[è£…å¤‡("+inv_count+"):home_add_shopItem]";
 			else
-				howitem += "×°±¸("+inv_count+")";
+				howitem += "è£…å¤‡("+inv_count+")";
 			if(daoju_count)
-				howdaoju += "[µÀ¾ß("+daoju_count+"):home_add_daoju_shopItem]";
+				howdaoju += "[é“å…·("+daoju_count+"):home_add_daoju_shopItem]";
 			else
-				howdaoju += "µÀ¾ß("+daoju_count+")";
+				howdaoju += "é“å…·("+daoju_count+")";
 		}
 			out += howitem + " " + howdaoju+"\n";	
 	}
 	return out+out_no_equip;
 }
 
-// 4¡¢½»Ò×/ÔùËÍ ÎïÆ·
-//Ìí¼Ó½»Ò××¨ÓÃÊÓÍ¼£¬ÒòÎªÓĞ¸´ÊıÎïÆ·
+// 4ã€äº¤æ˜“/èµ é€ ç‰©å“
+//æ·»åŠ äº¤æ˜“ä¸“ç”¨è§†å›¾ï¼Œå› ä¸ºæœ‰å¤æ•°ç‰©å“
 string view_inventory_trade_zhuangbei(void|string cmd,void|int notShowMoney,void|int showPrice){
 	string s="";
 	s += this_player()->query_money_cn()+"\n";
@@ -855,7 +855,7 @@ string view_inventory_trade_daoju(void|string cmd,void|int notShowMoney,void|int
 	s += view_something_trade_daoju(lambda(object ob){return ob->is("item")&&ob->query_item_canTrade();},cmd,showPrice,"trade");
 	return  s;
 }
-//Ìí¼ÓÔùËÍ×¨ÓÃÊÓÍ¼£¬ÒòÎªÓĞ¸´ÊıÎïÆ·
+//æ·»åŠ èµ é€ä¸“ç”¨è§†å›¾ï¼Œå› ä¸ºæœ‰å¤æ•°ç‰©å“
 string view_inventory_send_zhuangbei(void|string cmd,void|int notShowMoney,void|int showPrice){
 	string s="";
 	s += this_player()->query_money_cn()+"\n";
@@ -872,7 +872,7 @@ string view_inventory_send_daoju(void|string cmd,void|int notShowMoney,void|int 
 }
 protected private string view_something_trade_daoju(function filter_func,string list,void|int showPrice,string cmd)
 {
-	//½«×°±¸½»Ò×µÄ¶Ô·½nameÈ¡µÃ
+	//å°†è£…å¤‡äº¤æ˜“çš„å¯¹æ–¹nameå–å¾—
 	string cmdtype,user_name;
 	array(string) usr_content=list/" ";
 	cmdtype = usr_content[0];	
@@ -881,9 +881,9 @@ protected private string view_something_trade_daoju(function filter_func,string 
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -892,7 +892,7 @@ protected private string view_something_trade_daoju(function filter_func,string 
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry")
 					inv_count++;
 				else{
-					//µÀ¾ß-¿ÉÊ³ÓÃÎïÆ·
+					//é“å…·-å¯é£Ÿç”¨ç‰©å“
 					if(items[i]->query_item_type()=="food"||items[i]->query_item_type()=="water"){
 						out_no_equip+="["+items[i]->query_short();
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
@@ -907,16 +907,16 @@ protected private string view_something_trade_daoju(function filter_func,string 
 								{
 									switch(items[i]->query_peifang_kind()){
 										case "caifeng":
-											out_no_equip+="(²Ã·ì"+items[i]->query_viceskill_level()+")";
+											out_no_equip+="(è£ç¼"+items[i]->query_viceskill_level()+")";
 										break;
 										case "duanzao":
-											out_no_equip+="(¶ÍÔì"+items[i]->query_viceskill_level()+")";
+											out_no_equip+="(é”»é€ "+items[i]->query_viceskill_level()+")";
 										break;
 										case "liandan":
-											out_no_equip+="(Á¶µ¤"+items[i]->query_viceskill_level()+")";
+											out_no_equip+="(ç‚¼ä¸¹"+items[i]->query_viceskill_level()+")";
 										break;
 										case "zhijia":
-											out_no_equip+="(ÖÆ¼×"+items[i]->query_viceskill_level()+")";
+											out_no_equip+="(åˆ¶ç”²"+items[i]->query_viceskill_level()+")";
 										break;
 										default:
 										break;
@@ -945,22 +945,22 @@ protected private string view_something_trade_daoju(function filter_func,string 
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):"+cmd+" "+user_name+"]";
+			howitem += "[è£…å¤‡("+inv_count+"):"+cmd+" "+user_name+"]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):"+cmd+"_daoju "+user_name+"]";
+			howdaoju += "[é“å…·("+daoju_count+"):"+cmd+"_daoju "+user_name+"]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
 protected private string view_something_trade_zhuangbei(function filter_func,string list,void|int showPrice,string cmd)
 {
-	//½«×°±¸½»Ò×µÄ¶Ô·½nameÈ¡µÃ
+	//å°†è£…å¤‡äº¤æ˜“çš„å¯¹æ–¹nameå–å¾—
 	string cmdtype,user_name;
 	array(string) usr_content=list/" ";
 	cmdtype = usr_content[0];	
@@ -970,9 +970,9 @@ protected private string view_something_trade_zhuangbei(function filter_func,str
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -982,7 +982,7 @@ protected private string view_something_trade_zhuangbei(function filter_func,str
 					inv_count++;
 					if(items[i]["equiped"]){
 						/*
-						strlist+="¡õ";
+						strlist+="â–¡";
 						strlist+=items[i]->query_short()+"\n";
 						name_count[items[i]->query_name()]++;
 						*/
@@ -991,7 +991,7 @@ protected private string view_something_trade_zhuangbei(function filter_func,str
 					else{
 						out_no_equip+="["+items[i]->query_short();
 						if(items[i]->query_item_canLevel())
-							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"ÎŞµÈ")+"¼¶)";
+							out_no_equip+="("+(items[i]->query_item_canLevel()>0?items[i]->query_item_canLevel():"æ— ç­‰")+"çº§)";
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
 						name_count[items[i]->query_name()]++;
 					}
@@ -1003,23 +1003,23 @@ protected private string view_something_trade_zhuangbei(function filter_func,str
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):"+cmd+" "+user_name+"]";
+			howitem += "[è£…å¤‡("+inv_count+"):"+cmd+" "+user_name+"]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):"+cmd+"_daoju "+user_name+"]";
+			howdaoju += "[é“å…·("+daoju_count+"):"+cmd+"_daoju "+user_name+"]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
-/*5¡¢ÔùËÍÎïÆ·
+/*5ã€èµ é€ç‰©å“
 protected private string view_something_send_daoju(function filter_func,string list,void|int showPrice)
 {
-	//½«×°±¸½»Ò×µÄ¶Ô·½nameÈ¡µÃ
+	//å°†è£…å¤‡äº¤æ˜“çš„å¯¹æ–¹nameå–å¾—
 	string cmdtype,user_name;
 	array(string) usr_content=list/" ";
 	cmdtype = usr_content[0];	
@@ -1028,9 +1028,9 @@ protected private string view_something_send_daoju(function filter_func,string l
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -1039,7 +1039,7 @@ protected private string view_something_send_daoju(function filter_func,string l
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry")
 					inv_count++;
 				else{
-					//µÀ¾ß-¿ÉÊ³ÓÃÎïÆ·
+					//é“å…·-å¯é£Ÿç”¨ç‰©å“
 					if(items[i]->query_item_type()=="food"||items[i]->query_item_type()=="water"){
 						out_no_equip+="["+items[i]->query_short();
 						out_no_equip+=":"+list+" "+items[i]->query_name()+" "+name_count[items[i]->query_name()]+"]\n";
@@ -1065,22 +1065,22 @@ protected private string view_something_send_daoju(function filter_func,string l
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):sendother "+user_name+"]";
+			howitem += "[è£…å¤‡("+inv_count+"):sendother "+user_name+"]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):sendother_daoju "+user_name+"]";
+			howdaoju += "[é“å…·("+daoju_count+"):sendother_daoju "+user_name+"]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }
 protected private string view_something_send_item(function filter_func,string list,void|int showPrice)
 {
-	//½«×°±¸½»Ò×µÄ¶Ô·½nameÈ¡µÃ
+	//å°†è£…å¤‡äº¤æ˜“çš„å¯¹æ–¹nameå–å¾—
 	string cmdtype,user_name;
 	array(string) usr_content=list/" ";
 	cmdtype = usr_content[0];	
@@ -1090,9 +1090,9 @@ protected private string view_something_send_item(function filter_func,string li
 	array(object) items=filter(all_inventory(this_object(),this_player()),filter_func)-({this_player()});
 	string out="";
 	string out_no_equip="";
-	int count_max = query_beibao_size();//ÓÃ»§±³°üµÄÊµ¼ÊÈİÁ¿£¨°üÀ¨À©³äºóµÄ£©
+	int count_max = query_beibao_size();//ç”¨æˆ·èƒŒåŒ…çš„å®é™…å®¹é‡ï¼ˆåŒ…æ‹¬æ‰©å……åçš„ï¼‰
 	if(items&&sizeof(items)){
-		out+="(ÎïÆ·£º"+sizeof(items)+"/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š"+sizeof(items)+"/"+count_max+")\n"; 
 		string strlist = "";
 		int inv_count = 0;
 		int daoju_count = 0;
@@ -1101,7 +1101,7 @@ protected private string view_something_send_item(function filter_func,string li
 				if(items[i]->query_item_type()=="weapon"||items[i]->query_item_type()=="single_weapon"||items[i]->query_item_type()=="double_weapon"||items[i]->query_item_type()=="armor"||items[i]->query_item_type()=="decorate"||items[i]->query_item_type()=="jewelry"){
 					inv_count++;
 					if(items[i]["equiped"]){
-						strlist+="¡õ";
+						strlist+="â–¡";
 						strlist+=items[i]->query_short()+"\n";
 						name_count[items[i]->query_name()]++;
 						name_count[items[i]->query_name()]++;
@@ -1119,16 +1119,16 @@ protected private string view_something_send_item(function filter_func,string li
 		string howitem = "";
 		string howdaoju = "";
 		if(inv_count)
-			howitem += "[×°±¸("+inv_count+"):sendother "+user_name+"]";
+			howitem += "[è£…å¤‡("+inv_count+"):sendother "+user_name+"]";
 		else
-			howitem += "×°±¸("+inv_count+")";
+			howitem += "è£…å¤‡("+inv_count+")";
 		if(daoju_count)
-			howdaoju += "[µÀ¾ß("+daoju_count+"):sendother_daoju "+user_name+"]";
+			howdaoju += "[é“å…·("+daoju_count+"):sendother_daoju "+user_name+"]";
 		else
-			howdaoju += "µÀ¾ß("+daoju_count+")";
+			howdaoju += "é“å…·("+daoju_count+")";
 		out += howitem + " " + howdaoju+"\n" + strlist;	
 	}
 	else
-		out+="(ÎïÆ·£º0/"+count_max+")\n"; 
+		out+="(ç‰©å“ï¼š0/"+count_max+")\n"; 
 	return out+out_no_equip;
 }*/

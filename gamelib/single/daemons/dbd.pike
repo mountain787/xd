@@ -1,5 +1,5 @@
 /**                                                                                                                          
- *  log格式：INFO|STAT|DEBUG|ERROR Datetime -- [fuction(arg1,arg2,...)] [retValue] [succ|fail] [proccTime] [cause] 
+ *  log鏍煎紡锛欼NFO|STAT|DEBUG|ERROR Datetime -- [fuction(arg1,arg2,...)] [retValue] [succ|fail] [proccTime] [cause] 
  *  Author: zhupengcheng@dogstart.com
  *  Date  : 2007-3-30
  **/

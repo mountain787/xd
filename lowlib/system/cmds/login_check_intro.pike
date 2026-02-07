@@ -9,17 +9,17 @@ int main(string arg)
 	{
 		if(!user_name || !args || !userip)
 		{
-			title += "鐧婚檰杩囨湡\n";
-			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
-			title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
+			title += "登录过期\n";
+			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉注册账号銆俓n";
+			title += "[url 注册账号:http://"+REG_URL+"]\n";
 			write(title);
 			return 1;
 		}
 		else if( sizeof(user_name)<2 || sizeof(args)<2 )
 		{
-			title += "鐧婚檰杩囨湡\n";
-			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
-			title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
+			title += "登录过期\n";
+			title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉注册账号銆俓n";
+			title += "[url 注册账号:http://"+REG_URL+"]\n";
 			write(title);
 			return 1;
 		}
@@ -31,9 +31,9 @@ int main(string arg)
 			}
 			else
 			{
-				title += "鐧婚檰杩囨湡\n";
-				title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
-				title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
+				title += "登录过期\n";
+				title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉注册账号銆俓n";
+				title += "[url 注册账号:http://"+REG_URL+"]\n";
 				write(title);
 				return 1;
 			}
@@ -63,7 +63,7 @@ int main(string arg)
 					u=(program)(ROOT+"/"+path+"/clone/user.pike");
 				}
 				object me = find_player(user_name);
-				//涓や釜楠岃瘉锛宻essionid鍜宲assword
+				//两个验证，sessionid和password
 				if( userip&&userip==me->query_userip() && args&&args==me->password )
 				{
 					if(me->query_project()==path&&me["reconnect"]&&me->reconnect(user_name))
@@ -74,14 +74,14 @@ int main(string arg)
 				}
 				else
 				{
-					title += "鐧婚檰杩囨湡\n";
-					title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
-					title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
+					title += "登录过期\n";
+					title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉注册账号銆俓n";
+					title += "[url 注册账号:http://"+REG_URL+"]\n";
 					write(title);
 					return 1;
 				}
 			}
-			else//鍐呭瓨閲屼篃娌℃湁杩欎釜甯愬彿
+			else//内存里也没有这个账号
 			{
 				//杩欓噷杩涜鐢ㄦ埛鑷姩娉ㄥ唽杩囩▼
 				program u;
@@ -114,9 +114,9 @@ int main(string arg)
 	}
 	else
 	{
-		title += "鐧婚檰杩囨湡\n";
-		title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉娉ㄥ唽甯愬彿銆俓n";
-		title += "[url 娉ㄥ唽甯愬彿:http://"+REG_URL+"]\n";
+		title += "登录过期\n";
+		title += "鎮ㄧ殑娓稿鐧婚檰宸茬粡杩囨湡锛岃杩斿洖棣栭〉注册账号銆俓n";
+		title += "[url 注册账号:http://"+REG_URL+"]\n";
 		write(title);
 		return 1;
 	}

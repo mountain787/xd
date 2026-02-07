@@ -9,36 +9,36 @@ int main(string arg)
 	object ob = clone(YUSHI_PATH+"suiyu");
 	if(ob){
 		ob->amount = 20;
-		s += "鑾峰緱"+ob->query_short()+"\n";
+		s += "获得"+ob->query_short()+"\n";
 		ob->move_player(me->query_name());
 	}
 	ob = clone(YUSHI_PATH+"xianyuanyu");
 	if(ob){
 		ob->amount = 20;
-		s += "鑾峰緱"+ob->query_short()+"\n";
+		s += "获得"+ob->query_short()+"\n";
 		ob->move_player(me->query_name());
 	}
 	ob = clone(YUSHI_PATH+"linglongyu");
 	if(ob){
 		ob->amount = 20;
-		s += "鑾峰緱"+ob->query_short()+"\n";
+		s += "获得"+ob->query_short()+"\n";
 		ob->move_player(me->query_name());
 	}
 	ob = clone(YUSHI_PATH+"biluanyu");
 	if(ob){
 		ob->amount = 20;
-		s += "鑾峰緱"+ob->query_short()+"\n";
+		s += "获得"+ob->query_short()+"\n";
 		ob->move_player(me->query_name());
 	}
 	ob = clone(YUSHI_PATH+"xuantianbaoyu");
 	if(ob){
 		ob->amount = 20;
-		s += "鑾峰緱"+ob->query_short()+"\n";
+		s += "获得"+ob->query_short()+"\n";
 		ob->move_player(me->query_name());
 	}
 	tell_object(me,s);
 	me->command("look");
 	//me->write_view(WAP_VIEWD["/emote"],0,0,s);
-	//s += "\n[杩斿洖娓告垙:look]\n";
+	//s += "\n[返回游戏:look]\n";
 	return 1;
 }

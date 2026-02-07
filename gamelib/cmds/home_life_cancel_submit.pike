@@ -7,8 +7,8 @@ int main(string arg)
 	sscanf(arg,"%s %d",lifeType,ind);
 	string re = "";
 	re += "浣犵‘璁よ杩欎箞鍋氬悧锛焅n";
-	re += "[纭:home_life_cancel_confirm "+ lifeType+" "+ ind +"]\n";
-	re += "[杩斿洖:home_life_detail "+ lifeType +" "+ind +"]";
+	re += "[确认:home_life_cancel_confirm "+ lifeType+" "+ ind +"]\n";
+	re += "[返回:home_life_detail "+ lifeType +" "+ind +"]";
 	write(re);
 	return 1;
 }

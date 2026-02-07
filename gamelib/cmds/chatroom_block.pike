@@ -5,7 +5,7 @@ int main(string arg)
 	object me = this_player();
 	string s = "";
 	if(!arg)
-		s+="浣犺灞忚斀鍝釜鐜╁锛焅n";
+		s+="浣犺灞忚斀鍝釜玩家锛焅n";
 	else{
 		if(me["/plus/chatblock"]&&sizeof(me["/plus/chatblock"])){
 			int belocked = 0;
@@ -16,19 +16,19 @@ int main(string arg)
 				}
 			}
 			if(belocked)
-				s += "浣犲凡缁忓睆钄借繃浜嗚鐜╁锛屼笉鐢ㄩ噸澶嶅睆钄借杩斿洖銆俓n";	
+				s += "浣犲凡缁忓睆钄借繃浜嗚玩家锛屼笉鐢ㄩ噸澶嶅睆钄借返回銆俓n";	
 			else{
 				me["/plus/chatblock"]+=({arg});
-				s += "浣犲凡缁忚繃婊ゆ帀浜嗚鐜╁鍦ㄨ亰澶╅閬撶殑鍙戣█鍐呭锛岃杩斿洖銆俓n";	
+				s += "浣犲凡缁忚繃婊ゆ帀浜嗚玩家鍦ㄨ亰澶╅閬撶殑鍙戣█鍐呭锛岃返回銆俓n";	
 			}
 		}
 		else{
 			me["/plus/chatblock"]=({arg});
-			s += "浣犲凡缁忚繃婊ゆ帀浜嗚鐜╁鍦ㄨ亰澶╅閬撶殑鍙戣█鍐呭锛岃杩斿洖銆俓n";	
+			s += "浣犲凡缁忚繃婊ゆ帀浜嗚玩家鍦ㄨ亰澶╅閬撶殑鍙戣█鍐呭锛岃返回銆俓n";	
 		}
 	}
-	s+="[杩斿洖:chatroom_entry "+me->query_chatid()+"]\n";
-	s+="[杩斿洖娓告垙:look]\n";
+	s+="[返回:chatroom_entry "+me->query_chatid()+"]\n";
+	s+="[返回游戏:look]\n";
 	write(s);
 	return 1;
 }

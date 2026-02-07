@@ -7,7 +7,7 @@ int main(string arg)
 	object me=this_player();
 	PAIHANGD->update_mark_toplist(1);
 	me->command("paihang_mark_toplist");
-	//s += "\n[杩斿洖娓告垙:look]\n";
+	//s += "\n[返回游戏:look]\n";
 	//write(s);
 	return 1;
 }

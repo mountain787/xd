@@ -1,22 +1,22 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
-//鍒犻櫎鍏憡
+//删除公告
 
 int main(string arg)
 {
 	int id = (int)arg;
 	string s = "";
 	if(MSGD->msg_del(id)==1){
-		s += "鍒犻櫎鎴愬姛锛乗n";
+		s += "删除成功。\n";
 		MSGD->write_file();
 	}
 	else {
-		s += "璇ュ叕鍛婁笉瀛樺湪锛乗n";
+		s += "该公告不存在。\n";
 	}
 	s += "\n";
-	s += "[杩斿洖:msg_read admin old]\n";
-	s += "[杩斿洖娓告垙:look]\n";
+	s += "[返回:msg_read admin old]\n";
+	s += "[返回游戏:look]\n";
 	write(s);
 	return 1;
 }

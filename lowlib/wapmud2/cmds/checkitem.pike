@@ -15,16 +15,16 @@ int main(string arg)
 		if(ob->query_item_type()=="source")
 			s+=ob->query_inventory_links(count)+"\n";
 		else
-			s+="[鎹¤捣:get "+ob->query_name()+" "+count+"]\n";
-		s+="[杩斿洖:items]\n";
-		s+="[杩斿洖娓告垙:look]\n";
+			s+="[拿起:get "+ob->query_name()+" "+count+"]\n";
+		s+="[返回:items]\n";
+		s+="[返回游戏:look]\n";
 		write(s);
 	}
 	else{
 		string s = "";
-		s+= "娌℃湁杩欎釜鐗╁搧\n";
-		s+="[杩斿洖:items]\n";
-		s+="[杩斿洖娓告垙:look]\n";
+		s+= "没有这个物品\n";
+		s+="[返回:items]\n";
+		s+="[返回游戏:look]\n";
 		write(s);
 	}
 	return 1;

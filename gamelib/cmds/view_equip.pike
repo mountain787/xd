@@ -6,13 +6,13 @@ int main(string arg)
 	string s = "";
 	object ob = find_player(arg);
 	if(ob){
-		s += ob->query_name_cn()+"锛歕n";
+		s += ob->query_name_cn()+"：\n";
 		s += ob->view_equip();
 	}
 	else
-		s += "浣犺瑙傚療鐨勫璞″苟涓嶅瓨鍦╘n";
-	//s += "[杩斿洖:char "+arg+"]\n";
-	//s += "[杩斿洖娓告垙:look]\n";
+		s += "你要观察的对象并不存在\n";
+	//s += "[返回:char "+arg+"]\n";
+	//s += "[返回游戏:look]\n";
 	//write(s);
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;

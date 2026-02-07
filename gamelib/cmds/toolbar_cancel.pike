@@ -10,8 +10,8 @@ int main(string arg)
 	}
 	else 
 		s += "鍙栨秷璁剧疆澶辫触\n";
-	s += "[杩斿洖:my_toolbar]\n";
-	s += "[杩斿洖娓告垙:look]\n";
+	s += "[返回:my_toolbar]\n";
+	s += "[返回游戏:look]\n";
 	write(s);
 	return 1;
 }

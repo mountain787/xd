@@ -11,9 +11,10 @@ int main(string arg)
 		if(!AUCTIOND->reset_sale_info(this_player(),sale_id,0,4))
 			s += "娌℃湁鎵惧埌姝ゆ媿鍗栫殑绾綍\n";
 		else
-			s += "浣犲彇娑堜簡姝ゆ媿鍗朶n";
+			s += "你取消了此拍卖
+";
 	}
-	s += "[杩斿洖:look]\n";
+	s += "[返回:look]\n";
 	write(s);
 	return 1;
 }

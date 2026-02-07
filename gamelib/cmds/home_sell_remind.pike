@@ -12,7 +12,7 @@ int main(string arg)
 	{
 		s += HOMED->query_sell_info();
 	}
-	s += "[杩斿洖娓告垙:look]\n"; 
+	s += "[返回游戏:look]\n"; 
 	write(s);
 	return 1;
 }

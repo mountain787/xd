@@ -5,8 +5,8 @@ int main(string arg)
 	object me = this_player();
 	string s = "";
 	if(!arg){
-		s += "[娣诲姞鎴块棿:home_functionroom_buy_list home_base]\n";
-		s += "[鍙樺崠鎴块棿:home_functionroom_remind home_base]\n";
+		s += "[添加房间:home_functionroom_buy_list home_base]\n";
+		s += "[变卖房间:home_functionroom_remind home_base]\n";
 	}
 	/*
 	if(HOMED->if_can_buy_functionroom(me->query_name())){

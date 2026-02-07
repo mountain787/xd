@@ -12,7 +12,7 @@ int main(string arg)
 	{
 		s += HOMED->get_sell_functionroom_list(arg);
 	}
-	s += "\n[杩斿洖娓告垙:look]\n"; 
+	s += "\n[返回游戏:look]\n"; 
 	write(s);
 	return 1;
 }

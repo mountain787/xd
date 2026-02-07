@@ -8,7 +8,7 @@ int main(string arg)
 	string s = "";
 	string masterId = me->query_name();
 	s += HOMED->get_past_time_items(masterId);
-	s += "[杩斿洖娓告垙:look]\n";
+	s += "[返回游戏:look]\n";
 	write(s);
 	return 1;
 }

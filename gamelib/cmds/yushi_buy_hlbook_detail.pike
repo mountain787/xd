@@ -12,9 +12,10 @@ int main(string arg)
 	if(BUYD->query_book_num(name))
 		s += "\n[纭畾璐拱:yushi_buy_hlbook_confirm "+name+" "+yushi+"]\n";
 	else 
-		s += "\n璇ヤ功宸插敭瀹孿n";
+		s += "\n此书已售罄
+";
 	s += "[杩斿洖:yushi_buy_hlbook_list]\n";
-	s += "[杩斿洖娓告垙:look]\n";
+	s += "[返回游戏:look]\n";
 	write(s);
 	return 1;
 }

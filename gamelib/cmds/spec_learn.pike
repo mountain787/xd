@@ -19,7 +19,8 @@ int main(string arg)
 			write(s);
 	}
 	else{
-		s += "浣犺韩涓婃病鏈夎繖浠剁墿鍝乗n";
+		s += "你身上没有这件物品
+";
 		s += "[杩斿洖:look]\n";
 		write(s);
 	}

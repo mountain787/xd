@@ -5,3 +5,5 @@ core.1096
 gamelib/clone/item/
 gamelib/data/
 data_xiand/u/
+gamelib/clone/convert_count.txt
+gamelib/clone/convert_utf8.log

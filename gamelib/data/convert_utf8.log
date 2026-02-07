@@ -1,0 +1,43 @@
+[2026-02-06 21:07:56] [INFO] ============================================================
+[2026-02-06 21:07:56] [INFO] UTF-8 多进程转换脚本启动
+[2026-02-06 21:07:56] [INFO] ============================================================
+[2026-02-06 21:07:56] [INFO] 目标目录: gamelib/data/
+[2026-02-06 21:07:56] [INFO] CPU核心数: 8, 使用进程数: 16
+[2026-02-06 21:07:56] [INFO] 日志文件: gamelib/data/convert_utf8.log
+[2026-02-06 21:07:56] [INFO] 正在扫描文件...
+[2026-02-06 21:07:56] [INFO] 找到 187 个文件
+[2026-02-06 21:07:56] [INFO] 开始转换...
+[2026-02-06 21:07:56] [INFO] ============================================================
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/.vip_list.swp (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/can_buy_book_list.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/items_exchanged.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/questionnaire.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/topten copy.s (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/topten2.s (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/vip_goods_list (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/vip_list (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/word_replace_list (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/worlddrop_item.list (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/topten.s (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/chat/chatindex (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/honer/levellist (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/caifeng.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/caoyao.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/duanzao.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/kuangwu.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/liandan.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/peifang.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/ronglian.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/vicenpc.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/material/zhijia.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/task/task_item_list.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] [CONVERTED] gamelib/data/task/task_list.csv (GBK -> UTF-8)
+[2026-02-06 21:07:56] [INFO] ============================================================
+[2026-02-06 21:07:56] [INFO] 转换完成！
+[2026-02-06 21:07:56] [INFO] ============================================================
+[2026-02-06 21:07:56] [INFO] 总处理文件数: 187
+[2026-02-06 21:07:56] [INFO] 转换成功: 24
+[2026-02-06 21:07:56] [INFO] 跳过文件: 163
+[2026-02-06 21:07:56] [INFO] 转换失败: 0
+[2026-02-06 21:07:56] [INFO] 耗时: 0分0秒
+[2026-02-06 21:07:56] [INFO] 平均速度: 1912 文件/秒

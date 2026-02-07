@@ -3,7 +3,7 @@ db_bak/
 db_log/
 core.1096
 gamelib/clone/item/
-gamelib/data/
+# gamelib/data/  # removed to track data files
 data_xiand/u/
 gamelib/clone/convert_count.txt
 gamelib/clone/convert_utf8.log

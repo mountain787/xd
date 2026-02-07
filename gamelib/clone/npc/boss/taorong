@@ -6,8 +6,8 @@ void create(){
 	name=object_name(this_object());
 	_boss=3;
 	_flushtime=43200;
-	name_cn="陶荣";
-	desc="闻太师收服的山贼，聚风宝幡在手\n";
+	name_cn="闄惰崳";
+	desc="闂诲お甯堟敹鏈嶇殑灞辫醇锛岃仛椋庡疂骞″湪鎵媆n";
 	set_raceId("third");
 	set_profeId("humanlike");
 	picture="1";

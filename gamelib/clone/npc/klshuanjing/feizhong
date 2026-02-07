@@ -2,8 +2,8 @@
 inherit GAMELIB_NPC;
 void create(){
 	name=object_name(this_object());
-	name_cn="·ÑÖÙ";
-	desc="æûÍõØú³¼£¬ÕòÊØ³Ç³Ø\n";
+	name_cn="è´¹ä»²";
+	desc="çº£ç‹ä½è‡£ï¼Œé•‡å®ˆåŸæ± \n";
 	set_raceId("monst");
 	set_profeId("humanlike");
 	picture="feizhong";

@@ -9,6 +9,6 @@ void create(){
 	sex="male";
 	picture="humanlike_male";
 	_npcLevel=50;
-	name_cn="ÏÉµÀÅÄÂôĞÅÊ¹";
+	name_cn="ä»™é“æ‹å–ä¿¡ä½¿";
 	setup_npc();
 }

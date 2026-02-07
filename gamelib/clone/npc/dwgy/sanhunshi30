@@ -7,10 +7,10 @@ void create(){
 	set_raceId("third");
 	set_profeId("humanlike");
 	sex="male";
-	gender="ÄÐ";
-	pronoun="Ëû";
+	gender="ç”·";
+	pronoun="ä»–";
 	_npcLevel=30;
-	name_cn="É¢»êÊ¹";
+	name_cn="æ•£é­‚ä½¿";
 	_meritocrat=1;
 	setup_npc();
 }

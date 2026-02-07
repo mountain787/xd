@@ -6,11 +6,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("humanlike");
 	sex="female";
-	gender="Ů";
-	pronoun="��";
+	gender="女";
+	pronoun="她";
 	picture="humanlike_female";
 	_npcLevel=60;
-	name_cn="ƮҶС��";
+	name_cn="飘叶小仙";
 	setup_npc();
 }
 string query_words(){

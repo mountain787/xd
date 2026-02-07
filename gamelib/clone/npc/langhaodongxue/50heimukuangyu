@@ -7,11 +7,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("fish");
 	sex="female";
-	gender="´Æ";
-	pronoun="Ëü";
+	gender="é›Œ";
+	pronoun="å®ƒ";
 	picture="fish_female";
 	_npcLevel=50;
-	name_cn="ºÚÄ»¿ñÓã";
+	name_cn="é»‘å¹•ç‹‚é±¼";
 	setup_npc();
 }
 string query_words(){

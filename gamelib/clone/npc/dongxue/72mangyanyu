@@ -6,11 +6,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("fish");
 	sex="male";
-	gender="ÐÛ";
-	pronoun="Ëü";
+	gender="é›„";
+	pronoun="å®ƒ";
 	picture="fish_male";
 	_npcLevel=72;
-	name_cn="Ã¤ÑÛÓã";
+	name_cn="ç›²çœ¼é±¼";
 	_meritocrat=1;
 	setup_npc();
 }

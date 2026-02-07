@@ -7,10 +7,10 @@ void create(){
 	set_raceId("third");
 	set_profeId("bird");
 	sex="male";
-	gender="ĞÛ";
-	pronoun="Ëü";
+	gender="é›„";
+	pronoun="å®ƒ";
 	_npcLevel=28;
-	name_cn="ÇàÃæÄñ";
+	name_cn="é’é¢é¸Ÿ";
 	_meritocrat=1;
 	setup_npc();
 }

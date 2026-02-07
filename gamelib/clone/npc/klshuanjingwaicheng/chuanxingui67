@@ -6,11 +6,11 @@ void create(){
 	set_raceId("monst");
 	set_profeId("humanlike");
 	sex="male";
-	gender="ÄÐ";
-	pronoun="Ëû";
+	gender="ç”·";
+	pronoun="ä»–";
 	picture="humanlike_male";
 	_npcLevel=67;
-	name_cn="´«ÐÅ¹í";
+	name_cn="ä¼ ä¿¡é¬¼";
 	setup_npc();
 }
 string query_words(){

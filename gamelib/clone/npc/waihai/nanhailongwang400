@@ -3,15 +3,15 @@
 inherit GAMELIB_NPC;
 void create(){
 	name=object_name(this_object());
-	desc="ÎÒÊÇÁúÍõÅ¶~¡£\n";
+	desc="æˆ‘æ˜¯é¾™ç‹å“¦~ã€‚\n";
 	set_raceId("third");
 	set_profeId("humanlike");
 	sex="male";
-	gender="ÄĞ";
-	pronoun="Ëû";
+	gender="ç”·";
+	pronoun="ä»–";
 	picture="humanlike_male";
 	_npcLevel=400;
-	name_cn="ÄÏº£ÁúÍõ";
+	name_cn="å—æµ·é¾™ç‹";
 	_boss=1;
 	setup_npc();
 }

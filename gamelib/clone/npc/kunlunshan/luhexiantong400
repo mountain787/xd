@@ -3,21 +3,21 @@
 inherit GAMELIB_NPC;
 void create(){
 	name=object_name(this_object());
-	desc="À¥ÂØÉ½ÄÏ¼«ÏÉÎÌ×ùÏÂÍ½µÜ\n";
+	desc="æ˜†ä»‘å±±å—æžä»™ç¿åº§ä¸‹å¾’å¼Ÿ\n";
 	set_raceId("human");
 	set_profeId("humanlike");
 	sex="male";
-	gender="ÄÐ";
-	pronoun="Ëû";
+	gender="ç”·";
+	pronoun="ä»–";
 	picture=name;
 	_npcLevel=400;
-	name_cn="Â¹º×ÏÉÍ¯";
+	name_cn="é¹¿é¹¤ä»™ç«¥";
 	setup_npc();
 }
 string query_words(){
 	string s = ::query_words();
-	s += "[ÒøÉ«»Õ¼Ç¶Ò»»:hj_equip_exchange]\n";
-	s += "[»ðÔÂÇ©¶Ò»»:hyq_exchange]\n";
+	s += "[é“¶è‰²å¾½è®°å…‘æ¢:hj_equip_exchange]\n";
+	s += "[ç«æœˆç­¾å…‘æ¢:hyq_exchange]\n";
 	s += TASKD->query_words(this_player(),this_object());
 	return s;
 }

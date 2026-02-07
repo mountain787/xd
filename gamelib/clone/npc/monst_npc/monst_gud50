@@ -7,13 +7,13 @@ void create(){
 	set_raceId("monst");
 	set_profeId("humanlike");
 	sex="male";
-	gender="ÄÐ";
+	gender="ç”·";
 	picture="humanlike_male";
 	_npcLevel=50;
-	name_cn="ÑýÄ§Ö®ÑÛ";
+	name_cn="å¦–é­”ä¹‹çœ¼";
 	_meritocrat=1;
 	setup_npc();
-	//¼ÓÉÏÑ²ÂßÐÄÌø
+	//åŠ ä¸Šå·¡é€»å¿ƒè·³
 	add_heart_beat(randomGo,30);
 	set_heart_beat(1);
 }
@@ -27,7 +27,7 @@ void randomGo()
 	foreach(all_inventory(env),object player){
 		if( player && player->userip && !player->is("npc") ){
 			if(player->query_raceId()!=this_object()->query_raceId()){
-				tell_object(player,this_object()->query_name_cn()+"£ºÐÂÏÊµÄÈËÀàÑªÈâ£¡"+player->query_name_cn()+"£¡ÊÇÄã×ÔÕÒµÄ£¡\n");
+				tell_object(player,this_object()->query_name_cn()+"ï¼šæ–°é²œçš„äººç±»è¡€è‚‰ï¼"+player->query_name_cn()+"ï¼æ˜¯ä½ è‡ªæ‰¾çš„ï¼\n");
 				this_object()->kill(player->query_name(),0);
 				break;
 			}

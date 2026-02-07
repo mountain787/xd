@@ -7,11 +7,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("humanlike");
 	sex="female";
-	gender="Å®";
-	pronoun="Ëý";
+	gender="å¥³";
+	pronoun="å¥¹";
 	picture="humanlike_female";
 	_npcLevel=48;
-	name_cn="ÓÄ°µ»ÃÓ°";
+	name_cn="å¹½æš—å¹»å½±";
 	setup_npc();
 }
 string query_words(){

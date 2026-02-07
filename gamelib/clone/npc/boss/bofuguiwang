@@ -5,8 +5,8 @@ void create(){
 	name=object_name(this_object());
 	_boss=1;
 	_flushtime=3600;
-	name_cn="伯夫鬼王";
-	desc="鬼域之王，有夺人生死之能\n";
+	name_cn="浼か楝肩帇";
+	desc="楝煎煙涔嬬帇锛屾湁澶轰汉鐢熸涔嬭兘\n";
 	set_raceId("third");
 	set_profeId("humanlike");
 	picture="bofuguiwang";

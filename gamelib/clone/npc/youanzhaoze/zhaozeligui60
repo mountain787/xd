@@ -6,11 +6,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("humanlike");
 	sex="female";
-	gender="Å®";
-	pronoun="Ëı";
+	gender="å¥³";
+	pronoun="å¥¹";
 	picture="humanlike_female";
 	_npcLevel=60;
-	name_cn="ÕÓÔóÀ÷¹í";
+	name_cn="æ²¼æ³½å‰é¬¼";
 	_meritocrat=1;
 	setup_npc();
 }

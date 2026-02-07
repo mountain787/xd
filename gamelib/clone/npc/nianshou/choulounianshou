@@ -5,8 +5,8 @@ void create(){
 	name=object_name(this_object());
 	_boss=1;
 	_flushtime=36000;
-	name_cn="³óÂªÄêÊÞ";
-	desc="Í·³¤´¥½Ç£¬Ð×²ÐÒì³£\n";
+	name_cn="ä¸‘é™‹å¹´å…½";
+	desc="å¤´é•¿è§¦è§’ï¼Œå‡¶æ®‹å¼‚å¸¸\n";
 	set_raceId("third");
 	set_profeId("beast");
 	picture="nianshou";

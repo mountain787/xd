@@ -2,8 +2,8 @@
 inherit GAMELIB_NPC;
 void create(){
 	name=object_name(this_object());
-	name_cn="重甲门卫";
-	desc="人类大军守城重兵\n";
+	name_cn="閲嶇敳闂ㄥ崼";
+	desc="浜虹被澶у啗瀹堝煄閲嶅叺\n";
 	set_raceId("human");
 	set_profeId("humanlike");
 	picture="zhongjiamenwei";

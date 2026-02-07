@@ -7,11 +7,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("bird");
 	sex="male";
-	gender="ĞÛ";
-	pronoun="Ëü";
+	gender="é›„";
+	pronoun="å®ƒ";
 	picture="bird_male";
 	_npcLevel=29;
-	name_cn="ÖğÀË»ğº×";
+	name_cn="é€æµªç«é¹¤";
 	setup_npc();
 }
 string query_words(){

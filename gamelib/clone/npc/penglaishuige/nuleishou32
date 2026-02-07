@@ -7,11 +7,11 @@ void create(){
 	set_raceId("third");
 	set_profeId("beast");
 	sex="male";
-	gender="ÐÛ";
-	pronoun="Ëü";
+	gender="é›„";
+	pronoun="å®ƒ";
 	picture="beast_male";
 	_npcLevel=32;
-	name_cn="Å­À×ÊÞ";
+	name_cn="æ€’é›·å…½";
 	setup_npc();
 }
 string query_words(){

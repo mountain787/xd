@@ -955,7 +955,7 @@ private object get_attributes_item(string orgitem,int num,int|void orginal_level
 		else{ //如果不存在，则要做很多麻烦的事情
 			//生成新的物品文件数据
 			//werror("============writetmp:\n"+writetmp+"\n");
-			string item_pinyin_name=0;//获得装备的原始拼音名字，为了设置图片
+			string|zero item_pinyin_name=0;//获得装备的原始拼音名字，为了设置图片
 			mixed err1=catch{
 				item_pinyin_name=(orgitem/"/")[1];
 			};

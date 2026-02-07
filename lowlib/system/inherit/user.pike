@@ -117,9 +117,7 @@ string process_input(string arg){
     return arg;
 }
 void init(){
-	//werror("\n     system/clone/user.pike->init called\n");
 	if (this_object() == this_player()) {
-		//werror("\n      call add_action\n");
 		add_action("command_hook", "", 1);
 	}
 }

@@ -351,7 +351,7 @@ void set_attack_attri_add_per(string type, int val)
 
 //由liaocheng于07/3/1添加
 //仇恨系统///////////////////////////////
-object first_target;//记录第一仇恨目标
+object|zero first_target;//记录第一仇恨目标
 mapping(object:int) targets =([]); //仇恨列表，npc和玩家都会有，但处理过程却是不同的
 //接口，用于重值仇恨列表，也就是仇恨列表清零
 void reset_targets()  
@@ -377,7 +377,7 @@ void flush_targets(object ob, int val)
 object get_target()
 {
 	int max=0;
-	object tmp_ob=0;
+	object|zero tmp_ob=0;
 	if(targets){
 		//轮询仇恨列表，得到最到仇恨第一的目标
 		foreach(indices(targets),object ob) {

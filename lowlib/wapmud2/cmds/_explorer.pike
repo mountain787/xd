@@ -17,8 +17,38 @@ mapping load_bytes(string name,int pos,int len)
 		if(who=="_player"){
 			object player=this_player();
 			if(player!=0){
-				//spliter
+				//spliter - try both direct access and query function
 				mixed f=`->(player,fun);
+				if(!f && player["query_spliter"]){
+					f=player->query_spliter();
+				}
+				string whole;
+				if(functionp(f)){
+					whole=f();
+				}
+				else if(mappingp(f)){
+					whole=f["text"];
+					header=f["header"];
+					footer=f["footer"];
+				}
+				if(whole){
+					int whole_size=sizeof(whole);
+					for(int j=whole_size-1;j>=0;j--){
+						if(whole[j]=='\n'||whole[j]==' '||whole[j]=='\r'){
+							whole=whole[0..j-1];
+						}
+						else{
+							break;
+						}
+					}
+					text=whole[pos..pos+len-1];
+				}
+			}
+		}
+		else if(who=="_env"){
+			object env=environment(previous_object());
+			if(env!=0){
+				mixed f=`->(env,fun);
 				string whole;
 				if(functionp(f)){
 					whole=f();

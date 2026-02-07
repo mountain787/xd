@@ -837,6 +837,7 @@ int receive(string s)
 	object p=previous_object();
 	object ob=CONND->query_conn(p);
 	if(ob==0){
+		werror("receive() failed: no conn for "+object_name(p)+"\n");
 		return 0;
 	}
 	if(ob)

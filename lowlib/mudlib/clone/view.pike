@@ -25,7 +25,8 @@ string `()(void|object ob,void|object player,void|mixed arg)
 	if(!viewer){
 		string code=
 			"string view(void|object ob,void|object player,void|mixed arg){\n"
-			"object env=environment(player);\nstring out=\"\";mixed err;";
+			"object env=environment(player);\nstring out=\"\";mixed err;\n"
+			"if(!env){werror(\"env is NULL for view\\n\");return out;}\n";
 		for(int i=0;i<sizeof(template);){
 			if(template[i]=='$'){
 				if(i<sizeof(template)-1&&template[i+1]=='('){

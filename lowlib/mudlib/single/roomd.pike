@@ -105,7 +105,7 @@ void refresh_room_npc_to_currentlevel(object me,string path){
 //获得重置属性/等级的npc
 object get_npc_level(string orgi_path,int npclevel){
 	//werror("===============orgi_path:"+orgi_path+"\n");
-	object rtn_ob = 0;
+	object|zero rtn_ob = 0;
 	mixed err = catch{ rtn_ob=clone(ROOT+orgi_path); };
 	if(err){
 		rtn_ob=0;

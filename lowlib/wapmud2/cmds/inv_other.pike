@@ -19,7 +19,7 @@ int main(string arg)
 		//write("[返回:look]\n");
 		//return 1;	
 	}	
-	object ob = 0;
+	object|zero ob = 0;
 	object player; 
 	object me = this_player();
 	if(me->query_name() == player_name)

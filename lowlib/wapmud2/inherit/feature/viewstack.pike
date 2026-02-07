@@ -1,8 +1,8 @@
 #include <globals.h>
 #include <wapmud2/include/wapmud2.h>
-private object init_view;
+private function|zero init_view=0;
 private mixed init_view_arg;
-private array viewstack=({});
+private array(mixed) viewstack=({});
 private mapping spliter=([]);
 private int combat_flag=1;
 mapping query_spliter(){

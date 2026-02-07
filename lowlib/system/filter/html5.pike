@@ -86,7 +86,7 @@ private string decode(string s)
 	//string t=Locale.Charset.decoder("euc_cn")->feed(s)->drain();
 	//return t;
 }
-string filter(string s)
+string filter(zero|string s)
 {
 	////////////////20060309 by qianglee
 	//简单加密用户信息
@@ -155,7 +155,6 @@ string filter(string s)
 		}
 		else{
 			out+=decode(s);
-			s=0;
 			break;
 		}
 		string type,name,cmd,acmd,href;

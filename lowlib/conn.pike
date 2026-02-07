@@ -17,20 +17,21 @@ object query_filter()
 //该write方法其实调用filter进行转换，如果设置了filter的时候
 int write(string s)
 {
-	//werror("========write call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write call s=["+s+"]==========\n");
 	object old=EFUNSD->this_player();
 	EFUNSD->set_this_player(user);
 	object filter=query_filter();
 	if(filter)
 		s=filter->filter(s);
 	out+=s;
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write out size="+sizeof(out)+"==========\n");
 	if(sizeof(out))//不管是否通过filter层转换，如果有数据，下面就可以调用读写回调方法处理之
 		conn->set_nonblocking(read_callback,write_callback,close_callback);
 	EFUNSD->set_this_player(old);
 	if(!user){
 		close();
 	}
-	//werror("========write end==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write end==========\n");
 	return s?sizeof(s):1;
 }
 protected void tryclose()
@@ -65,8 +66,9 @@ protected void write_callback(mixed id)
 }
 protected void read_callback(mixed id,string data)
 {
-	//werror("========read_callback call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback call data=["+data+"]==========\n");
 	if(!user){
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback: user is NULL, closing==========\n");
 		conn->close();
 		return;
 	}
@@ -79,6 +81,7 @@ protected void read_callback(mixed id,string data)
 		string s=l[i];
 		if(sizeof(s)>0&&s[sizeof(s)-1]=='\r')
 			s=s[0..sizeof(s)-2];
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback processing command=["+s+"]==========\n");
 		mixed err;
 		if(on_input){
 			function f=on_input;
@@ -91,15 +94,16 @@ protected void read_callback(mixed id,string data)
 			err=catch{
 				object filter=query_filter();
 				if(filter&&filter["process_input"])
-					s=filter->process_input(s); 
+					s=filter->process_input(s);
 				if(user){
 					if(user["process_input"]){
-						string t=user->process_input(s); 
+						string t=user->process_input(s);
 						s=t;
 					}
 					if(s){
 						if(s=="0")
 							s = "look what";
+						Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback calling EFUNSD->command(["+s+"], user)==========\n");
 						EFUNSD->command(s,user);
 						/*	
 						object obt= System.Time();
@@ -165,7 +169,7 @@ protected void close_callback(mixed id)
 }
 void create(Stdio.File c,object ob)
 {
-	//werror("========create call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create call==========\n");
 	in="";
 	out="";
 	on_input=0;
@@ -174,8 +178,9 @@ void create(Stdio.File c,object ob)
 	user=ob;
 	CONND->set_conn(ob,this_object());
 	CONND->set_this_player(user);
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create calling logon==========\n");
 	ob->logon();
-	//werror("========create end==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create end==========\n");
 }
 void set_user(object dest)
 {

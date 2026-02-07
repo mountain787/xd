@@ -73,7 +73,7 @@ object query_fb_room(string room_name,int room_num,string team_id,int flag)
 			if(tmp && sizeof(tmp)){
 				for(int i=0;i<sizeof(tmp);i++){
 					/////////////////////////////////////////////
-					object room = 0; 
+					object|zero room = 0; 
 					string new_room_path = ROOM_PATH+tmp[i];
 					program p = compile_file(new_room_path);
 					//加入到当前进程的master中的programs中
@@ -118,7 +118,7 @@ void delete_fb_members(string fb_id,string player_name)
 		m_delete(fb_members[fb_id],player_name);
 }
 //查阅玩家是否在副本里面，判断副本不打开动态npc的条件
-int query_fb_memebers(string fb_id,string player_name){
+int query_fb_memebers(string|zero fb_id,string player_name){
 	//werror("=======query fb status\n");
 	if(!fb_id) return 0;
 	if(search(fb_id,"posanzhidi") != -1) return 0;//如果是这里的地图，则依然打开动态npc，不受副本的影响

@@ -80,7 +80,7 @@ string get_org_converted_level(string orgitem,int boss_level){
 		//orgitem="jewelry/49xingmangzhihuan";
 		werror("================orgitem:"+orgitem+"\n");
 		//以下则处理比较麻烦的生成物品流程
-		string item_pinyin_name=0;
+		string|zero item_pinyin_name=0;
 		mixed err1=catch{
 			item_pinyin_name=(orgitem/"/")[1];
 		};
@@ -88,7 +88,7 @@ string get_org_converted_level(string orgitem,int boss_level){
 			item_pinyin_name=0;
 		}
 		
-		object ob=0;
+		object|zero ob=0;
 		int org_level=boss_level;
 		mixed err= catch{ob=clone(ITEM_PATH+orgitem);};
 		if(!err && ob)

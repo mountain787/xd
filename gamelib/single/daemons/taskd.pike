@@ -933,7 +933,7 @@ object if_in_findTask(object player,string killed_name)
 {
 	string log_s = "";
 	int prop = 0; //掉落任务物品的几率
-	object rtn_ob = 0;
+	object|zero rtn_ob = 0;
 	array(object) items_drop = ({});
 	array(int) item_task_list = ({});
 	task tmp_task;

@@ -626,7 +626,7 @@ mapping(int:object) init_lifes(string lifes,string lifeType)
 		if(lifeName!="0")
 		{
 			string new_life_path = LIFE_PATH+"/"+lifeType+"/"+lifeName;         //"生物"文件路径
-			object life = 0;
+			object|zero life = 0;
 				mixed err =catch{
 					life = clone(new_life_path);                        //得到这个生物
 				};
@@ -1460,7 +1460,7 @@ int add_function_room(string roomName)
 			{
 
 				string path = ITEM_PATH + "/home/others/chuansongshenfu";
-				object chuansongshenfu = 0;
+				object|zero chuansongshenfu = 0;
 				mixed err = catch{
 					chuansongshenfu = clone(path);
 				};
@@ -1680,7 +1680,7 @@ string life_add(string infancyName,string lifeType,int ind,int count)
 //2、依据不同的地段信息，设置该生物的成熟时间
 object init_new_lifes(string lifePath,string areaName,string infancyType)
 {
-	object newLife = 0;
+	object|zero newLife = 0;
 	area aa = areaMap[areaName];
 	mixed err = catch{
 		newLife=clone(lifePath);
@@ -1816,7 +1816,7 @@ string give_items(object ob)
 		if(dropRate>=random(100))                                                  //一定几率掉落物品
 		{
 			goodsPath = ITEM_PATH + goodsName;
-			object goods = 0;
+			object|zero goods = 0;
 			mixed err = catch{
 				goods=clone(goodsPath);
 			};

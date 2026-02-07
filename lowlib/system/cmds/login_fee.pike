@@ -18,7 +18,7 @@ int main(string arg)
 		if(!me){
 			string user=Stdio.read_file(DATA_ROOT+"u/"+user_name[sizeof(user_name)-2..]+"/"+user_name+".o");
 			string pswd;
-			array(string) usr_content=user/"\n";
+			array(string) usr_content=user?user/"\n":({});
 			foreach(usr_content,string strCompare){
 				if((strCompare/" ")[0]=="password"){
 					if( (strCompare/" ")[1] ){

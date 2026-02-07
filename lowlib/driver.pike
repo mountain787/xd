@@ -13,8 +13,19 @@ void accept_callback()
 	Stdio.File ob=port->accept();
 	if(!ob)
 		return;
-	program u=lib_master->connect();
-	CONN(ob,u());
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "accept_callback: got connection\n");
+	mixed err;
+	err=catch{
+		program u=lib_master->connect();
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "accept_callback: u="+sprintf("%O", u)+"\n");
+		object user_obj=u();
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "accept_callback: user_obj="+sprintf("%O", user_obj)+"\n");
+		CONN(ob,user_obj);
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "accept_callback: CONN called\n");
+	};
+	if(err){
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "accept_callback: ERROR="+sprintf("%O", err)+"\n");
+	}
 } 
 
 object efuns;

@@ -61,10 +61,11 @@ string query_name_cn(void|int true_name){
 			return name_cn;
 	}
 	else{
-		if(this_object()->query_raceId()=="human")
-			return "鏃犲悕閬撶";
+		// Check if query_raceId function exists before calling it
+		if(this_object()["query_raceId"] && this_object()->query_raceId()=="human")
+			return "无名剑客";
 		else
-			return "鏃犲悕濡栫伒";
+			return "无名妖女";
 	}
 }
 void set_fake_name_cn(string arg){
@@ -76,8 +77,15 @@ string query_short(){
 string query_desc(){
 	if(desc)
 		return desc;
-	else
-		return this_object()->query_short();
+	else{
+		mixed err=catch{
+			string result = this_object()->query_short();
+			return result;
+		};
+		// If query_short fails, return a default description
+		werror("query_desc failed for "+object_name(this_object())+"\n");
+		return "";
+	}
 }
 void remove(){
 	destruct(this_object());

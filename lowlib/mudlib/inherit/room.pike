@@ -33,21 +33,23 @@ int dongtai_npc_start_level=50;
 
 void add_items(array(string|program) _items){
 	object me= this_player();
-	object env=environment(me);
+	object env=me ? environment(me) : 0;
 	foreach(_items,string|program s){
-		int adjust=0;//刷新npc级别调整，如果是地狱，则增加3级		
-		//werror("----add_items -> player=["+me->name+"]----\n");
-		if(me->gamelevel=="putong") adjust=0;
-		else if(me->gamelevel=="emeng") adjust=5;
-		else if(me->gamelevel=="diyu") adjust=10;
-		object t_ob = 0;
-		object ob=0;
+		int adjust=0;//刷新npc级别调整，如果是地狱，则增加3级
+		//werror("----add_items -> player=["+(me?me->name:"none")+"]----\n");
+		if(me){
+			if(me->gamelevel=="putong") adjust=0;
+			else if(me->gamelevel=="emeng") adjust=5;
+			else if(me->gamelevel=="diyu") adjust=10;
+		}
+		object|zero t_ob = 0;
+		object|zero ob=0;
 		mixed err=catch{
 			//等级大于50级以上才开启动态NPC
-			int fb_status = FBD->query_fb_memebers(me->fb_id,me->query_name());//0 为非副本，1为副本
+			int fb_status = me ? FBD->query_fb_memebers(me->fb_id,me->query_name()) : 1;//0 为非副本，1为副本
 			//int fb_status = search(fb_arr,this_object()->name);
 			//werror("======fb_status "+fb_status +"\n");
-			if(env->is_peaceful()!=1&&me->query_level()>=dongtai_npc_start_level && fb_status == 0)
+			if(me && env && env->is_peaceful()!=1&&me->query_level()>=dongtai_npc_start_level && fb_status == 0)
 				t_ob=MUD_ROOMD->get_npc_level(s-ROOT,me->query_level()+adjust);//生成文件名不变的npc对象，再赋予对应等级/强度
 		};
 		if(!err&&t_ob) ob=t_ob;
@@ -76,6 +78,7 @@ void reset_items()
 {
 	::reset_items();//调用底层的reset方法
 	object me= this_player();
+	if(!me) return;
 	//werror("----reset_items -> player=["+me->name+"]----\n");
 	//等级大于50级以上才开启动态NPC
 	int fb_status = FBD->query_fb_memebers(me->fb_id,me->query_name());

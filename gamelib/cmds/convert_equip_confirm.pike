@@ -238,7 +238,7 @@ int main(string arg)
 			object orginal_item=clone (ITEM_PATH+item_rawname);
 			//werror("=============217orginal_item "+orginal_item->query_item_canLevel()+"\n");
 			//werror("=============218item "+item->query_item_canLevel()+"\n");
-			object new_item = 0;
+			object|zero new_item = 0;
 			if(ret_flag != 3){
 				if(orginal_item)//如果超过70级以上物品熔炼，则获得原物品等级，以及目前装备的等级，100级装备，熔炼出100级的装备
 					new_item = ITEMSD->get_convert_item(item_rawname,attri_num,orginal_item->query_item_canLevel(),item->query_item_canLevel(),item);

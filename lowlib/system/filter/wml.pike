@@ -127,7 +127,7 @@ private string decode(string s,void|int skip_filter)
 	}
 	return out;
 }
-string filter(string s)
+string filter(zero|string s)
 {
 	string txd = "";
 	string userid = this_player()->name;
@@ -155,7 +155,6 @@ string filter(string s)
 		}
 		else{
 			out+=decode(s);
-			s=0;
 			break;
 		}
 		string type,name,cmd,acmd,href,ahref;

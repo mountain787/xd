@@ -36,10 +36,11 @@ void write_view_tmp(void|object|function f,void|mixed...args){
 		else
 			spliter["footer"]="[返回:flushview]\n[返回游戏:look]";
 	}
-	this_object()->command("_explorer _player/spliter");
+	this_object()->command("_explorer _player/spliter", this_object());
 }
 void write_view(void|object|function f,void|mixed...args){
 	object env = environment(this_object());
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== write_view called: this_object="+sprintf("%O", this_object())+" f="+sprintf("%O", f)+"\n");
 	if(init_view==0)
 		init_view=WAP_VIEWD["/init"];
 	if(!combat_flag&&!this_object()->in_combat)
@@ -66,6 +67,7 @@ void write_view(void|object|function f,void|mixed...args){
 		spliter["text"]=env->query_arrive_msg(this_object()->name)+viewstack[0][0](@(viewstack[0][1]));
 	else
 		spliter["text"]=viewstack[0][0](@(viewstack[0][1]));
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== write_view: spliter text size="+sizeof(spliter["text"])+"\n");
 	spliter["footer"]="";
 	if(sizeof(viewstack)>1){
 		if(viewstack[0][0]->cacheable)
@@ -73,7 +75,10 @@ void write_view(void|object|function f,void|mixed...args){
 		else
 			spliter["footer"]="[返回:popview]\n[返回游戏:look]";
 	}
-	this_object()->command("_explorer _player/spliter");
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== write_view: calling command(\"_explorer _player/spliter\", this_object())\n");
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== write_view: this_object="+sprintf("%O", this_object())+"\n");
+	this_object()->command("_explorer _player/spliter", this_object());
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== write_view: command() returned\n");
 }
 void reset_view(void|object|function f,void|mixed...args){
 	viewstack=({});

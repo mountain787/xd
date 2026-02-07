@@ -43,7 +43,7 @@ int command_hook(string arg)
 	}
 	return 0;
 }
-void command(string str)
+void command(string str,void|object this)
 {
-	predef::command(str);
+	predef::command(str, this);
 }

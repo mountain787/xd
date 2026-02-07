@@ -55,14 +55,17 @@ protected void tryclose()
 }
 protected void write_callback(mixed id)
 {
-	//werror("========write_callback call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback out size before write: "+sizeof(out)+"==========\n");
 	int n=conn->write(out);
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback wrote "+n+" bytes, remaining "+sizeof(out)+"==========\n");
 	out=out[n..];
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback out size after slice: "+sizeof(out)+"==========\n");
 	if(sizeof(out)==0){
 		conn->set_nonblocking(read_callback,0,close_callback);
 	}
 	tryclose();
-	//werror("========write_callback end==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback end==========\n");
 }
 protected void read_callback(mixed id,string data)
 {
@@ -142,24 +145,35 @@ protected void read_callback(mixed id,string data)
 }
 void close()
 {
-	//werror("========close call==========\n");
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close call==========\n");
 	if(closing){
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: already closing, tryclose==========\n");
 		tryclose();
 		return;
 	}
 	closing=1;
 	object filter=query_filter();
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: filter="+(filter?"exists":"NULL")+"==========\n");
 	if(filter){
 		object ob=filter;
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: checking net_dead==========\n");
 		if(ob["net_dead"]){
+			Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: calling net_dead==========\n");
 			string s=ob->net_dead();
 			out+=s;
-			if(sizeof(out))
-				conn->set_nonblocking(read_callback,write_callback,0);
+			Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: net_dead returned, out size="+sizeof(out)+"==========\n");
 		}
 	}
-	tryclose();
-	//werror("========close end==========\n");
+	// Don't call tryclose yet - let write_callback handle it after data is sent
+	if(sizeof(out)){
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: setting write_callback, out size="+sizeof(out)+"==========\n");
+		conn->set_nonblocking(0,write_callback,close_callback);
+	}
+	else{
+		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: no data, calling tryclose==========\n");
+		tryclose();
+	}
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close end==========\n");
 }
 protected void close_callback(mixed id)
 {

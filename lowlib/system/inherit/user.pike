@@ -107,7 +107,7 @@ string query_cwd(){
 }
 void write_prompt() {}
 array(string) query_command_prefix(){
-	return ({COMMAND_PREFIX});
+	return ({COMMAND_PREFIX, SROOT+"/wapmud2/cmds/", ROOT+"/gamelib/cmds/"});
 }
 string process_input(string arg){
     if(arg=="flush_filter"){

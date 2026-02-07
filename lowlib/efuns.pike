@@ -159,16 +159,25 @@ object load_object(string|object file)
 
 int exec(object dest,object me)//don't call this inside pikenv_command()
 {
+	Stdio.append_file("/tmp/xiand_login_debug.log", "exec() called: dest="+sprintf("%O", dest)+" me="+sprintf("%O", me)+"\n");
+	Stdio.append_file("/tmp/xiand_login_debug.log", "exec: this_player="+sprintf("%O", CONND->query_this_player())+"\n");
 	if(CONND->query_conn(dest)){
+		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: dest already has connection, returning 0\n");
 		//werror("Can't exec a interactive user.\n");
 		return 0;
 	}
 	else{
 		object ob=CONND->query_conn(me);
+		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: conn for me="+sprintf("%O", ob)+"\n");
+		if(!ob){
+			Stdio.append_file("/tmp/xiand_login_debug.log", "exec: ERROR! ob is NULL!\n");
+			return 0;
+		}
 		ob->set_user(dest);
 		CONND->set_conn(dest,ob);
-		if(CONND->query_this_player()==me)
-			CONND->set_this_player(dest);
+		// Always set this_player to dest after exec
+		CONND->set_this_player(dest);
+		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: success, returning 1, this_player now="+sprintf("%O", CONND->query_this_player())+"\n");
 		return 1;
 	}
 }
@@ -205,19 +214,24 @@ void write(mixed s,mixed...args)
 //	if(ob==0){
 		ob=CONND->query_conn(CONND->query_this_player());
 //	}
-	Stdio.append_file("/tmp/xiand_write_debug.log", "write() called: this_player=" + sprintf("%O", CONND->query_this_player()) + " ob=" + sprintf("%O", ob) + " s=" + sprintf("%O", s) + "\n");
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() called: this_player=" + sprintf("%O", CONND->query_this_player()) + " ob=" + sprintf("%O", ob) + " s=" + sprintf("%.100s", s) + "\n");
 	if(args&&sizeof(args)){
-		if(ob)
+		if(ob){
+			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() calling ob->write with sprintf\n");
 			ob->write(sprintf(s,@args));
+		}
 //		else
 //			Stdio.stdout->write(sprintf(s,@args));
 	}
 	else{
-		if(ob)
+		if(ob){
+			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() calling ob->write directly\n");
 			ob->write(s);
+		}
 //		else
 //			Stdio.stdout->write(s);
 	}
+	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() returned\n");
 }
 /*
 string read_file(string file,void|int start_line,void|int n)
@@ -1254,10 +1268,13 @@ void set_filter(object f)
 
 void flush_filter()
 {
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() called==========\n");
 	object ob=CONND->query_conn(this_player());
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() ob="+(ob?"exists":"NULL")+"==========\n");
 	if(ob){
 		ob->close();
 	}
+	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() end==========\n");
 }
 
 object query_filter()

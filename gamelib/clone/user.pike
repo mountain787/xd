@@ -717,7 +717,8 @@ string query_links(void|int count)
 	{
 		out += "家园：["+HOMED->query_homeName_by_masterId(this_object()->query_name())+":home_display "+this_object()->query_home_path()+"]\n";
 	}
-	if(this_object()->query_raceId()==this_player()->query_raceId()){
+	object tp=this_player();
+	if(tp&&this_object()->query_raceId()==tp->query_raceId()){
 		//增加了帮战杀戮的显示，由liaocheng于08/08/30添加
 		object env=environment(this_object());
 		if(env->room_race == "third" && this_object()->bangid && this_player()->bangid && BANGZHAND->is_in_bangzhan(this_object()->bangid,this_player()->bangid))

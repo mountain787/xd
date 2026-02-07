@@ -73,10 +73,11 @@ string process_input(string s)
 		int n;
 		string tail="";
 		sscanf(s,"%d %s",n,tail);
-		if(this_player()["hidden"]){
-			if(n<sizeof(this_player()->hidden))
-				s=this_player()->hidden[n]+tail;
-			else 
+		object tp=this_player();
+		if(tp&&tp["hidden"]){
+			if(n<sizeof(tp->hidden))
+				s=tp->hidden[n]+tail;
+			else
 				s="look";
 		}
 	}

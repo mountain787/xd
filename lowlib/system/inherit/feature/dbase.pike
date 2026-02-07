@@ -16,10 +16,14 @@ mixed `[](string key, void|mixed n)
 	if(key&&sizeof(key)&&key[0]=='/'){
 		array a=key[1..]/"/";
 		if(!data)data=([]);
+		if(!data_tmp)data_tmp=([]);
 		mapping m=data;
-		if(a[0]=="tmp")
+		int start_idx=0;
+		if(sizeof(a)>0&&a[0]=="tmp"){
 			m=data_tmp;
-		for(int i=0;i<sizeof(a)-1;i++){
+			start_idx=1;
+		}
+		for(int i=start_idx;i<sizeof(a)-1;i++){
 			string s=a[i];
 			if(!mappingp(m[s])){
 				return 0;
@@ -42,10 +46,15 @@ mixed `[]=(string key, mixed val, void|mixed n)
 	// }
 	if(key&&sizeof(key)&&key[0]=='/'){
 		array a=key[1..]/"/";
+		if(!data)data=([]);
+		if(!data_tmp)data_tmp=([]);
 		mapping m=data;
-		if(a[0]=="tmp")
+		int start_idx=0;
+		if(sizeof(a)>0&&a[0]=="tmp"){
 			m=data_tmp;
-		for(int i=0;i<sizeof(a)-1;i++){
+			start_idx=1;
+		}
+		for(int i=start_idx;i<sizeof(a)-1;i++){
 			string s=a[i];
 			if(!mappingp(m[s])){
 				m[s]=([]);
@@ -65,10 +74,15 @@ mixed _m_delete(string key)
 {
 	if(key&&sizeof(key)&&key[0]=='/'){
 		array a=key[1..]/"/";
+		if(!data)data=([]);
+		if(!data_tmp)data_tmp=([]);
 		mapping m=data;
-		if(a[0]=="tmp")
+		int start_idx=0;
+		if(sizeof(a)>0&&a[0]=="tmp"){
 			m=data_tmp;
-		for(int i=0;i<sizeof(a)-1;i++){
+			start_idx=1;
+		}
+		for(int i=start_idx;i<sizeof(a)-1;i++){
 			string s=a[i];
 			if(!mappingp(m[s])){
 				m[s]=([]);

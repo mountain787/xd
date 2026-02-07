@@ -54,4 +54,18 @@
 //#define ROOT		        "/usr/local/games/xiand00"//游戏根目录 在sys_config.h中定义
 //#define SROOT		        "/usr/local/games/xiand00/lowlib"//游戏底层根目录 在sys_config.h中定义
 
+// Global write() override - route all write() calls to efuns.pike
+// This is needed for Pike 9 compatibility - in Pike 9, write() would otherwise
+// resolve to predef::write() instead of the custom write() in efuns.pike
+#ifndef EFUNSD
+#define EFUNSD ((object)(SROOT "/efuns.pike"))
+#endif
+
+#ifndef __NO_WRITE_OVERRIDE__
+void write(mixed s, mixed...args)
+{
+	EFUNSD->write(s, @args);
+}
+#endif
+
 #endif

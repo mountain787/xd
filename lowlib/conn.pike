@@ -1,4 +1,5 @@
 //! 用户连接类
+#define __NO_WRITE_OVERRIDE__
 #include "lowlib.h"
 #include <gamelib/include/time.h>
 #include <globals.h>

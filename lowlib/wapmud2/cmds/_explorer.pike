@@ -1,6 +1,5 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
-#include <lowlib.h>
 #define PAGESIZE 6000
 #define BYTESPERLINK 100
 
@@ -98,7 +97,7 @@ int view_file(string name,int pos,int ppos)
 		footer=m["footer"];
 	}
 	//头部
-	EFUNSD->write(header);
+	write(header);
 	if(text==0)
 		return 0;
 	if(sizeof(text)<PAGESIZE)
@@ -146,9 +145,9 @@ int view_file(string name,int pos,int ppos)
 	if(text!=""){
 		text=text[0..len-1];
 		//中部内容
-		EFUNSD->write(text+"\n");
+		write(text+"\n");
 		if(!eof)
-			EFUNSD->write("[下一页:_explorer "+name+" "+(pos+len)+" "+ppos+"]\n");
+			write("[下一页:_explorer "+name+" "+(pos+len)+" "+ppos+"]\n");
 	}
 	if(pos!=0){
 		if(pos>PAGESIZE){
@@ -206,10 +205,10 @@ int view_file(string name,int pos,int ppos)
 		last_pos=pos-i;
 		if(last_pos==1||last_pos==-1)
 			last_pos=0;
-		EFUNSD->write("[上一页:_explorer "+name+" "+last_pos+" "+ppos+"]\n");
+		write("[上一页:_explorer "+name+" "+last_pos+" "+ppos+"]\n");
 	}
 	//尾部信息
-	EFUNSD->write(footer);
+	write(footer);
 	return 1;
 }
 int main(string arg)

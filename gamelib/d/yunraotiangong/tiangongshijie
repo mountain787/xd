@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="天宫石阶";
+	name_cn="澶╁鐭抽樁";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/yunraotiangong/yanyunvyao70"}));
 	add_items(({ROOT "/gamelib/clone/npc/yunraotiangong/mingcuihuangli70"}));
@@ -17,11 +17,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往星辰长路:fb_entry yunraotiangong 15 1]\n";
+	tmp += "[鍘诲線鏄熻景闀胯矾:fb_entry yunraotiangong 15 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往天宫正殿:fb_entry yunraotiangong 17 1]\n";
+		tmp += "[鍘诲線澶╁姝ｆ:fb_entry yunraotiangong 17 1]\n";
 	else
-		tmp += "去往天宫正殿\n";
+		tmp += "鍘诲線澶╁姝ｆ\n";
 	return tmp;
 }
 int check_if_clear(){

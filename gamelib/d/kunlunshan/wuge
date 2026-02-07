@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=92;
 void create(){
 	name=object_name(this_object());
-	name_cn="Îä¸ó";
+	name_cn="æ­¦é˜";
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/kunlunshan/xianqifang";
 	exits["east"]=ROOT "/gamelib/d/paimh/paimaihang_human";
@@ -15,9 +15,9 @@ string query_links(){
 	string tmp="";
 	if(player->query_raceId()==room_race){
 		//if(player->packageLevel<=90)
-			tmp+="²Ø±¦Ïä£º[´æ:user_package]|[È¡:user_repackage]|[¹ºÂò:user_package_buy_list]\n";
+			tmp+="è—å®ç®±ï¼š[å­˜:user_package]|[å–:user_repackage]|[è´­ä¹°:user_package_buy_list]\n";
 		//else
-			//tmp+="²Ø±¦Ïä£º[´æ:user_package]|[È¡:user_repackage]\n";
+			//tmp+="è—å®ç®±ï¼š[å­˜:user_package]|[å–:user_repackage]\n";
 	}
 	return tmp;
 }

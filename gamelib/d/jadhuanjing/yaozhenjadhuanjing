@@ -8,14 +8,14 @@ array(string) flush_human = ({"jadhuanjing/jingweiduishibing","jadhuanjing/jingw
 void create(){
 	name=object_name(this_object());
 	set_room_type("city");
-	name_cn="—˝’Û°æΩ˜°µ∫ª√æ≥°ø";
+	name_cn="Â¶ñÈòµ„ÄêÈáëÈ≥åÂ≤õÂπªÂ¢É„Äë";
 	desc="\n";
 	set_belong_to("jadhuanjing");
 	exits["west"]=ROOT "/gamelib/d/jadhuanjing/lianqifang";
 	string tmp_s = CITYD->query_captured("jadhuanjing");
 	if(tmp_s == "monst"){
 		room_race="monst";
-		name_cn += "(—˝ƒß’º¡Ï)";
+		name_cn += "(Â¶ñÈ≠îÂç†È¢Ü)";
 		foreach(flush_monst,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));
@@ -23,7 +23,7 @@ void create(){
 	}
 	else if(tmp_s == "human"){
 		room_race="human";
-		name_cn += "(»À¿‡’º¡Ï)";
+		name_cn += "(‰∫∫Á±ªÂç†È¢Ü)";
 		foreach(flush_human,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));

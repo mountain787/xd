@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=751;
 void create(){
 	name=object_name(this_object());
-	name_cn="·üôË¹¬";
+	name_cn="ä¼ç¾²å®«";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/fuxishan/fuxipianting";
 	exits["south"]=ROOT "/gamelib/d/fuxishan/yiwuxiaowu";
@@ -20,7 +20,7 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race){
-		tmp+="[ĞİÏ¢:sleep]\n";
+		tmp+="[ä¼‘æ¯:sleep]\n";
 		}
 	return tmp;
 }

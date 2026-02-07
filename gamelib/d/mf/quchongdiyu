@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="蛆虫地狱";
+	name_cn="铔嗚櫕鍦扮嫳";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/mf/zhuanshengshi29"}));
 	add_items(({ROOT "/gamelib/clone/npc/mf/senluoyao30"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往畜生地狱:fb_entry mingfu 15 1]\n";
+	tmp += "[鍘诲線鐣滅敓鍦扮嫳:fb_entry mingfu 15 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往转轮王宫:fb_entry mingfu 17 1]\n";
+		tmp += "[鍘诲線杞疆鐜嬪:fb_entry mingfu 17 1]\n";
 	else
-			tmp +="去往转轮王宫\n";
+			tmp +="鍘诲線杞疆鐜嬪\n";
 	return tmp;
 }
 int check_if_clear(){

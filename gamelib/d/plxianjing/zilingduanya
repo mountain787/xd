@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=1252;
 void create(){
 	name=object_name(this_object());
-	name_cn="×ÏÁé¶ÏÑÂ";
+	name_cn="ç´«çµæ–­å´–";
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/plxianjing/zilingguanghuan";
 }

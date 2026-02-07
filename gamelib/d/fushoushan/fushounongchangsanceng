@@ -5,11 +5,11 @@ string room_race="monst";
 static int room_level=179;
 void create(){
 	name=object_name(this_object());
-	name_cn="福寿农场三层";
+	name_cn="绂忓鍐滃満涓夊眰";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/fushoushan/fushounongchangerceng";
 	exits["north"]=ROOT "/gamelib/d/fushoushan/fushounongchangsiceng";
-	desc+="[走出洞穴:qge74hye "+"fushoushan/fushounongchangyiceng"+"]\n";
+	desc+="[璧板嚭娲炵┐:qge74hye "+"fushoushan/fushounongchangyiceng"+"]\n";
 	add_items(({ROOT "/gamelib/clone/npc/fushouzhuangyuan/guonong20"}));
 	add_items(({ROOT "/gamelib/clone/npc/fushouzhuangyuan/yuanlinhuajiang20"}));
 	add_items(({ROOT "/gamelib/clone/npc/fushouzhuangyuan/caichanv20"}));

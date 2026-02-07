@@ -3,6 +3,6 @@
 inherit WAP_ROOM;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÖÐÁ¢";
+	name_cn="ä¸­ç«‹";
 	desc="\n";
 }

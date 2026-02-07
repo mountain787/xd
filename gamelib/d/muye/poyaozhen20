@@ -5,9 +5,9 @@ string room_race="human";
 static int room_level=471;
 void create(){
 	name=object_name(this_object());
-	name_cn="破妖阵二十层";
+	name_cn="鐮村闃典簩鍗佸眰";
 	desc="\n";
-	desc+="[走出洞穴:qge74hye "+"muye/yinghoushanlu"+"]\n";
+	desc+="[璧板嚭娲炵┐:qge74hye "+"muye/yinghoushanlu"+"]\n";
 	exits["south"]=ROOT "/gamelib/d/muye/poyaozhen19";
 	add_items(({ROOT "/gamelib/clone/npc/muye/xiaoyaobing40"}));
 	add_items(({ROOT "/gamelib/clone/npc/muye/yaobingfulu40"}));

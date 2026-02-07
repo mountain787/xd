@@ -8,7 +8,7 @@ array(string) flush_human = ({"xiqicheng/jingweiduishibing","xiqicheng/jingweidu
 void create(){
 	name=object_name(this_object());
 	set_room_type("city");
-	name_cn="武王禁宫";
+	name_cn="姝︾帇绂佸";
 	desc="\n";
 	set_belong_to("xiqicheng");
 	exits["east"]=ROOT "/gamelib/d/xiqicheng/tianyouguangchang";
@@ -16,7 +16,7 @@ void create(){
 	string tmp_s = CITYD->query_captured("xiqicheng");
 	if(tmp_s == "monst"){
 		room_race="monst";
-		name_cn += "(妖魔占领)";
+		name_cn += "(濡栭瓟鍗犻)";
 		foreach(flush_monst,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));
@@ -24,7 +24,7 @@ void create(){
 	}
 	else if(tmp_s == "human"){
 		room_race="human";
-		name_cn += "(人类占领)";
+		name_cn += "(浜虹被鍗犻)";
 		foreach(flush_human,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));

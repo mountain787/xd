@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=1009;
 void create(){
 	name=object_name(this_object());
-	name_cn="̦޺��·";
+	name_cn="苔藓滑路";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/langhaodongxue/rukoudongxuechalu";
 	exits["west"]=ROOT "/gamelib/d/langhaodongxue/heimuxuanwo";
@@ -22,7 +22,7 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race || room_race == "third"){
-		tmp+="[��Ϣ:sleep]\n";
+		tmp+="[休息:sleep]\n";
 		}
 	return tmp;
 }

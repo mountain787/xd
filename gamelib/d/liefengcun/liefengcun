@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=1;
 void create(){
 	name=object_name(this_object());
-	name_cn="Ùı·ç´å";
+	name_cn="å†½é£æ‘";
 	desc="\n";
 	set_room_type("rookie");
 	exits["east"]=ROOT "/gamelib/d/liefengcun/liefengdonggang";

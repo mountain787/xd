@@ -5,13 +5,13 @@ string room_race="human";
 static int room_level=1205;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÅÄÂôĞĞ";
+	name_cn="æ‹å–è¡Œ";
 	exits["north"]=ROOT "/gamelib/d/plxianjing/wuge1";
-	desc="ÎÒÃÇÕâ¶ùµÄ¶«Î÷Ó¦ÓĞ¾¡ÓĞ~~\n";
-	desc+="[**ĞÂÊÖ±Ø¶Á**:vendue_readme]\n";
-	desc+="[**ÅÄÂôÎïÆ·**:vendue_mygoods_list]\n";
-	desc+="[**¾ºÅÄÎïÆ·**:vendue_goods_list]\n";
-	desc+="[**ÁìÈ¡´¦**:vendue_getback_list]\n";
+	desc="æˆ‘ä»¬è¿™å„¿çš„ä¸œè¥¿åº”æœ‰å°½æœ‰~~\n";
+	desc+="[**æ–°æ‰‹å¿…è¯»**:vendue_readme]\n";
+	desc+="[**æ‹å–ç‰©å“**:vendue_mygoods_list]\n";
+	desc+="[**ç«æ‹ç‰©å“**:vendue_goods_list]\n";
+	desc+="[**é¢†å–å¤„**:vendue_getback_list]\n";
 }
 int is_peaceful()
 {

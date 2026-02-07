@@ -5,11 +5,11 @@ string room_race="third";
 static int room_level=3005;
 void create(){
 	name=object_name(this_object());
-	name_cn="»¶¹º³¡";
+	name_cn="æ¬¢è´­åœº";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/bawangbao/bawanganxiang";
-	links="[Âô¶«Î÷:inventory_sell]\n";
-	links+="[»»È¡ÎïÆ·:bz_view_equiplist weapon]\n";
+	links="[å–ä¸œè¥¿:inventory_sell]\n";
+	links+="[æ¢å–ç‰©å“:bz_view_equiplist weapon]\n";
 }
 int is_peaceful()
 {

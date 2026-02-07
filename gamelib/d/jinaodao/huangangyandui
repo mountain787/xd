@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=26;
 void create(){
 	name=object_name(this_object());
-	name_cn="»¨¸ÚÑÒ¶Ñ";
+	name_cn="èŠ±å²—å²©å †";
 	desc="\n";
 	exits["north"]=ROOT "/gamelib/d/jinaodao/heiyankou";
 	add_items(({ROOT "/gamelib/clone/npc/jinaodao/shachong4"}));

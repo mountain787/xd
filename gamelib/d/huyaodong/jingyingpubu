@@ -5,17 +5,17 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="¾§Ó¨ÆÙ²¼";
+	name_cn="æ™¶è¹ç€‘å¸ƒ";
 	desc="\n";
 }
 string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(check_if_clear() == 1)
-		tmp += "[È¥ÍùºüÑı¶´¿Ú:fb_entry huyaodong 1 1]\n";
+		tmp += "[å»å¾€ç‹å¦–æ´å£:fb_entry huyaodong 1 1]\n";
 	else
-		tmp += "È¥ÍùºüÑı¶´¿Ú\n";
-	tmp += "[Àë¿ª»Ã¾³:fb_leave huyaodong]\n";
+		tmp += "å»å¾€ç‹å¦–æ´å£\n";
+	tmp += "[ç¦»å¼€å¹»å¢ƒ:fb_leave huyaodong]\n";
 	return tmp;
 }
 int check_if_clear(){

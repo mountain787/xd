@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="а����·";
+	name_cn="邪风弯路";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/bwmk/bawangbaoqingwei"}));
 	add_items(({ROOT "/gamelib/clone/npc/bwmk/jingweijunbingzu"}));
@@ -16,11 +16,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[ȥ�����Ϫˮ:fb_entry bawangmoku 9 1]\n";
+	tmp += "[去往恍惚溪水:fb_entry bawangmoku 9 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[ȥ��ħХѨ:fb_entry bawangmoku 11 1]\n";
+		tmp += "[去往魔啸穴:fb_entry bawangmoku 11 1]\n";
 	else
-		tmp += "ȥ��ħХѨ\n";
+		tmp += "去往魔啸穴\n";
 	return tmp;
 }
 int check_if_clear(){

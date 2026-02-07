@@ -5,8 +5,8 @@ string room_race="monst";
 static int room_level=1;
 void create(){
 	name=object_name(this_object());
-	name_cn="声名后山";
-	desc="和声名山吕岳谈谈，他会指引你任务~\n";
+	name_cn="澹板悕鍚庡北";
+	desc="鍜屽０鍚嶅北鍚曞渤璋堣皥锛屼粬浼氭寚寮曚綘浠诲姟~\n";
 	set_room_type("rookie");
 	exits["south"]=ROOT "/gamelib/d/jiulongdao/shengmingshan";
 }
@@ -22,7 +22,7 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race || room_race == "third"){
-		tmp+="[休息:sleep]\n";
+		tmp+="[浼戞伅:sleep]\n";
 		}
 	return tmp;
 }

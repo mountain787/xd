@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="ÆÇÉ¢Ö®ÑÛ";
+	name_cn="é­„æ•£ä¹‹çœ¼";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/nianshou/canrennianshou"}));
 	add_items(({ROOT "/gamelib/clone/npc/nianshou/liudaocanrennianshou"}));
@@ -16,7 +16,7 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[Àë¿ª»Ã¾³:fb_leave posanzhidi_m]\n";
+	tmp += "[ç¦»å¼€å¹»å¢ƒ:fb_leave posanzhidi_m]\n";
 	return tmp;
 }
 int check_if_clear(){

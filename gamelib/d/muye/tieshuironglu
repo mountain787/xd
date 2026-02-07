@@ -5,11 +5,11 @@ string room_race="monst";
 static int room_level=496;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÌúË®ÈÛÂ¯";
+	name_cn="é“æ°´ç†”ç‚‰";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/muye/linghepubu";
 	exits["north"]=ROOT "/gamelib/d/muye/qixianyizhan";
-	links="[ĞŞÀí×°±¸:repair]\n";
-	links+="[ĞŞÀíËùÓĞ×°±¸:repair_all]\n";
-	links+="[¶ÍÔì:viceskill_duanzao_list m_weapon]|[ÈÛ½â:viceskill_rongjie_list]|[ÈÛÁ¶:viceskill_ronglian_list 0]\n";
+	links="[ä¿®ç†è£…å¤‡:repair]\n";
+	links+="[ä¿®ç†æ‰€æœ‰è£…å¤‡:repair_all]\n";
+	links+="[é”»é€ :viceskill_duanzao_list m_weapon]|[ç†”è§£:viceskill_rongjie_list]|[ç†”ç‚¼:viceskill_ronglian_list 0]\n";
 }

@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=1;
 void create(){
 	name=object_name(this_object());
-	name_cn="白石子路";
+	name_cn="鐧界煶瀛愯矾";
 	desc="\n";
 	set_room_type("rookie");
 	exits["east"]=ROOT "/gamelib/d/huanyecun/huanyehu";

@@ -5,9 +5,9 @@ string room_race="monst";
 static int room_level=406;
 void create(){
 	name=object_name(this_object());
-	name_cn="洞天窟二十层";
+	name_cn="娲炲ぉ绐熶簩鍗佸眰";
 	desc="\n";
-	desc+="[走出洞窟:qge74hye "+"plshuige/jishuihu"+"]\n";
+	desc+="[璧板嚭娲炵獰:qge74hye "+"plshuige/jishuihu"+"]\n";
 	exits["north"]=ROOT "/gamelib/d/plshuige/dongtianku19";
 	add_items(({ROOT "/gamelib/clone/npc/penglaishuige/tunyunshou35"}));
 	add_items(({ROOT "/gamelib/clone/npc/penglaishuige/nuleishou35"}));

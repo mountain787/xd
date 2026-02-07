@@ -6,17 +6,17 @@ static int room_level=1;
 void create(){
 	object room = this_object();
 	name=object_name(this_object());
-	name_cn="Ë½¼ÒĞ¡µê";
+	name_cn="ç§å®¶å°åº—";
 	desc="\n";
 }
 string query_links(){
 	string tmp="";
 	object room = this_object();
-	tmp += "ÕâÀïÊÇ"+room->query_roomNameCn()+"\n\n\n\n";
+	tmp += "è¿™é‡Œæ˜¯"+room->query_roomNameCn()+"\n\n\n\n";
 	//werror("----what's wrong !---\n");
-	//tmp += "ÕâÀïÓĞ:\n";
+	//tmp += "è¿™é‡Œæœ‰:\n";
 	tmp += HOMED->query_shop_items()+"\n";
 	tmp += "\n";
-	tmp += "[·µ»ØÃÅ¿Ú:home_move door]\n";
+	tmp += "[è¿”å›é—¨å£:home_move door]\n";
 	return tmp;
 }

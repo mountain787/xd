@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=24;
 void create(){
 	name=object_name(this_object());
-	name_cn="�صͺ�";
+	name_cn="地低湖";
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/congxianzhen/shifu";
 	add_items(({ROOT "/gamelib/clone/npc/kunlunshan/qinyuan3"}));

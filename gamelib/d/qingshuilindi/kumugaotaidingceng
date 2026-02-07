@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=932;
 void create(){
 	name=object_name(this_object());
-	name_cn="¿İÄ¾¸ßÌ¨¶¥²ã";
+	name_cn="æ¯æœ¨é«˜å°é¡¶å±‚";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/qingshuilindi/kumugaotaisanceng";
 	add_items(({ROOT "/gamelib/clone/npc/qingshuilindi/50gangshaoweibing"}));

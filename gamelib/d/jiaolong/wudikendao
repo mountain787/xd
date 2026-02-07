@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="无底坑道";
+	name_cn="鏃犲簳鍧戦亾";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/julongwei42"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/qiannianlongyao43"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往火海瀑布:fb_entry jiaolong 18 1]\n";
+	tmp += "[鍘诲線鐏捣鐎戝竷:fb_entry jiaolong 18 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往地底深缝:fb_entry jiaolong 20 1]\n";
+		tmp += "[鍘诲線鍦板簳娣辩紳:fb_entry jiaolong 20 1]\n";
 	else
-		tmp += "去往地底深缝\n";
+		tmp += "鍘诲線鍦板簳娣辩紳\n";
 	return tmp;
 }
 int check_if_clear(){

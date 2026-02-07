@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="ʬҰϸ·";
+	name_cn="尸野细路";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/bwmk/bawangbaojinwei"}));
 	add_items(({ROOT "/gamelib/clone/npc/bwmk/jingweijunshouling"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[ȥ������Ѩ:fb_entry bawangmoku 16 1]\n";
+	tmp += "[去往骷髅穴:fb_entry bawangmoku 16 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[ȥ��Ѫ��ʯ·:fb_entry bawangmoku 18 1]\n";
+		tmp += "[去往血淋石路:fb_entry bawangmoku 18 1]\n";
 	else
-		tmp += "ȥ��Ѫ��ʯ·\n";
+		tmp += "去往血淋石路\n";
 	return tmp;
 }
 int check_if_clear(){

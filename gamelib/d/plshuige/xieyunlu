@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=339;
 void create(){
 	name=object_name(this_object());
-	name_cn="б��·";
+	name_cn="斜云路";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/plshuige/shenyunyoujin1";
 	exits["north"]=ROOT "/gamelib/d/plshuige/luoyunpo";

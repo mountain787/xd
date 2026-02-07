@@ -5,8 +5,8 @@ string room_race="human";
 static int room_level=178;
 void create(){
 	name=object_name(this_object());
-	name_cn="Æ®Ò¶¹È";
-	desc="ÔİÎŞ\n";
+	name_cn="é£˜å¶è°·";
+	desc="æš‚æ— \n";
 	exits["south"]=ROOT "/gamelib/d/shierxianjing/huashulin";
 	exits["north"]=ROOT "/gamelib/d/shierxianjing/erxianfeng";
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/juyanguai20"}));

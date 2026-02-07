@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="���ٲ�";
+	name_cn="火海瀑布";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/julongwei42"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/qiannianlongyao43"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[ȥ���ػ�Ѩ:fb_entry jiaolong 17 1]\n";
+	tmp += "[去往地火穴:fb_entry jiaolong 17 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[ȥ���޵׿ӵ�:fb_entry jiaolong 19 1]\n";
+		tmp += "[去往无底坑道:fb_entry jiaolong 19 1]\n";
 	else
-		tmp += "ȥ���޵׿ӵ�\n";
+		tmp += "去往无底坑道\n";
 	return tmp;
 }
 int check_if_clear(){

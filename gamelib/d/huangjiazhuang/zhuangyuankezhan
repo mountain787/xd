@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=259;
 void create(){
 	name=object_name(this_object());
-	name_cn="×¯Ô°¿ÍÕ»";
+	name_cn="åº„å›­å®¢æ ˆ";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/huangjiazhuang/houzhuangmuyuan";
 	exits["south"]=ROOT "/gamelib/d/huangjiazhuang/tiejiangpu";
@@ -20,14 +20,14 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race){
-		tmp+="[ĞİÏ¢:sleep]\n";
+		tmp+="[ä¼‘æ¯:sleep]\n";
 		object env=environment(player);
 		string cur_pos=file_name(env)-ROOT;
 		if(player->relife){
 			if(player->relife!=cur_pos)
-				tmp+="[ÉèÖÃ¸´»îµã:relife "+cur_pos+"]\n";
+				tmp+="[è®¾ç½®å¤æ´»ç‚¹:relife "+cur_pos+"]\n";
 		}else
-			tmp+="[ÉèÖÃ¸´»îµã:relife "+cur_pos+"]\n";
+			tmp+="[è®¾ç½®å¤æ´»ç‚¹:relife "+cur_pos+"]\n";
 	}
 	return tmp;
 }

@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=0;
 void create(){
 	name=object_name(this_object());
-	name_cn="Äş¸èµî";
+	name_cn="å®æ­Œæ®¿";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/ninggedian/qianxuehu";
 	exits["south"]=ROOT "/gamelib/d/ninggedian/lingxidi";
@@ -24,20 +24,20 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race || room_race == "third"){
-		tmp+="[ĞİÏ¢:sleep]\n";
+		tmp+="[ä¼‘æ¯:sleep]\n";
 	
 		object env=environment(player);
 		string cur_pos=file_name(env)-ROOT;
 		if(player->relife){
 			if(player->relife!=cur_pos)
-				tmp+="[ÉèÖÃ¸´»îµã:relife "+cur_pos+"]\n";
+				tmp+="[è®¾ç½®å¤æ´»ç‚¹:relife "+cur_pos+"]\n";
 		}
 		else
-			tmp+="[ÉèÖÃ¸´»îµã:relife "+cur_pos+"]\n";
+			tmp+="[è®¾ç½®å¤æ´»ç‚¹:relife "+cur_pos+"]\n";
 	}
-	tmp+="[µêÆÌÍÆ¼ö:home_shop_recommend]\n";
-	tmp+= "[ÅÄÂôĞĞ:home_paimaihang_entry]\n";
-	tmp+="[µêÆÌÏúÁ¿ÅÅĞĞ:home_shop_sale_paihang yushi]\n";
-	tmp+="[¼ÒÔ°´«ËÍÕó¡¾ºşĞÄÍ¤¡¿:qge74hye liangjinghu/huxinting]\n";
+	tmp+="[åº—é“ºæ¨è:home_shop_recommend]\n";
+	tmp+= "[æ‹å–è¡Œ:home_paimaihang_entry]\n";
+	tmp+="[åº—é“ºé”€é‡æ’è¡Œ:home_shop_sale_paihang yushi]\n";
+	tmp+="[å®¶å›­ä¼ é€é˜µã€æ¹–å¿ƒäº­ã€‘:qge74hye liangjinghu/huxinting]\n";
 	return tmp;
 }

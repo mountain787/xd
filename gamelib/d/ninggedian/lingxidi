@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=0;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÁéÏ¬µØ";
+	name_cn="çµçŠ€åœ°";
 	picture = name;
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/home/"+GAME_NAME_S+"/lingxidi/lingximen";

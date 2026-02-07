@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="铁壁洞穴";
+	name_cn="閾佸娲炵┐";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/jiaolongwei38"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/longtoufubing39"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往蛟龙巢穴:fb_entry jiaolong 2 1]\n";
+	tmp += "[鍘诲線铔熼緳宸㈢┐:fb_entry jiaolong 2 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往金岩石门:fb_entry jiaolong 4 1]\n";
+		tmp += "[鍘诲線閲戝博鐭抽棬:fb_entry jiaolong 4 1]\n";
 	else
-		tmp += "去往金岩石门\n";
+		tmp += "鍘诲線閲戝博鐭抽棬\n";
 	return tmp;
 }
 int check_if_clear(){

@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=1;
 void create(){
 	name=object_name(this_object());
-	name_cn="ɳʯ��·";
+	name_cn="沙石弯路";
 	desc="\n";
 	set_room_type("rookie");
 	exits["east"]=ROOT "/gamelib/d/shanyaohaiwan/wanyanxiliu";

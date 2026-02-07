@@ -5,9 +5,9 @@ string room_race="human";
 static int room_level=344;
 void create(){
 	name=object_name(this_object());
-	name_cn="深云幽境五层";
+	name_cn="娣变簯骞藉浜斿眰";
 	desc="\n";
-	desc+="[走出幽境:qge74hye "+"plshuige/xieyunlu"+"]\n";
+	desc+="[璧板嚭骞藉:qge74hye "+"plshuige/xieyunlu"+"]\n";
 	exits["south"]=ROOT "/gamelib/d/plshuige/shenyunyoujin6";
 	exits["north"]=ROOT "/gamelib/d/plshuige/shenyunyoujin4";
 	add_items(({ROOT "/gamelib/clone/npc/penglaishuige/tianshuiwuzei32"}));

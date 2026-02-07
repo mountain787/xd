@@ -5,11 +5,11 @@ string room_race="human";
 static int room_level=118;
 void create(){
 	name=object_name(this_object());
-	name_cn="桃源洞十四层";
+	name_cn="妗冩簮娲炲崄鍥涘眰";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/shierxianjing/taoyuantongshisanceng";
 	exits["north"]=ROOT "/gamelib/d/shierxianjing/taoyuantongshiwuceng";
-	desc+="[走出洞穴:qge74hye "+"shierxianjing/taoyuantongyiceng"+"]\n";
+	desc+="[璧板嚭娲炵┐:qge74hye "+"shierxianjing/taoyuantongyiceng"+"]\n";
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/qingyunshou18"}));
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/weilong18"}));
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/leiniao18"}));

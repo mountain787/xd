@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=78;
 void create(){
 	name=object_name(this_object());
-	name_cn="ռ��̨";
+	name_cn="占星台";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/kunlunshan/xinglou";
 }

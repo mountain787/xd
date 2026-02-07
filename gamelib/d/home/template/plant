@@ -6,15 +6,15 @@ static int room_level=1;
 void create(){
 	object room = this_object();
 	name=object_name(this_object());
-	name_cn="»¨Ô°";
+	name_cn="èŠ±å›­";
 	desc="\n";
 }
 string query_links(){
 	string tmp="";
 	object room = this_object();
-	tmp += "ÕâÀïÊÇ"+room->query_roomNameCn()+"\n\n\n\n";
-	tmp += "ÕâÀïÓĞ:\n";
+	tmp += "è¿™é‡Œæ˜¯"+room->query_roomNameCn()+"\n\n\n\n";
+	tmp += "è¿™é‡Œæœ‰:\n";
 	tmp += HOMED->query_all_lifes(room->query_name())+"\n\n";
-	tmp += "[·µ»ØÇ°Ìü:home_move main]\n";
+	tmp += "[è¿”å›å‰å…:home_move main]\n";
 	return tmp;
 }

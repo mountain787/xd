@@ -5,9 +5,9 @@ string room_race="third";
 static int room_level=529;
 void create(){
 	name=object_name(this_object());
-	name_cn="ºÓµ×ÑÒÑ¨Ê®²ã";
+	name_cn="æ²³åº•å²©ç©´åå±‚";
 	desc="\n";
-	desc+="[×ß³ö¶´Ñ¨:qge74hye "+"muye/linghepubu"+"]\n";
+	desc+="[èµ°å‡ºæ´ç©´:qge74hye "+"muye/linghepubu"+"]\n";
 	exits["south"]=ROOT "/gamelib/d/muye/hediyanxue11";
 	exits["north"]=ROOT "/gamelib/d/muye/hediyanxue9";
 	add_items(({ROOT "/gamelib/clone/npc/muye/juyanguai38"}));

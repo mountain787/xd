@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=269;
 void create(){
 	name=object_name(this_object());
-	name_cn="ºÚÍÁ·ØµØ";
+	name_cn="é»‘åœŸåŸåœ°";
 	desc="\n";
 	exits["north"]=ROOT "/gamelib/d/huangjiazhuang/yinguidadao";
 	add_items(({ROOT "/gamelib/clone/npc/huangjiazhuang/huangyechailang16"}));

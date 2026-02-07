@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=1064;
 void create(){
 	name=object_name(this_object());
-	name_cn="�ػ�ˮ·";
+	name_cn="迂回水路";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/chenjichaoze/chenjiwanlu";
 	exits["west"]=ROOT "/gamelib/d/chenjichaoze/duanleiwanlu";

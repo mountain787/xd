@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=10000;
 void create(){
 	name=object_name(this_object());
-	name_cn="³¯¸èÎ÷ÄÏÂ¥";
+	name_cn="æœæ­Œè¥¿å—æ¥¼";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/chaogewaicheng/chenghedao";
 	exits["north"]=ROOT "/gamelib/d/chaogewaicheng/xinanchengqiang";

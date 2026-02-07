@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=1198;
 void create(){
 	name=object_name(this_object());
-	name_cn="广袤雨林深处";
+	name_cn="骞胯ⅳ闆ㄦ灄娣卞";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/guangmaoyuan/yuwulin";
 	exits["west"]=ROOT "/gamelib/d/guangmaoyuan/guangmaoyulinqianchu";

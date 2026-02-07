@@ -5,11 +5,11 @@ string room_race="human";
 static int room_level=217;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÂäÙ¤¶´Ê®¶ş²ã";
+	name_cn="è½ä¼½æ´åäºŒå±‚";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/shierxianjing/luojiadongshiyiceng";
 	exits["north"]=ROOT "/gamelib/d/shierxianjing/luojiadongshisanceng";
-	desc+="[×ß³ö¶´Ñ¨:qge74hye "+"shierxianjing/luojiadongyiceng"+"]\n";
+	desc+="[èµ°å‡ºæ´ç©´:qge74hye "+"shierxianjing/luojiadongyiceng"+"]\n";
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/juyanguai22"}));
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/baixushuyao22"}));
 	add_items(({ROOT "/gamelib/clone/npc/shierxianshan/xiaopanlong22"}));

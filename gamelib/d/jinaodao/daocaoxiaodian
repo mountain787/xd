@@ -7,8 +7,8 @@ int store_level_low = 1;
 int store_level_high = 10;
 void create(){
 	name=object_name(this_object());
-	name_cn="µ¾²İĞ¡µê";
+	name_cn="ç¨»è‰å°åº—";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/jinaodao/yuhuacunguangchang";
-	links="[Âò¶«Î÷:list]\n[Âô¶«Î÷:inventory_sell]\n[¶ÍÔìÅä·½:viceskill_peifang_view duanzao]\n[Á¶µ¤Åä·½:viceskill_peifang_view liandan]\n[²Ã·ìÅä·½:viceskill_peifang_view caifeng]\n[ÖÆ¼×Åä·½:viceskill_peifang_view zhijia]\n[¼¼ÄÜ¾íÖá:buy_items book kuangyao]\n";
+	links="[ä¹°ä¸œè¥¿:list]\n[å–ä¸œè¥¿:inventory_sell]\n[é”»é€ é…æ–¹:viceskill_peifang_view duanzao]\n[ç‚¼ä¸¹é…æ–¹:viceskill_peifang_view liandan]\n[è£ç¼é…æ–¹:viceskill_peifang_view caifeng]\n[åˆ¶ç”²é…æ–¹:viceskill_peifang_view zhijia]\n[æŠ€èƒ½å·è½´:buy_items book kuangyao]\n";
 }

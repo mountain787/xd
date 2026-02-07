@@ -5,11 +5,11 @@ string room_race="third";
 static int room_level=643;
 void create(){
 	name=object_name(this_object());
-	name_cn="°×Ê¯¸ó";
+	name_cn="ç™½çŸ³é˜";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/xihai/baishichalu";
 	exits["north"]=ROOT "/gamelib/d/xihai/xihailonggonghoudian";
-	links="[ĞŞÀí×°±¸:repair]\n";
-	links+="[ĞŞÀíËùÓĞ×°±¸:repair_all]\n";
-	links+="[¶ÍÔì:viceskill_duanzao_list m_weapon]|[ÈÛ½â:viceskill_rongjie_list]|[ÈÛÁ¶:viceskill_ronglian_list 0]\n";
+	links="[ä¿®ç†è£…å¤‡:repair]\n";
+	links+="[ä¿®ç†æ‰€æœ‰è£…å¤‡:repair_all]\n";
+	links+="[é”»é€ :viceskill_duanzao_list m_weapon]|[ç†”è§£:viceskill_rongjie_list]|[ç†”ç‚¼:viceskill_ronglian_list 0]\n";
 }

@@ -5,14 +5,14 @@ string room_race="third";
 static int room_level=308;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÔÆÃÅ";
+	name_cn="äº‘é—¨";
 	desc="\n";
 	object player=this_player();
 //	exits["east"]=ROOT "/gamelib/d/plxianjing/mingyunxiaojing";
 	exits["south"]=ROOT "/gamelib/d/plshuige/yunlitongdao";
 //	exits["west"]=ROOT "/gamelib/d/plxianjing/lingyunxiaojing";
-	desc+="[½øÈë¡¾»Ã¾³¡¿ºüÑı¶´:fb_entry huyaodong 0 0]\n";
-	desc+="[ÈÛºÏËéÆ¬:huanjin_view_equiplist hundun]\n";
-	desc+="[ÉÏ½»Ñª»ğÊ¯:huanjin_view_equiplist hu]\n";
-	desc+="[Ç©ÔµÖñÍ²:qianyuanzhutong]\n";
+	desc+="[è¿›å…¥ã€å¹»å¢ƒã€‘ç‹å¦–æ´:fb_entry huyaodong 0 0]\n";
+	desc+="[ç†”åˆç¢ç‰‡:huanjin_view_equiplist hundun]\n";
+	desc+="[ä¸Šäº¤è¡€ç«çŸ³:huanjin_view_equiplist hu]\n";
+	desc+="[ç­¾ç¼˜ç«¹ç­’:qianyuanzhutong]\n";
 }

@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=310;
 void create(){
 	name=object_name(this_object());
-	name_cn="ºşĞÄÍ¤";
+	name_cn="æ¹–å¿ƒäº­";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/liangjinghu/yinhuxuanqiao";
 	exits["south"]=ROOT "/gamelib/d/liangjinghu/yinyangge";
@@ -17,6 +17,6 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp+="[¼ÒÔ°´«ËÍÕó¡¾Äş¸èµî¡¿:qge74hye ninggedian/ninggedian]\n";
+	tmp+="[å®¶å›­ä¼ é€é˜µã€å®æ­Œæ®¿ã€‘:qge74hye ninggedian/ninggedian]\n";
 	return tmp;
 }

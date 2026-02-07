@@ -6,25 +6,25 @@ static int room_level=5000;
 void create(){
 	name=object_name(this_object());
 	set_room_type("city");
-	name_cn="ÌìÒ°¼±¾È´¦";
+	name_cn="å¤©é‡æ€¥æ•‘å¤„";
 	desc="\n";
 	set_belong_to("tianyecheng");
 	exits["north"]=ROOT "/gamelib/d/tianyecheng/yangxindian";
 	string tmp_s = CITYD->query_captured("tianyecheng");
 	if(tmp_s == "monst"){
 		room_race="monst";
-		name_cn += "(ÑıÄ§Õ¼Áì)";
+		name_cn += "(å¦–é­”å é¢†)";
 	}
 	else if(tmp_s == "human"){
 		room_race="human";
-		name_cn += "(ÈËÀàÕ¼Áì)";
+		name_cn += "(äººç±»å é¢†)";
 	}
 }
 string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race){
-		tmp+="[ĞİÏ¢:sleep]\n";
+		tmp+="[ä¼‘æ¯:sleep]\n";
 	}
 	return tmp;
 }	

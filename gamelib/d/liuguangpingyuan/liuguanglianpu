@@ -5,13 +5,13 @@ string room_race="third";
 static int room_level=1139;
 void create(){
 	name=object_name(this_object());
-	name_cn="Á÷¹âÁ¶ÆÌ";
+	name_cn="æµå…‰ç‚¼é“º";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/liuguangpingyuan/liuguangmaichang";
 	exits["west"]=ROOT "/gamelib/d/liuguangpingyuan/liuguangxiaoxie";
-	links="[ĞŞÀí×°±¸:repair]\n";
-	links+="[ĞŞÀíËùÓĞ×°±¸:repair_all]\n";
-	links+="[¶ÍÔì:viceskill_duanzao_list m_weapon]|[ÈÛ½â:viceskill_rongjie_list]|[ÈÛÁ¶:viceskill_ronglian_list 0]\n";
+	links="[ä¿®ç†è£…å¤‡:repair]\n";
+	links+="[ä¿®ç†æ‰€æœ‰è£…å¤‡:repair_all]\n";
+	links+="[é”»é€ :viceskill_duanzao_list m_weapon]|[ç†”è§£:viceskill_rongjie_list]|[ç†”ç‚¼:viceskill_ronglian_list 0]\n";
 }
 int is_peaceful()
 {

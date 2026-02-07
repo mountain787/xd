@@ -5,9 +5,9 @@ string room_race="monst";
 static int room_level=401;
 void create(){
 	name=object_name(this_object());
-	name_cn="¶´Ìì¿ßÊ®Îå²ã";
+	name_cn="æ´å¤©çªŸåäº”å±‚";
 	desc="\n";
-	desc+="[×ß³ö¶´¿ß:qge74hye "+"plshuige/jishuihu"+"]\n";
+	desc+="[èµ°å‡ºæ´çªŸ:qge74hye "+"plshuige/jishuihu"+"]\n";
 	exits["south"]=ROOT "/gamelib/d/plshuige/dongtianku16";
 	exits["north"]=ROOT "/gamelib/d/plshuige/dongtianku14";
 	add_items(({ROOT "/gamelib/clone/npc/penglaishuige/tunyunshou34"}));

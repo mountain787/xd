@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=1201;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÁéÏÉÕó¹ã³¡";
+	name_cn="çµä»™é˜µå¹¿åœº";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/plxianjing/lxzzahuopu";
 	exits["west"]=ROOT "/gamelib/d/plxianjing/fenyun";
@@ -24,7 +24,7 @@ string query_links(){
 	object player=this_player();
 	string tmp="";
 	if(player->query_raceId()==room_race || room_race=="third"){
-		tmp+="[ĞİÏ¢:sleep]\n";
+		tmp+="[ä¼‘æ¯:sleep]\n";
 		}
 	return tmp;
 }

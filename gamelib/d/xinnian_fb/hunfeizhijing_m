@@ -5,14 +5,14 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="»ê·ÉÖ®¾®";
+	name_cn="é­‚é£žä¹‹äº•";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/nianshou/xiongenianshou"}));
 }
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[Àë¿ª»Ã¾³:fb_leave hunfeizhijing_m]\n";
+	tmp += "[ç¦»å¼€å¹»å¢ƒ:fb_leave hunfeizhijing_m]\n";
 	return tmp;
 }
 int check_if_clear(){

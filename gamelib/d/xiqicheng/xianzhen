@@ -15,8 +15,8 @@ void create(){
 	string tmp_s = CITYD->query_captured("xiqicheng");
 	if(tmp_s == "monst"){
 		room_race="monst";
-		name_cn = "ÑıÕó¡¾Î÷áª¡¿";
-		name_cn += "(ÑıÄ§Õ¼Áì)";
+		name_cn = "å¦–é˜µã€è¥¿å²ã€‘";
+		name_cn += "(å¦–é­”å é¢†)";
 		foreach(flush_monst,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));
@@ -24,8 +24,8 @@ void create(){
 	}
 	else if(tmp_s == "human"){
 		room_race="human";
-		name_cn = "ÏÉÕó¡¾Î÷áª¡¿";
-		name_cn += "(ÈËÀàÕ¼Áì)";
+		name_cn = "ä»™é˜µã€è¥¿å²ã€‘";
+		name_cn += "(äººç±»å é¢†)";
 		foreach(flush_human,string item){
 			if(item && sizeof(item))
 				add_items(({ROOT "/gamelib/clone/npc/"+item}));
@@ -38,15 +38,15 @@ string query_links()
 	string tmp="";
 	if(player->query_raceId()==room_race&&player->query_level()>=30){
 		if(room_race=="monst"){
-			tmp+="[ÑıÕó¡¾±ÌÓÎ¹¬¡¿:city_qge74hye jinaodao/yaozhenbiyougong xiqicheng]\n";
+			tmp+="[å¦–é˜µã€ç¢§æ¸¸å®«ã€‘:city_qge74hye jinaodao/yaozhenbiyougong xiqicheng]\n";
 		}
 		else if(room_race=="human"){
-			tmp+="[ÏÉÕó¡¾ÓñĞé¹¬¡¿:city_qge74hye kunlunshan/xianzhenxuyugong xiqicheng]\n";
+			tmp+="[ä»™é˜µã€ç‰è™šå®«ã€‘:city_qge74hye kunlunshan/xianzhenxuyugong xiqicheng]\n";
 		}
 	}
 	if(player->query_raceId()==room_race&&player->query_level()>=45){
 		if(room_race=="human")
-			tmp+="[ÏÉÕó¡¾Ñ×µÛ¹È¡¿:qge74hye yandigu/xianzhenyandigu]\n";
+			tmp+="[ä»™é˜µã€ç‚å¸è°·ã€‘:qge74hye yandigu/xianzhenyandigu]\n";
 	}
 	return tmp;
 }

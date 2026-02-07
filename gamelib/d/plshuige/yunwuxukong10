@@ -5,9 +5,9 @@ string room_race="human";
 static int room_level=327;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÔÆÎíĞé¿ÕÊ®²ã";
+	name_cn="äº‘é›¾è™šç©ºåå±‚";
 	desc="\n";
-	desc+="[×ß³öĞé¿Õ:qge74hye "+"plshuige/mianyunti"+"]\n";
+	desc+="[èµ°å‡ºè™šç©º:qge74hye "+"plshuige/mianyunti"+"]\n";
 	exits["south"]=ROOT "/gamelib/d/plshuige/yunwuxukong9";
 	exits["north"]=ROOT "/gamelib/d/plshuige/yunwuxukong11";
 	add_items(({ROOT "/gamelib/clone/npc/penglaishuige/tianshuiwuzei28"}));

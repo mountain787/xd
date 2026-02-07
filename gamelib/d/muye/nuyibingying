@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=429;
 void create(){
 	name=object_name(this_object());
-	name_cn="ū�۱�Ӫ";
+	name_cn="奴役兵营";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/muye/kuyibingying";
 	exits["north"]=ROOT "/gamelib/d/muye/zhongjunying";

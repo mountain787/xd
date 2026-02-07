@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="幽灵瀑布";
+	name_cn="骞界伒鐎戝竷";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/youanzhaoze/fushuiyao60"}));
 	add_items(({ROOT "/gamelib/clone/npc/youanzhaoze/kugubianfu60"}));
@@ -17,11 +17,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往毒血水塘:fb_entry youanzhaoze 14 1]\n";
+	tmp += "[鍘诲線姣掕姘村:fb_entry youanzhaoze 14 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往沉重石门:fb_entry youanzhaoze 16 1]\n";
+		tmp += "[鍘诲線娌夐噸鐭抽棬:fb_entry youanzhaoze 16 1]\n";
 	else
-		tmp += "去往沉重石门\n";
+		tmp += "鍘诲線娌夐噸鐭抽棬\n";
 	return tmp;
 }
 int check_if_clear(){

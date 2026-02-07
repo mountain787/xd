@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="�泲";
+	name_cn="虫巢";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/lvxieshenyuan/wugongshouwei18"}));
 	add_items(({ROOT "/gamelib/clone/npc/lvxieshenyuan/meidufu19"}));
@@ -16,8 +16,8 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[ȥ��Ѫ��ͨ·:fb_entry lvxie 8 1]\n";
-	tmp += "[�뿪�þ�:fb_leave lvxie]\n";
+	tmp += "[去往血腥通路:fb_entry lvxie 8 1]\n";
+	tmp += "[离开幻境:fb_leave lvxie]\n";
 	return tmp;
 }
 int check_if_clear(){

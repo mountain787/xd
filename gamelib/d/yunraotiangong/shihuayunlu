@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="湿滑云路";
+	name_cn="婀挎粦浜戣矾";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/yunraotiangong/yanyunvyao70"}));
 	add_items(({ROOT "/gamelib/clone/npc/yunraotiangong/mingcuihuangli70"}));
@@ -17,11 +17,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往烟雨石门:fb_entry yunraotiangong 1 1]\n";
+	tmp += "[鍘诲線鐑熼洦鐭抽棬:fb_entry yunraotiangong 1 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往花香小榭:fb_entry yunraotiangong 3 1]\n";
+		tmp += "[鍘诲線鑺遍灏忔Ν:fb_entry yunraotiangong 3 1]\n";
 	else
-		tmp += "去往花香小榭\n";
+		tmp += "鍘诲線鑺遍灏忔Ν\n";
 	return tmp;
 }
 int check_if_clear(){

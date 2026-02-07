@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=0;
 void create(){
 	name=object_name(this_object());
-	name_cn="��Ϭƽԭ";
+	name_cn="灵犀平原";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/home/xd9/lingxidi/lingxihepan";
 }

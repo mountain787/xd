@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=372;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÔÆÖÐËþ°Ë²ã";
+	name_cn="äº‘ä¸­å¡”å…«å±‚";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/plshuige/yunzhongta7";
 	exits["north"]=ROOT "/gamelib/d/plshuige/yunzhongta9";

@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="冤魂领域";
+	name_cn="鍐ら瓊棰嗗煙";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/dwgy/guitoujiang29"}));
 	add_items(({ROOT "/gamelib/clone/npc/dwgy/sanhunshi30"}));
@@ -15,11 +15,11 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往鬼王石门:fb_entry duwuguiyu 11 1]\n";
+	tmp += "[鍘诲線楝肩帇鐭抽棬:fb_entry duwuguiyu 11 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往万丈深渊:fb_entry duwuguiyu 13 1]\n";
+		tmp += "[鍘诲線涓囦笀娣辨笂:fb_entry duwuguiyu 13 1]\n";
 	else
-			tmp +="去往万丈深渊\n";
+			tmp +="鍘诲線涓囦笀娣辨笂\n";
 	return tmp;
 }
 int check_if_clear(){

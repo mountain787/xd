@@ -3,7 +3,7 @@
 inherit WAP_ROOM;
 void create(){
 	name=object_name(this_object());
-	name_cn="³¤ÌìÂ·";
+	name_cn="é•¿å¤©è·¯";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/huangyuan/changtianzhen";
 	exits["north"]=ROOT "/gamelib/d/huangyuan/zhuohongtulu";

@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=786;
 void create(){
 	name=object_name(this_object());
-	name_cn="·üôËÆÙ²¼";
+	name_cn="ä¼ç¾²ç€‘å¸ƒ";
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/fuxishan/fuxihe";
 	add_items(({ROOT "/gamelib/clone/npc/fuxishan/47youyijinghun"}));

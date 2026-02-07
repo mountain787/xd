@@ -5,7 +5,7 @@ string room_race="monst";
 static int room_level=499;
 void create(){
 	name=object_name(this_object());
-	name_cn="��²Ӫһ��";
+	name_cn="俘虏营一层";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/muye/shibanlu";
 	exits["north"]=ROOT "/gamelib/d/muye/fuluying2";

@@ -5,7 +5,7 @@ string room_race="human";
 static int room_level=827;
 void create(){
 	name=object_name(this_object());
-	name_cn="Ñ×µÛ¹¬¶«Æ«Ìü";
+	name_cn="ç‚å¸å®«ä¸œåå…";
 	desc="\n";
 	exits["west"]=ROOT "/gamelib/d/yandigu/yandigong";
 	add_items(({ROOT "/gamelib/clone/npc/yandigu/yandizuoqi400"}));

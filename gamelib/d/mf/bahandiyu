@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="八寒地狱";
+	name_cn="鍏瘨鍦扮嫳";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/mf/zhuanshengshi29"}));
 	add_items(({ROOT "/gamelib/clone/npc/mf/senluoyao30"}));
@@ -16,12 +16,12 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[去往苦难通道:fb_entry mingfu 8 1]\n";
+	tmp += "[鍘诲線鑻﹂毦閫氶亾:fb_entry mingfu 8 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[去往八热地狱:fb_entry mingfu 10 1]\n";
+		tmp += "[鍘诲線鍏儹鍦扮嫳:fb_entry mingfu 10 1]\n";
 	else
-			tmp +="去往八热地狱\n";
-	tmp += "[离开幻境:fb_leave mingfu]\n";
+			tmp +="鍘诲線鍏儹鍦扮嫳\n";
+	tmp += "[绂诲紑骞诲:fb_leave mingfu]\n";
 	return tmp;
 }
 int check_if_clear(){

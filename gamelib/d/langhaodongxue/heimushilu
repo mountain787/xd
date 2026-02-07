@@ -5,7 +5,7 @@ string room_race="third";
 static int room_level=1013;
 void create(){
 	name=object_name(this_object());
-	name_cn="��Ļʯ·";
+	name_cn="黑幕石路";
 	desc="\n";
 	exits["south"]=ROOT "/gamelib/d/langhaodongxue/heimuxuanwo";
 	exits["north"]=ROOT "/gamelib/d/langhaodongxue/heimushuiwu";

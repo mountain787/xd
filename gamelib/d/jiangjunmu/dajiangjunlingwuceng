@@ -5,11 +5,11 @@ string room_race="human";
 static int room_level=307;
 void create(){
 	name=object_name(this_object());
-	name_cn="大将军陵五层";
+	name_cn="澶у皢鍐涢櫟浜斿眰";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/jiangjunmu/dajiangjunlingliuceng";
 	exits["west"]=ROOT "/gamelib/d/jiangjunmu/dajiangjunlingsiceng";
-	desc+="[走出洞穴:qge74hye "+"jiangjunmu/dajiangjunlingyiceng"+"]\n";
+	desc+="[璧板嚭娲炵┐:qge74hye "+"jiangjunmu/dajiangjunlingyiceng"+"]\n";
 	add_items(({ROOT "/gamelib/clone/npc/jiangjunmu/lingmushouwei21"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiangjunmu/yuangui21"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiangjunmu/jinjiahaigu21"}));

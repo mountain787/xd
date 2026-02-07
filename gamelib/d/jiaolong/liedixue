@@ -5,7 +5,7 @@ int clear = 0;
 void create(){
 	name=object_name(this_object());
 	set_room_type("fb");
-	name_cn="ÁÑµØÑ¨";
+	name_cn="è£‚åœ°ç©´";
 	desc="\n";
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/julongwei42"}));
 	add_items(({ROOT "/gamelib/clone/npc/jiaolongchaoxue/qiannianlongyao43"}));
@@ -16,12 +16,12 @@ void create(){
 string query_links(){
 	object player=this_player();
 	string tmp="";
-	tmp += "[È¥ÍùµØµ×Éî·ì:fb_entry jiaolong 20 1]\n";
+	tmp += "[å»å¾€åœ°åº•æ·±ç¼:fb_entry jiaolong 20 1]\n";
 	if(check_if_clear() == 1)
-		tmp += "[È¥ÍùÔÂ¾«¾®:fb_entry jiaolong 22 1]\n";
+		tmp += "[å»å¾€æœˆç²¾äº•:fb_entry jiaolong 22 1]\n";
 	else
-		tmp += "È¥ÍùÔÂ¾«¾®\n";
-	tmp += "[Àë¿ª»Ã¾³:fb_leave jiaolong]\n";
+		tmp += "å»å¾€æœˆç²¾äº•\n";
+	tmp += "[ç¦»å¼€å¹»å¢ƒ:fb_leave jiaolong]\n";
 	return tmp;
 }
 int check_if_clear(){

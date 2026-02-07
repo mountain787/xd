@@ -7,9 +7,9 @@ int store_level_low = 11;
 int store_level_high = 20;
 void create(){
 	name=object_name(this_object());
-	name_cn="ÏÉÆ÷·»";
+	name_cn="ä»™å™¨åŠ";
 	desc="\n";
 	exits["east"]=ROOT "/gamelib/d/kunlunshan/wuge";
 	exits["south"]=ROOT "/gamelib/d/kunlunshan/yuxugonghouting";
-	links="[Âò¶«Î÷:list]\n[Âô¶«Î÷:inventory_sell]\n";
+	links="[ä¹°ä¸œè¥¿:list]\n[å–ä¸œè¥¿:inventory_sell]\n";
 }

@@ -128,7 +128,6 @@ void receive_message(string newclass, string msg){
 	receive(msg);
 }
 int setup(string arg){
-	Stdio.append_file("/tmp/xiand_login_debug.log", "user.pike: setup() called arg=["+arg+"]\n");
 	first_login=login_time=update_time=reconnect_time=time();
     set_heart_beat(1);
     set_living_name(name);
@@ -137,7 +136,6 @@ int setup(string arg){
     set_password(arg);
 	//add for password by calvin 2006-12-08
 	set_this_player(this_object());
-    Stdio.append_file("/tmp/xiand_login_debug.log", "user.pike: setup() returning 1\n");
     return 1;
 }
 #ifndef __NO_ENVIRONMENT__

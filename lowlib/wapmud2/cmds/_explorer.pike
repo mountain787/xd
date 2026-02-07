@@ -11,37 +11,26 @@ mapping load_bytes(string name,int pos,int len)
 	string footer="";
 
 	string who,fun;
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes() called: name="+name+" pos="+pos+" len="+len+"\n");
 	if(sscanf(name,"%s/%s",who,fun)!=2){
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: sscanf failed\n");
 		return 0;
 	}
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: who="+who+" fun="+fun+"\n");
 	if(who=="_player"){
 		object player=this_player();
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: player="+sprintf("%O", player)+"\n");
 		if(player!=0){
 			//spliter - try both direct access and query function
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: trying `->(player, fun)\n");
 			mixed f=`->(player,fun);
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: f="+sprintf("%O", f)+"\n");
 			if(!f && player["query_spliter"]){
-				Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: trying player->query_spliter()\n");
 				f=player->query_spliter();
-				Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: f from query_spliter="+sprintf("%O", f)+"\n");
 			}
 			string whole;
 			if(functionp(f)){
-				Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: f is function\n");
 				whole=f();
 			}
 			else if(mappingp(f)){
-				Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: f is mapping\n");
 				whole=f["text"];
 				header=f["header"];
 				footer=f["footer"];
 			}
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== load_bytes: whole="+sprintf("%.100O", whole)+" header="+sprintf("%.100O", header)+" footer="+sprintf("%.100O", footer)+"\n");
 			if(whole){
 				int whole_size=sizeof(whole);
 				for(int j=whole_size-1;j>=0;j--){
@@ -102,8 +91,6 @@ int view_file(string name,int pos,int ppos)
 	int eol=0;
 	int maxlen;
 	int should_sub=0;
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer.view_file() called: name="+name+" pos="+pos+" ppos="+ppos+"\n");
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: EFUNSD="+sprintf("%O", EFUNSD)+"\n");
 	mapping m=load_bytes(name,pos,PAGESIZE);
 	if(m){
 		text=m["text"]+"\n";
@@ -111,21 +98,9 @@ int view_file(string name,int pos,int ppos)
 		footer=m["footer"];
 	}
 	//头部
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: calling write for header, header="+sprintf("%.100s", header)+"\n");
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: about to call EFUNSD->write\n");
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: EFUNSD="+sprintf("%O", EFUNSD)+"\n");
-	if(EFUNSD){
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: EFUNSD exists, calling write\n");
-		EFUNSD->write(header);
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: EFUNSD->write returned\n");
-	}
-	else{
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: ERROR! EFUNSD is null/0\n");
-	}
-	if(text==0){
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: text is 0, returning\n");
+	EFUNSD->write(header);
+	if(text==0)
 		return 0;
-	}
 	if(sizeof(text)<PAGESIZE)
 		eof=1;
 	maxlen=PAGESIZE;
@@ -171,12 +146,9 @@ int view_file(string name,int pos,int ppos)
 	if(text!=""){
 		text=text[0..len-1];
 		//中部内容
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: calling write for text, size="+sizeof(text)+"\n");
 		EFUNSD->write(text+"\n");
-		if(!eof){
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: calling write for next page link\n");
+		if(!eof)
 			EFUNSD->write("[下一页:_explorer "+name+" "+(pos+len)+" "+ppos+"]\n");
-		}
 	}
 	if(pos!=0){
 		if(pos>PAGESIZE){
@@ -234,11 +206,9 @@ int view_file(string name,int pos,int ppos)
 		last_pos=pos-i;
 		if(last_pos==1||last_pos==-1)
 			last_pos=0;
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: calling write for prev page link\n");
 		EFUNSD->write("[上一页:_explorer "+name+" "+last_pos+" "+ppos+"]\n");
 	}
 	//尾部信息
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer: calling write for footer\n");
 	EFUNSD->write(footer);
 	return 1;
 }
@@ -250,14 +220,10 @@ int main(string arg)
 	array(string) files;
 	array(string) names;
 	array(string) hide=({});
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer.pike main() called: arg="+arg+"\n");
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer.pike: this_player="+sprintf("%O", this_player())+"\n");
 	if(sscanf(arg,"%s %d %d",name,pos,ppos)!=3)
 		if(sscanf(arg,"%s %d",name,pos)!=2)
 			name=arg;
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer.pike: name="+name+" pos="+pos+" ppos="+ppos+"\n");
 	if(name[0]=='_'){
-		Stdio.append_file("/tmp/xiand_debug_flow.log", "=== _explorer.pike: calling view_file\n");
 		return view_file(name,pos,ppos);
 	}
 	return 1;

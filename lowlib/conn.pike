@@ -17,21 +17,18 @@ object query_filter()
 //该write方法其实调用filter进行转换，如果设置了filter的时候
 int write(string s)
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write call s=["+s+"]==========\n");
 	object old=EFUNSD->this_player();
 	EFUNSD->set_this_player(user);
 	object filter=query_filter();
 	if(filter)
 		s=filter->filter(s);
 	out+=s;
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write out size="+sizeof(out)+"==========\n");
 	if(sizeof(out))//不管是否通过filter层转换，如果有数据，下面就可以调用读写回调方法处理之
 		conn->set_nonblocking(read_callback,write_callback,close_callback);
 	EFUNSD->set_this_player(old);
 	if(!user){
 		close();
 	}
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write end==========\n");
 	return s?sizeof(s):1;
 }
 protected void tryclose()
@@ -49,29 +46,22 @@ protected void tryclose()
 		//werror("----tryclose conn->close()----\n");
 		conn->set_nonblocking();
 		conn->close();
-		destruct(this_object()); 
+		destruct(this_object());
 	}
 	//werror("========tryclose end==========\n");
 }
 protected void write_callback(mixed id)
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback call==========\n");
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback out size before write: "+sizeof(out)+"==========\n");
 	int n=conn->write(out);
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback wrote "+n+" bytes, remaining "+sizeof(out)+"==========\n");
 	out=out[n..];
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback out size after slice: "+sizeof(out)+"==========\n");
 	if(sizeof(out)==0){
 		conn->set_nonblocking(read_callback,0,close_callback);
 	}
 	tryclose();
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========write_callback end==========\n");
 }
 protected void read_callback(mixed id,string data)
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback call data=["+data+"]==========\n");
 	if(!user){
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback: user is NULL, closing==========\n");
 		conn->close();
 		return;
 	}
@@ -84,7 +74,6 @@ protected void read_callback(mixed id,string data)
 		string s=l[i];
 		if(sizeof(s)>0&&s[sizeof(s)-1]=='\r')
 			s=s[0..sizeof(s)-2];
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback processing command=["+s+"]==========\n");
 		mixed err;
 		if(on_input){
 			function f=on_input;
@@ -106,9 +95,8 @@ protected void read_callback(mixed id,string data)
 					if(s){
 						if(s=="0")
 							s = "look what";
-						Stdio.append_file("/tmp/xiand_conn_debug.log", "========read_callback calling EFUNSD->command(["+s+"], user)==========\n");
 						EFUNSD->command(s,user);
-						/*	
+						/*
 						object obt= System.Time();
 						int st =  obt->usec_full;
 						EFUNSD->command(s,user);
@@ -117,14 +105,14 @@ protected void read_callback(mixed id,string data)
 							array at1 = (s/" ");
 							if(at1&&sizeof(at1)){
 								if(at1[0]=="login"||at1[0]=="set_filter"||at1[0]=="look"||at1[0]=="login_des"||at1[0]=="login_des_p"||at1[0]=="flushview")
-									;	
+									;
 								else
 									Stdio.append_file(ROOT+"/log/cmd_record.log."+get_time(),"["+user->name+"]["+s+"] ["+timediff+"]\n");
 							}
 							else
 								Stdio.append_file(ROOT+"/log/cmd_record.log."+get_time(),"["+user->name+"]["+s+"] ["+timediff+"]\n");
 						}
-						*/	
+						*/
 					}
 				}
 			};
@@ -145,35 +133,26 @@ protected void read_callback(mixed id,string data)
 }
 void close()
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close call==========\n");
 	if(closing){
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: already closing, tryclose==========\n");
 		tryclose();
 		return;
 	}
 	closing=1;
 	object filter=query_filter();
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: filter="+(filter?"exists":"NULL")+"==========\n");
 	if(filter){
 		object ob=filter;
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: checking net_dead==========\n");
 		if(ob["net_dead"]){
-			Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: calling net_dead==========\n");
 			string s=ob->net_dead();
 			out+=s;
-			Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: net_dead returned, out size="+sizeof(out)+"==========\n");
 		}
 	}
 	// Don't call tryclose yet - let write_callback handle it after data is sent
 	if(sizeof(out)){
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: setting write_callback, out size="+sizeof(out)+"==========\n");
 		conn->set_nonblocking(0,write_callback,close_callback);
 	}
 	else{
-		Stdio.append_file("/tmp/xiand_conn_debug.log", "========close: no data, calling tryclose==========\n");
 		tryclose();
 	}
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========close end==========\n");
 }
 protected void close_callback(mixed id)
 {
@@ -183,7 +162,6 @@ protected void close_callback(mixed id)
 }
 void create(Stdio.File c,object ob)
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create call==========\n");
 	in="";
 	out="";
 	on_input=0;
@@ -192,9 +170,7 @@ void create(Stdio.File c,object ob)
 	user=ob;
 	CONND->set_conn(ob,this_object());
 	CONND->set_this_player(user);
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create calling logon==========\n");
 	ob->logon();
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========create end==========\n");
 }
 void set_user(object dest)
 {

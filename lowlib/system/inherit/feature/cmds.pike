@@ -9,13 +9,11 @@ int command_hook(string arg)
 		room_cmds=env->query_command_prefix();
 	}
    	array(string) a=room_cmds+this_object()->query_command_prefix();
-	Stdio.append_file("/tmp/xiand_command_debug.log", "command_hook: verb=" + verb + " arg=" + arg + " prefixes=" + sprintf("%O", a) + "\n");
 	array(string) posible=({});
 	string perfect;
     	for(int i=0;i<sizeof(a);i++){
 		cmd_path = a[i]+"/";
 		array(string) d=get_dir(cmd_path);
-		Stdio.append_file("/tmp/xiand_command_debug.log", "command_hook: checking path " + cmd_path + " files=" + sprintf("%O", d) + "\n");
 		if(d){
 			foreach(d,string s){
 				if(s[0..sizeof(verb)-1]==verb&&s[-1]!='~'){
@@ -27,7 +25,6 @@ int command_hook(string arg)
 			}
 		}
 	}
-	Stdio.append_file("/tmp/xiand_command_debug.log", "command_hook: posible=" + sprintf("%O", posible) + " perfect=" + perfect + "\n");
 	if(sizeof(posible)==1){
 		cmd_path=posible[0];
 		cobj = load_object(cmd_path);

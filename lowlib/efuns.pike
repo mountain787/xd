@@ -142,16 +142,13 @@ void shout(string s)
 object load_object(string|object file)
 {
 	object ob;
-	Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: file=" + sprintf("%O", file) + "\n");
 	mixed err=catch{
 		ob=(object)file;
 	};
 	if(err==0){
-		Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: success ob=" + sprintf("%O", ob) + "\n");
 		return ob;
 	}
 	else{
-		Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: error=" + sprintf("%O", err) + "\n");
 		master()->handle_error(err);
 		return 0;
 	}
@@ -159,25 +156,19 @@ object load_object(string|object file)
 
 int exec(object dest,object me)//don't call this inside pikenv_command()
 {
-	Stdio.append_file("/tmp/xiand_login_debug.log", "exec() called: dest="+sprintf("%O", dest)+" me="+sprintf("%O", me)+"\n");
-	Stdio.append_file("/tmp/xiand_login_debug.log", "exec: this_player="+sprintf("%O", CONND->query_this_player())+"\n");
 	if(CONND->query_conn(dest)){
-		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: dest already has connection, returning 0\n");
 		//werror("Can't exec a interactive user.\n");
 		return 0;
 	}
 	else{
 		object ob=CONND->query_conn(me);
-		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: conn for me="+sprintf("%O", ob)+"\n");
 		if(!ob){
-			Stdio.append_file("/tmp/xiand_login_debug.log", "exec: ERROR! ob is NULL!\n");
 			return 0;
 		}
 		ob->set_user(dest);
 		CONND->set_conn(dest,ob);
 		// Always set this_player to dest after exec
 		CONND->set_this_player(dest);
-		Stdio.append_file("/tmp/xiand_login_debug.log", "exec: success, returning 1, this_player now="+sprintf("%O", CONND->query_this_player())+"\n");
 		return 1;
 	}
 }
@@ -214,10 +205,8 @@ void write(mixed s,mixed...args)
 //	if(ob==0){
 		ob=CONND->query_conn(CONND->query_this_player());
 //	}
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() called: this_player=" + sprintf("%O", CONND->query_this_player()) + " ob=" + sprintf("%O", ob) + " s=" + sprintf("%.100s", s) + "\n");
 	if(args&&sizeof(args)){
 		if(ob){
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() calling ob->write with sprintf\n");
 			ob->write(sprintf(s,@args));
 		}
 //		else
@@ -225,13 +214,11 @@ void write(mixed s,mixed...args)
 	}
 	else{
 		if(ob){
-			Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() calling ob->write directly\n");
 			ob->write(s);
 		}
 //		else
 //			Stdio.stdout->write(s);
 	}
-	Stdio.append_file("/tmp/xiand_debug_flow.log", "=== efuns.write() returned\n");
 }
 /*
 string read_file(string file,void|int start_line,void|int n)
@@ -1121,7 +1108,6 @@ int str_is_excepted(string str)
 string action_verb;
 int command(string|function str,void|object this)//XXX:Execute the command 'str' for this_object(), as if the player had typed the command in. command() returns a numeric value roughly to the driver's "evaluation cost"; this number is only an approximation. If you need precise benchmarks, try time_expression() instead.
 {
-	Stdio.append_file("/tmp/xiand_command_debug.log", "command() called: str=" + sprintf("%O", str) + " this=" + sprintf("%O", this) + "\n");
 	if(this==0)
 		this=previous_object();
 	if(str==0)
@@ -1268,13 +1254,10 @@ void set_filter(object f)
 
 void flush_filter()
 {
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() called==========\n");
 	object ob=CONND->query_conn(this_player());
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() ob="+(ob?"exists":"NULL")+"==========\n");
 	if(ob){
 		ob->close();
 	}
-	Stdio.append_file("/tmp/xiand_conn_debug.log", "========flush_filter() end==========\n");
 }
 
 object query_filter()

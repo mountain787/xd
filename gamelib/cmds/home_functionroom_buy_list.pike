@@ -10,8 +10,8 @@ int main(string arg)
 	}
 	/*
 	if(HOMED->if_can_buy_functionroom(me->query_name())){
-		s += "鎮ㄦ墍鎷ユ湁鐨勫姛鑳芥埧闂存暟閲忓凡杈惧埌涓婇檺锛屼笉鑳藉啀娣诲姞鍒殑鍔熻兘鎴块棿\n";
-		s += "\n[杩斿洖:popview]\n";
+		s += "您的墍鎷ユ湁鐨勫姛鑳芥埧闂存暟閲忓凡杈惧埌涓婇檺锛屼笉鑳藉啀娣诲姞鍒殑鍔熻兘鎴块棿\n";
+		s += "\n[返回:popview]\n";
 		write(s);
 		return 1;
 	}
@@ -19,7 +19,7 @@ int main(string arg)
 	else{
 		s += HOMED->query_function_room_for_sale(arg);
 	}
-	s += "\n[杩斿洖:popview]\n";
+	s += "\n[返回:popview]\n";
 	write(s);
 	return 1;
 }

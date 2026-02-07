@@ -7,13 +7,13 @@ int main(string arg)
 	string s = "";
 	if(room){
 		me->move(room);
-		me->reset_view(WAP_VIEWD["/home"]);                                                                      
+		me->reset_view(WAP_VIEWD["/home"]);
 		me->write_view();
 		return 1;
 	}
 	else{
-		s += "浠栧濂藉儚杩樺湪瑁呬慨锛岀◢鍚庡啀鏉ュ惂\n";
-		s += "\n[纭畾:look]\n";
+		s += "他家好像还在装修，稍后再来吧\n";
+		s += "\n[确认:look]\n";
 		write(s);
 		return 1;
 	}

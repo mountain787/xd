@@ -6,7 +6,7 @@ int main(string arg)
 	int n;
 	sscanf(arg,"%d",n);
 	this_player()->delete_mail(n);
-	s+="鎴愬姛鍒犻櫎璇ラ偖浠讹紝璇疯繑鍥烇紒\n";
+	s+="成功删除该邮件，请返回！\n";
 	s+="[返回:mailbox]\n";
 	write(s);
 	//this_player()->write_view(WAP_VIEWD["/mailbox_delete"]);

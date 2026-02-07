@@ -6,10 +6,10 @@ int main(string arg)
 	int num=(int)arg;
 	string s = "";
 	if(this_player()->clean_toolbar(num)){
-		s = "浣犲凡鍙栨秷浜嗗揩鎹烽敭"+(num+1)+"鐨勮缃甛n";
+		s = "你已取消了快捷键"+(num+1)+"的设置\n";
 	}
-	else 
-		s += "鍙栨秷璁剧疆澶辫触\n";
+	else
+		s += "取消设置失败\n";
 	s += "[返回:my_toolbar]\n";
 	s += "[返回游戏:look]\n";
 	write(s);

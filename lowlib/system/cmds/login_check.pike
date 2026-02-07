@@ -3,8 +3,10 @@ int main(string arg)
 {
 	string path,user_name,lgpswd,userip;
 	string title = "";
+	Stdio.append_file("/tmp/xiand_login_debug.log", "login_check called with arg=["+arg+"]\n");
 	title += "=玩家登录=\n";
 	if(arg&&(sscanf(arg,"%s %s %s %s",path,user_name,lgpswd,userip)==4)){
+		Stdio.append_file("/tmp/xiand_login_debug.log", "sscanf: path=["+path+"] user=["+user_name+"] pswd=["+lgpswd+"] ip=["+userip+"]\n");
 		if(!path || !user_name || !lgpswd || !userip){
 			title += "登录错误！\n";
 			title += "您输入的用户名和密码不符合规范，请返回重试。\n";
@@ -31,6 +33,7 @@ int main(string arg)
 			}
 		}
 		string user=Stdio.read_file(DATA_ROOT+"u/"+user_name[sizeof(user_name)-2..]+"/"+user_name+".o");
+	Stdio.append_file("/tmp/xiand_login_debug.log", "user file exists: " + (user?"yes":"no") + "\n");
 		if(!user){
 			object me = find_player(user_name);
 			//内存里有，也是正常登陆，可以登入游戏
@@ -77,14 +80,19 @@ int main(string arg)
 				//有这个用户，但是用户不在线，这里需要找到该用户档案中的密码字段并对比lgpswd
 				string pswd;
 				array(string) usr_content=user/"\n";
+				Stdio.append_file("/tmp/xiand_login_debug.log", "usr_content size=" + sizeof(usr_content) + "\n");
 				foreach(usr_content,string strCompare){
+					Stdio.append_file("/tmp/xiand_login_debug.log", "checking line: [" + strCompare + "]\n");
 					if((strCompare/" ")[0]=="password"){
+						Stdio.append_file("/tmp/xiand_login_debug.log", "found password line!\n");
 						if( (strCompare/" ")[1] ){
 							string pswdTmp = (strCompare/" ")[1];
 							pswd =(pswdTmp/"\"")[1];
+							Stdio.append_file("/tmp/xiand_login_debug.log", "extracted password: [" + pswd + "]\n");
 						}
 					}
 				}
+				Stdio.append_file("/tmp/xiand_login_debug.log", "final pswd=[" + (pswd?pswd:"NULL") + "] lgpswd=[" + lgpswd + "]\n");
 				if(!pswd){
 					title += "登录错误！\n";
 					//title += "您输入的用户名和密码认证失败，是否需要找回密码？\n";
@@ -102,34 +110,53 @@ int main(string arg)
 					return 1;
 				}
 				if(pswd && lgpswd==pswd){
+					Stdio.append_file("/tmp/xiand_login_debug.log", "password matches! creating user object...\n");
 					program u;
 					object m;
 					catch{
 						m=(object)(ROOT+"/"+path+"/master.pike");
+						Stdio.append_file("/tmp/xiand_login_debug.log", "master.m=" + sprintf("%O", m) + "\n");
 					};
 					if(m){
 						u=m->connect();
+						Stdio.append_file("/tmp/xiand_login_debug.log", "u from master=" + sprintf("%O", u) + "\n");
 					}
 					if(!u){
 						u=(program)(ROOT+"/"+path+"/clone/user.pike");
+						Stdio.append_file("/tmp/xiand_login_debug.log", "u from file=" + sprintf("%O", u) + "\n");
 					}
+					Stdio.append_file("/tmp/xiand_login_debug.log", "about to call me=u()...\n");
 					me=u();
+					Stdio.append_file("/tmp/xiand_login_debug.log", "user object created: me=" + sprintf("%O", me) + "\n");
 					me->set_name(user_name);
 					me->set_userip(userip);
 					me->set_project(path);
-					if(me->setup(lgpswd)){
+					Stdio.append_file("/tmp/xiand_login_debug.log", "calling setup...\n");
+					mixed setup_result = catch { me->setup(lgpswd); };
+					Stdio.append_file("/tmp/xiand_login_debug.log", "setup result=" + sprintf("%O", setup_result) + "\n");
+					if(setup_result==0){
+						Stdio.append_file("/tmp/xiand_login_debug.log", "setup success! calling exec...\n");
 						exec(me,previous_object());
 						if(environment(me)==0){
 							me->move(LOW_VOID_OB);
 						}
+						Stdio.append_file("/tmp/xiand_login_debug.log", "destruct previous_object...\n");
 						destruct(previous_object());
+						Stdio.append_file("/tmp/xiand_login_debug.log", "login complete!\n");
+					}
+					else{
+						Stdio.append_file("/tmp/xiand_login_debug.log", "setup failed!\n");
 					}
 					return 1;
+				}
+				else{
+					Stdio.append_file("/tmp/xiand_login_debug.log", "password mismatch! pswd=["+pswd+"] lgpswd=["+lgpswd+"]\n");
 				}
 			}
 		}
 	}
 	else{
+		Stdio.append_file("/tmp/xiand_login_debug.log", "sscanf failed or arg is empty\n");
 		title += "登陆错误！\n";
 		title += "[url 返回:http://"+INDEX_URL+"]\n";
 	}

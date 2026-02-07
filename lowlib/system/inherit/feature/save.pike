@@ -47,15 +47,25 @@ int restore()
 		for(int i=0;i<sizeof(inventory);i++){
 			string filename=inventory[i];
 			if(filename=="0") continue;
-			
+
 			if((filename/"/gamelib")[0] != "~")
 				filename = "~/gamelib"+(filename/"/gamelib")[1];
-			object ob=clone(expand_symlinks(pikenv_path(filename)));
-			if(ob){
-				if(inventory_data&&i<sizeof(inventory_data)){
-					pikenv_restore_object(ob,inventory_data[i]);
+			// pikenv_path already returns absolute path, no need for expand_symlinks
+			string final_path=pikenv_path(filename);
+			Stdio.append_file("/tmp/xiand_login_debug.log", sprintf("inventory[%d]: orig=%s\n  after_check=%s\n  final_path=%s\n",
+				i, inventory[i], filename, final_path));
+			// Use catch to handle missing items gracefully
+			mixed err = catch {
+				object ob=clone(final_path);
+				if(ob){
+					if(inventory_data&&i<sizeof(inventory_data)){
+						pikenv_restore_object(ob,inventory_data[i]);
+					}
+					ob->move(this_object());
 				}
-				ob->move(this_object());
+			};
+			if(err){
+				Stdio.append_file("/tmp/xiand_login_debug.log", "clone failed for: "+final_path+" - "+sprintf("%O", err[0])+"\n");
 			}
 		}
 		inventory=0;

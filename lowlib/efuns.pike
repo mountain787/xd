@@ -142,13 +142,16 @@ void shout(string s)
 object load_object(string|object file)
 {
 	object ob;
+	Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: file=" + sprintf("%O", file) + "\n");
 	mixed err=catch{
 		ob=(object)file;
 	};
 	if(err==0){
+		Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: success ob=" + sprintf("%O", ob) + "\n");
 		return ob;
 	}
 	else{
+		Stdio.append_file("/tmp/xiand_command_debug.log", "load_object: error=" + sprintf("%O", err) + "\n");
 		master()->handle_error(err);
 		return 0;
 	}
@@ -202,6 +205,7 @@ void write(mixed s,mixed...args)
 //	if(ob==0){
 		ob=CONND->query_conn(CONND->query_this_player());
 //	}
+	Stdio.append_file("/tmp/xiand_write_debug.log", "write() called: this_player=" + sprintf("%O", CONND->query_this_player()) + " ob=" + sprintf("%O", ob) + " s=" + sprintf("%O", s) + "\n");
 	if(args&&sizeof(args)){
 		if(ob)
 			ob->write(sprintf(s,@args));
@@ -1101,8 +1105,9 @@ int str_is_excepted(string str)
 }
 
 string action_verb;
-int command(string|function str,void|object this)//XXX:Execute the command 'str' for this_object(), as if the player had typed the command in. command() returns a numeric value roughly to the driver's "evaluation cost"; this number is only an approximation. If you need precise benchmarks, try time_expression() instead. 
+int command(string|function str,void|object this)//XXX:Execute the command 'str' for this_object(), as if the player had typed the command in. command() returns a numeric value roughly to the driver's "evaluation cost"; this number is only an approximation. If you need precise benchmarks, try time_expression() instead.
 {
+	Stdio.append_file("/tmp/xiand_command_debug.log", "command() called: str=" + sprintf("%O", str) + " this=" + sprintf("%O", this) + "\n");
 	if(this==0)
 		this=previous_object();
 	if(str==0)

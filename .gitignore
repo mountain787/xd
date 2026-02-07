@@ -2,8 +2,6 @@ log/
 db_bak/
 db_log/
 core.1096
-# Ignore large item directories but keep essential ones
-gamelib/clone/item/armor/
-gamelib/clone/item/weapon/
+gamelib/clone/item/
 gamelib/data/
 data_xiand/u/

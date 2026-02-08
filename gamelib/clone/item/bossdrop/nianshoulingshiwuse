@@ -1,0 +1,25 @@
+#include <globals.h>
+#include <gamelib/include/gamelib.h>
+inherit WAP_BAOSHI;
+void create(){
+	name=object_name(this_object());
+	name_cn="【灵】无色界年兽灵石(红)";
+	unit="颗";
+	picture="nianshoulingshi";
+	desc="\n";
+	set_color("red");
+	set_item_canEquip(1);
+	set_item_canDrop(1);
+	set_item_canGet(1);
+	set_item_canTrade(1);
+	set_item_canSend(1);
+	set_item_canStorage(1);
+	set_value(50);
+	set_item_canLevel(80);
+	set_attack_all_add(110);
+	set_mofa_all_add(110);
+	set_mofachuantou_add(110);
+	set_wulichuantou_add(110);
+	set_dodgechuantou_add(20);
+	set_item_kind("pusu");
+}

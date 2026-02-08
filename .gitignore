@@ -2,8 +2,13 @@ log/
 db_bak/
 db_log/
 core.1096
-gamelib/clone/item/
+# gamelib/clone/item/ - track system files, ignore player-crafted files
+gamelib/clone/item/**/*.o
+# 玩家打造的装备 - 使用精确匹配
+**/*00*
+**/*_c_*
 # gamelib/data/  # removed to track data files
 data_xiand/u/
+data_xiand/new_users/
 gamelib/clone/convert_count.txt
 gamelib/clone/convert_utf8.log

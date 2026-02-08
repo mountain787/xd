@@ -276,7 +276,20 @@ prepare_data_directories() {
 
     # 创建日志目录: /usr/local/games/allxd/log/xd01/
     local log_dir="/usr/local/games/allxd/log/xd$area_num"
+    local source_log_dir="/usr/local/games/xiand/log"
+
     mkdir -p "$log_dir"
+
+    # 复制源 log 目录的所有子目录结构
+    if [ -d "$source_log_dir" ]; then
+        for subdir in "$source_log_dir"/*; do
+            if [ -d "$subdir" ]; then
+                local dirname=$(basename "$subdir")
+                mkdir -p "$log_dir/$dirname"
+            fi
+        done
+    fi
+
     chmod 755 "$log_dir"
 
     # 修改权限

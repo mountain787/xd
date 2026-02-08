@@ -1627,6 +1627,75 @@ body {
     background: linear-gradient(90deg, #aa44ff, #6600cc);
 }
 
+.mana-bar {
+    background: linear-gradient(90deg, #4dabf5, #339af0);
+}
+
+.energy-bar {
+    background: linear-gradient(90deg, #51cf66, #37b24d);
+}
+
+.exp-bar {
+    background: linear-gradient(90deg, #ffd43b, #fab005);
+}
+
+/* 经验进度条 - 横跨整个宽度 */
+.exp-progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    width: 100%;
+}
+
+.exp-level-left {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fab005;
+    min-width: 35px;
+}
+
+.exp-level-right {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fab005;
+    min-width: 35px;
+    text-align: right;
+}
+
+.exp-bar-track {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.exp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd43b, #fab005);
+    border-radius: 5px;
+    transition: width 0.5s ease-out;
+    position: relative;
+}
+
+.exp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
 .header-actions {
     display: flex;
     flex-wrap: nowrap;
@@ -2809,6 +2878,29 @@ body {
 .hp-text {
     font-size: 9px;
     color: #aaa;
+}
+
+.mana-bar-container {
+    width: 75px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.mana-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease-out;
+    border-radius: 2px;
+}
+
+.player-mana {
+    background: linear-gradient(90deg, #4dabf5, #339af0);
+}
+
+.mana-text {
+    font-size: 8px;
+    color: #a5d8ff;
 }
 
 .neili-bar-container {

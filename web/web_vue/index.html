@@ -117,8 +117,6 @@
                         <span class="divider">·</span>
                         <span class="player-name-cn" v-if="playerStats && playerStats.name_cn">{{ playerStats.name_cn }}</span>
                         <span class="divider" v-if="playerStats && playerStats.name_cn">·</span>
-                        <span class="player-level" v-if="playerStats && playerStats.level">Lv.{{ playerStats.level }}</span>
-                        <span class="divider" v-if="playerStats && playerStats.level">·</span>
                         <span class="server-info">{{ areaName }}</span>
                     </div>
                     <!-- 玩家状态信息 - 血槽显示 -->
@@ -141,12 +139,14 @@
                                 <div class="bar-fill energy-bar" :style="{ width: Math.min(100, playerStats.energy) + '%' }"></div>
                             </div>
                         </div>
-                        <div class="stat-bar">
-                            <span class="stat-label">经验</span>
-                            <div class="bar-container">
-                                <div class="bar-fill exp-bar" :style="{ width: (playerStats.exp / playerStats.exp_need * 100) + '%' }"></div>
-                            </div>
+                    </div>
+                    <!-- 经验进度条 - 横跨整个宽度 -->
+                    <div class="exp-progress-bar" v-if="playerStats && playerStats.exp_need">
+                        <span class="exp-level-left">Lv.{{ playerStats.level }}</span>
+                        <div class="exp-bar-track">
+                            <div class="exp-bar-fill" :style="{ width: Math.min(100, (playerStats.exp / playerStats.exp_need * 100)) + '%' }"></div>
                         </div>
+                        <span class="exp-level-right">Lv.{{ playerStats.level + 1 }}</span>
                     </div>
                 </div>
                 <div class="header-actions">

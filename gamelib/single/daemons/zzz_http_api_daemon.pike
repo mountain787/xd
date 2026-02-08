@@ -585,19 +585,19 @@ void handle_request(Protocols.HTTP.Server.Request req)
                 break;
             default:
                 // 处理 /api/html?xxx 格式
-                if(has_prefix(path, "/api/html")) {
+                if(search(path, "/api/html") == 0) {
                     handle_api_html(req);
                 }
                 // 处理 /api/json?xxx 格式 - 返回JSON供Vue前端解析
-                else if(has_prefix(path, "/api/json")) {
+                else if(search(path, "/api/json") == 0) {
                     handle_api_json(req);
                 }
                 // 处理 /api/battle_status?xxx 格式 - 获取战斗状态（敌我双方）
-                else if(has_prefix(path, "/api/battle_status")) {
+                else if(search(path, "/api/battle_status") == 0) {
                     handle_api_battle_status(req);
                 }
                 // 处理 /api/performs?xxx 格式 - 获取可用招式列表
-                else if(has_prefix(path, "/api/performs")) {
+                else if(search(path, "/api/performs") == 0) {
                     handle_api_performs(req);
                 }
                 // translate.js 从 http_api 目录提供（始终允许，不受api_only_mode限制）
@@ -605,7 +605,7 @@ void handle_request(Protocols.HTTP.Server.Request req)
                     serve_file(req, "gamelib/single/d/http_api/translate.js", "application/javascript");
                 }
                 // 静态资源
-                else if(has_prefix(path, "/css/") || has_prefix(path, "/js/")) {
+                else if(search(path, "/css/") == 0 || search(path, "/js/") == 0) {
                     if(!api_only_mode) {
                         serve_file(req, "web/web_vue" + path, guess_type(path));
                     } else {
@@ -613,7 +613,7 @@ void handle_request(Protocols.HTTP.Server.Request req)
                     }
                 }
                 // images 目录在 web/ 下
-                else if(has_prefix(path, "/images/")) {
+                else if(search(path, "/images/") == 0) {
                     if(!api_only_mode) {
                         serve_file(req, "web" + path, guess_type(path));
                     } else {
@@ -705,7 +705,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
     string client_ip = req->remote_addr || "unknown";
 
     // 注册命令处理 - 直接实现注册逻辑（xiand没有login_regnew命令）
-    if(has_prefix(cmd, "login_regnew ")) {
+    if(search(cmd, "login_regnew ") == 0) {
         if(check_register_rate_limit(client_ip)) {
             send_html_error(req, "注册尝试过于频繁，请稍后再试");
             return;
@@ -1184,7 +1184,8 @@ mapping parse_bracket_content(string content, string txd, string userid)
             "txd": txd
         ]);
     }
-    else if(search(content, ":") > 0 && has_suffix(content, ":...")) {
+    // 检查是否以 ":..." 结尾 (Pike没有has_suffix函数)
+    else if(search(content, ":") > 0 && sizeof(content) >= 4 && content[sizeof(content)-4..] == ":...") {
         int colon_pos = search(content, ":");
         string cmd_name = content[0..colon_pos-1];
         return ([
@@ -1194,7 +1195,8 @@ mapping parse_bracket_content(string content, string txd, string userid)
         ]);
     }
     // 处理 [类型:变量名: ...] 格式（如 [string:manage_userMain ...]）
-    else if(has_suffix(content, " ...]")) {
+    // 检查是否以 " ...]" 结尾
+    else if(sizeof(content) >= 6 && content[sizeof(content)-6..] == " ...]") {
         // 去掉开头的 [ 和结尾的: ...]
         string inner = content[1..sizeof(content)-6];  // 去掉 [ 和 : ...]
         // 查找第一个 : 分隔类型和变量名
@@ -1225,7 +1227,8 @@ mapping parse_bracket_content(string content, string txd, string userid)
     }
     // 处理 类型:变量名 ... 格式（如 string:manage_userMain ...）
     // 注意：这里content没有方括号，已经被strip掉了
-    else if(has_suffix(content, " ...")) {
+    // 检查是否以 " ..." 结尾
+    else if(sizeof(content) >= 4 && content[sizeof(content)-4..] == " ...") {
         // 去掉结尾的 " ..."
         string prefix = content[0..sizeof(content)-4];
         // 检查是否是 类型:变量名 格式
@@ -1260,12 +1263,16 @@ mapping parse_bracket_content(string content, string txd, string userid)
             label = content[0..pos-1];
             action_cmd = content[pos+1..];
 
-            // 图片链接 [imgurl picture:/images/...]
-            if(label == "imgurl picture" || has_prefix(label, "imgurl picture ")) {
+            // 图片链接 [imgurl picture:/images/...] 或 [miniimg minipicture:/images/...]
+            // 使用 search() 代替 has_prefix() (Pike没有has_prefix函数)
+            int is_imgurl = (label == "imgurl picture" || search(label, "imgurl picture ") == 0);
+            int is_miniimg = (label == "miniimg minipicture" || search(label, "miniimg minipicture ") == 0);
+
+            if(is_imgurl || is_miniimg) {
                 // 提取图片路径
                 string image_path = action_cmd;
-                // 如果 label 包含额外信息（如 "imgurl picture:头像"），路径从 action_cmd 获取
-                if(has_prefix(action_cmd, "picture:")) {
+                // 如果 action_cmd 以 picture: 开头，去掉前缀
+                if(search(action_cmd, "picture:") == 0) {
                     image_path = action_cmd[8..]; // 跳过 "picture:"
                 }
                 return ([
@@ -1431,7 +1438,7 @@ void handle_api_partitions(Protocols.HTTP.Server.Request req)
 {
     string area = getenv("GAME_AREA");
     if(!area || area == "") area = "01";
-    if(has_prefix(area, "xd")) area = area[2..];
+    if(search(area, "xd") == 0) area = area[2..];
 
     int start_area, end_area;
     if(search(area, "-") > 0) {
@@ -2122,9 +2129,9 @@ mapping query_room_exits(object player)
                 string dest_name = "";
 
                 if(dest_path && sizeof(dest_path) > 0) {
-                    if(!has_prefix(dest_path, ROOT) && !has_prefix(dest_path, "/")) {
+                    if(search(dest_path, ROOT) != 0 && search(dest_path, "/") != 0) {
                         dest_path = ROOT + "/" + dest_path;
-                    } else if(has_prefix(dest_path, "/") && !has_prefix(dest_path, ROOT)) {
+                    } else if(search(dest_path, "/") == 0 && search(dest_path, ROOT) != 0) {
                         dest_path = ROOT + dest_path;
                     }
 

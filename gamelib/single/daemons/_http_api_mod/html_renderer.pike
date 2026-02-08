@@ -238,7 +238,7 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                 part = String.trim_all_whites(part);
                 if(!sizeof(part)) continue;
 
-                if(has_prefix(part, "[") && has_suffix(part, "]")) {
+                if(search(part, "[") == 0 && part[-1] == ']') {
                     string content = part[1..<1];
                     string var_name, default_val, width, type;
 
@@ -251,12 +251,12 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                         int is_passwd = (type == "passwd" || type == "password");
                         html += format_html_input(var_name, "", "", txd, userid, is_passwd);
                     }
-                    else if(search(content, ":") > 0 && has_suffix(content, ":...")) {
+                    else if(search(content, ":") > 0 && content[-4..] == ":...") {
                         int colon_pos = search(content, ":");
                         string cmd_name = content[0..colon_pos-1];
                         html += format_html_command_input(cmd_name, txd, userid);
                     }
-                    else if(has_suffix(content, " ...")) {
+                    else if(content[-5..] == " ...") {
                         string cmd_name = content[0..sizeof(content)-5];
                         html += format_html_command_input(cmd_name, txd, userid);
                     }
@@ -267,7 +267,7 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                             string action_cmd = content[pos+1..];
 
                             // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                            if(has_prefix(content, "miniimg ")) {
+                            if(search(content, "miniimg ") == 0) {
                                 int colon_pos = search(content[8..], ":");
                                 if(colon_pos >= 0) {
                                     string img_name = content[8..8+colon_pos-1];
@@ -279,7 +279,7 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                                 }
                             }
                             // 图片加载 [imgurl name:/path/to/image.gif]
-                            else if(has_prefix(content, "imgurl ")) {
+                            else if(search(content, "imgurl ") == 0) {
                                 int colon_pos = search(content[7..], ":");
                                 if(colon_pos >= 0) {
                                     string img_name = content[7..7+colon_pos-1];
@@ -617,7 +617,7 @@ mapping parse_response_to_json(string response, string userid)
                 part = String.trim_all_whites(part);
                 if(!sizeof(part)) continue;
 
-                if(has_prefix(part, "[") && has_suffix(part, "]")) {
+                if(search(part, "[") == 0 && part[-1] == ']') {
                     string content = part[1..<1];
                     int pos = search(content, ":");
                     if(pos > 0) {
@@ -625,7 +625,7 @@ mapping parse_response_to_json(string response, string userid)
                         string action_cmd = content[pos+1..];
 
                         // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                        if(has_prefix(content, "miniimg ")) {
+                        if(search(content, "miniimg ") == 0) {
                             int colon_pos = search(content[8..], ":");
                             if(colon_pos >= 0) {
                                 string img_name = content[8..8+colon_pos-1];
@@ -645,7 +645,7 @@ mapping parse_response_to_json(string response, string userid)
                             }
                         }
                         // 图片加载 [imgurl name:/path/to/image.gif]
-                        else if(has_prefix(content, "imgurl ")) {
+                        else if(search(content, "imgurl ") == 0) {
                             int colon_pos = search(content[7..], ":");
                             if(colon_pos >= 0) {
                                 string img_name = content[7..7+colon_pos-1];

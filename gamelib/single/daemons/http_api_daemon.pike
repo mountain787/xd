@@ -1716,7 +1716,7 @@ void handle_api_autofight(Protocols.HTTP.Server.Request req)
 
 /**
  * 获取可用招式列表 API
- * 直接从玩家对象读取招式数据
+ * 通过执行 MUD 命令获取招式列表，兼容不同 MUD 实现
  */
 void handle_api_performs(Protocols.HTTP.Server.Request req)
 {
@@ -1724,153 +1724,211 @@ void handle_api_performs(Protocols.HTTP.Server.Request req)
         mapping params = get_params(req);
         string txd = url_decode(params["txd"]);
 
-        // werror("[API] /api/performs START\n");
-
         if(!txd || txd == "" || txd == " ") {
-            // werror("[API] /api/performs ERROR: missing txd\n");
             send_json(req, ([ "error": "需要认证信息：txd" ]), 400);
             return;
         }
 
         mapping auth = decode_txd(txd);
         if(!auth) {
-            // werror("[API] /api/performs ERROR: decode_txd failed\n");
             send_json(req, ([ "error": "TXD认证信息无效" ]), 401);
             return;
         }
 
-        string userid = auth["userid"];
-        // werror("[API] /api/performs userid=%s\n", userid);
+        string auth_userid = auth["userid"];
+        string auth_password = auth["password"];
 
-        object player = get_player_from_connection(userid);
-        if(!player) {
-            // werror("[API] /api/performs ERROR: player not found for userid=%s\n", userid);
-            send_json(req, ([ "error": "玩家未登录" ]), 401);
-            return;
-        }
-
-        // werror("[API] /api/performs player found\n");
-
-        // 获取当前装备的武功
-        object|zero attack_skill;
-        if(functionp(player->query_attack_skill)) {
-            attack_skill = player->query_attack_skill();
-        }
-        // werror("[API] /api/performs attack_skill=%O\n", attack_skill);
+        // 执行 use_perform 命令获取技能列表（xiand使用use_perform）
+        string response = execute_command(auth_userid, auth_password, "use_perform");
+        string new_txd = generate_txd(auth_userid);
 
         array performs_list = ({});
-        string skill_name = "unknown";
-        string skill_name_cn = "未装配武功";
+        string skill_name = "xiand";
+        string skill_name_cn = "技能";
         int skill_level = 0;
-        int player_neili = 0;
+        int in_combat = 0;
 
-        if(attack_skill) {
-            // 获取武功名称
-            if(functionp(attack_skill->query_name)) {
-                skill_name = attack_skill->query_name() || "unknown";
-            }
-            if(functionp(attack_skill->query_name_cn)) {
-                skill_name_cn = attack_skill->query_name_cn() || "未知武功";
-            }
-            // werror("[API] /api/performs skill_name=%s skill_name_cn=%s\n", skill_name, skill_name_cn);
+        // 检查是否在战斗中
+        if(search(response, "察看战况") >= 0 || search(response, "fight") >= 0) {
+            in_combat = 1;
+        }
 
-            // 获取武功等级 (skills 是映射属性，直接访问)
-            mapping skills = player->skills;
-            // werror("[API] /api/performs skills=%O\n", skills);
-            if(skills && skills[skill_name]) {
-                skill_level = skills[skill_name][0];
-            }
-            // werror("[API] /api/performs skill_level=%d\n", skill_level);
+        // 解析 xiand 技能列表格式
+        // 格式: □[技能名(1级/10%):use_perform skill_id] 或 □[技能名(2级):use_perform skill_id](冷却时间)
+        array lines = response / "\n";
 
-            // 获取内力
-            if(functionp(player->query_neili)) {
-                player_neili = player->query_neili();
+        foreach(lines, string line) {
+            line = String.trim_all_whites(line);
+            if(sizeof(line) == 0) continue;
+
+            // 去掉行首的 □ 标记
+            if(line[0] == 0 || line[0] == ' ') {
+                line = String.trim_all_whites(line[1..]);
             }
 
-            // 获取所有可用招式
-            array(object) performs = ({});
-            if(functionp(attack_skill->all_performs)) {
-                performs = attack_skill->all_performs(player);
-            }
-            // werror("[API] /api/performs performs=%O count=%d\n", performs, sizeof(performs));
+            // 解析 xiand 技能格式: [技能名(1级/10%):use_perform skill_id]
+            // 或: [技能名(2级):use_perform skill_id]
+            // 或: [技能名:use_perform skill_id]
+            string perform_name, perform_id;
+            int level = 0;
+            int exp_percent = 0;
+            int cooling = 0;
 
-            if(performs && sizeof(performs) > 0) {
-                foreach(performs, object perform_obj) {
-                    // werror("[API] /api/performs process perform_obj=%O\n", perform_obj);
-                    if(!perform_obj) {
-                        // werror("[API] /api/performs skipping null perform_obj\n");
-                        continue;
+            // 检查是否有冷却时间标记 (5s) 或 (3m)
+            string clean_line = line;
+            if(search(line, "秒") > 0 || search(line, "分") > 0 ||
+               search(line, "s)") > 0 || search(line, "m)") > 0) {
+                cooling = 1;
+            }
+
+            // 尝试匹配带等级和经验的格式: [技能名(1级/10%):use_perform skill_id]
+            if(sscanf(line, "[%s(%d级/%d%%):use_perform %s]",
+                       perform_name, level, exp_percent, perform_id) == 4) {
+                perform_name = String.trim_all_whites(perform_name);
+                perform_id = String.trim_all_whites(perform_id);
+                performs_list += ({
+                    ([
+                        "id": perform_id,
+                        "name_cn": perform_name,
+                        "neili_cost": 0,
+                        "level_req": 0,
+                        "skill_level": level,
+                        "exp_percent": exp_percent,
+                        "available": !cooling,
+                        "enough_neili": 1,
+                        "cooling": cooling
+                    ])
+                });
+            }
+            // 尝试匹配满级格式: [技能名(10级):use_perform skill_id]
+            else if(sscanf(line, "[%s(%d级):use_perform %s]",
+                             perform_name, level, perform_id) == 3) {
+                perform_name = String.trim_all_whites(perform_name);
+                perform_id = String.trim_all_whites(perform_id);
+                performs_list += ({
+                    ([
+                        "id": perform_id,
+                        "name_cn": perform_name,
+                        "neili_cost": 0,
+                        "level_req": 0,
+                        "skill_level": level,
+                        "exp_percent": 100,
+                        "available": !cooling,
+                        "enough_neili": 1,
+                        "cooling": cooling
+                    ])
+                });
+            }
+            // 尝试匹配基本格式: [技能名:use_perform skill_id]
+            else if(sscanf(line, "[%s:use_perform %s]", perform_name, perform_id) == 2) {
+                perform_name = String.trim_all_whites(perform_name);
+                perform_id = String.trim_all_whites(perform_id);
+                performs_list += ({
+                    ([
+                        "id": perform_id,
+                        "name_cn": perform_name,
+                        "neili_cost": 0,
+                        "level_req": 0,
+                        "skill_level": 0,
+                        "exp_percent": 0,
+                        "available": !cooling,
+                        "enough_neili": 1,
+                        "cooling": cooling
+                    ])
+                });
+            }
+        }
+
+        // 如果通过命令解析失败，尝试直接从玩家对象读取（txpike9兼容）
+        if(sizeof(performs_list) == 0) {
+            object player = get_player_from_connection(auth_userid);
+            if(player) {
+                // 尝试获取装备的武功（多种方式）
+                object|zero attack_skill = 0;
+                if(functionp(player->query_attack_skill)) {
+                    attack_skill = player->query_attack_skill();
+                } else if(mappingp(player->equipped) && player->equipped["weapon"]) {
+                    // 从装备的武器获取武功
+                    object weapon = player->equipped["weapon"];
+                    if(functionp(weapon->query_skill)) {
+                        attack_skill = weapon->query_skill();
+                    }
+                }
+
+                if(attack_skill) {
+                    if(functionp(attack_skill->query_name_cn)) {
+                        skill_name_cn = attack_skill->query_name_cn() || "未知武功";
                     }
 
-                    // 获取招式ID - 使用 object_name 获取对象名称
-                    string perform_id = object_name(perform_obj);
-
-                    // 获取招式中文名 - name_cn 是直接变量
-                    string perform_name_cn = perform_obj->name_cn || "";
-
-                    // werror("[API] /api/performs perform: id=%s name_cn=%s\n", perform_id, perform_name_cn);
-
-                    // 获取所需内力 - 如果没有neili_cost属性，默认为0
-                    int neili_cost = 0;
-                    if(intp(perform_obj->neili_cost)) {
-                        neili_cost = perform_obj->neili_cost;
-                    } else if(intp(perform_obj->qi_damage)) {
-                        neili_cost = perform_obj->qi_damage;
+                    mapping skills = player->skills;
+                    if(skills && sizeof(skills) > 0) {
+                        // 获取第一个技能的等级
+                        foreach(indices(skills), string sk) {
+                            if(arrayp(skills[sk]) && sizeof(skills[sk]) > 0) {
+                                skill_level = skills[sk][0];
+                                break;
+                            }
+                        }
                     }
 
-                    // 获取所需等级 - 如果没有level_req属性，默认为0
-                    int level_req = 0;
-                    if(intp(perform_obj->level_req)) {
-                        level_req = perform_obj->level_req;
+                    // 获取内力
+                    int player_neili = 0;
+                    if(functionp(player->query_neili)) {
+                        player_neili = player->query_neili();
                     }
 
-                    // 检查是否可用（等级足够）
-                    int available = 1;
-                    if(level_req > 0 && skill_level < level_req) {
-                        available = 0;
+                    // 获取所有可用招式
+                    array(object) performs = ({});
+                    if(functionp(attack_skill->all_performs)) {
+                        performs = attack_skill->all_performs(player);
                     }
 
-                    // 检查内力是否足够
-                    int enough_neili = player_neili >= neili_cost;
+                    if(performs && sizeof(performs) > 0) {
+                        foreach(performs, object perform_obj) {
+                            if(!perform_obj) continue;
 
-                    if(sizeof(perform_name_cn) > 0) {
-                        performs_list += ({
-                            ([
-                                "id": perform_id,
-                                "name_cn": perform_name_cn,
-                                "neili_cost": neili_cost,
-                                "level_req": level_req,
-                                "skill_level": skill_level,
-                                "available": available,
-                                "enough_neili": enough_neili
-                            ])
-                        });
+                            string perform_id = object_name(perform_obj);
+                            string perform_name_cn = perform_obj->name_cn || "";
+
+                            int neili_cost = 0;
+                            if(intp(perform_obj->neili_cost)) {
+                                neili_cost = perform_obj->neili_cost;
+                            } else if(intp(perform_obj->qi_damage)) {
+                                neili_cost = perform_obj->qi_damage;
+                            }
+
+                            if(sizeof(perform_name_cn) > 0) {
+                                performs_list += ({
+                                    ([
+                                        "id": perform_id,
+                                        "name_cn": perform_name_cn,
+                                        "neili_cost": neili_cost,
+                                        "level_req": 0,
+                                        "skill_level": skill_level,
+                                        "available": 1,
+                                        "enough_neili": player_neili >= neili_cost
+                                    ])
+                                });
+                            }
+                        }
                     }
                 }
             }
         }
 
-        // werror("[API] /api/performs SUCCESS: total_performs=%d\n", sizeof(performs_list));
-
-        // 生成新的 txd
-        string new_txd = generate_txd(userid);
-
         send_json(req, ([
             "performs": performs_list,
-            "skill_name": skill_name,
+            "skill_name": "xiand",
             "skill_name_cn": skill_name_cn,
-            "skill_level": skill_level,
-            "player_neili": player_neili,
-            "in_combat": 0,
+            "skill_level": 0,
+            "player_neili": 0,
+            "in_combat": in_combat,
             "txd": new_txd
         ]));
-
-        // werror("[API] /api/performs END\n");
     };
 
     if(err) {
         werror("[API] /api/performs EXCEPTION: %s\n", describe_error(err));
-        werror("[API] /api/performs BACKTRACE: %s\n", sprintf("%O", err));
         send_json(req, ([ "error": "服务器错误" ]), 500);
     }
 }

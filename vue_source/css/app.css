@@ -2501,7 +2501,8 @@ body {
 /* 子容器 - 固定宽度，模仿iframe的child样式 */
 .mud-child {
     display: inline-block;
-    width: 300px;
+    width: 95%;
+    max-width: 800px;
     text-align: left;
     vertical-align: top;
 }
@@ -2550,8 +2551,8 @@ body {
 
 /* 地图图片 */
 .mud-inline-image[src*="/map/"] {
-    max-width: 300px;
-    max-height: 200px;
+    max-width: 100%;
+    max-height: 300px;
     display: block;
     margin: 8px auto;
 }

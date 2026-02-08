@@ -1,0 +1,65 @@
+# MySQL 用户授权说明
+
+## 为 Docker 容器配置 MySQL 访问权限
+
+### 方法一：使用自动设置脚本（推荐）
+
+```bash
+./scripts/setup-mysql-docker-access.sh
+```
+
+### 方法二：手动配置
+
+#### 1. 登录 MySQL
+
+```bash
+mysql -u root -p
+```
+
+#### 2. 创建 Docker 网络用户并授权
+
+```sql
+-- 为 Docker 容器网络创建 root 用户（密码：Happy888888）
+CREATE USER IF NOT EXISTS 'root'@'172.18.%' IDENTIFIED BY 'Happy888888';
+
+-- 或者为所有 Docker 网络创建用户
+CREATE USER IF NOT EXISTS 'root'@'172.17.0.1' IDENTIFIED BY 'Happy888888';
+
+-- 授予所有权限
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.18.%' WITH GRANT OPTION;
+GRANT ALL PRIVILEGES ON *.* TO 'root'@'172.17.0.1' WITH GRANT OPTION;
+
+-- 刷新权限
+FLUSH PRIVILEGES;
+
+-- 查看授权结果
+SELECT user, host FROM mysql.user WHERE user='root';
+```
+
+### 网络说明
+
+| 网络段 | 说明 |
+|--------|------|
+| 172.17.0.1 | Docker 默认网关（容器访问宿主机） |
+| 172.18.% | Docker 自定义网络 |
+| % | 所有网络（不推荐生产环境） |
+
+### 容器连接方式
+
+容器内可以通过以下方式连接 MySQL：
+
+```bash
+# 方式 1：通过 Docker 网关
+mysql -h 172.17.0.1 -u root -pHappy888888
+
+# 方式 2：通过 socat 转发的 Unix socket
+mysql -S /tmp/.mysql_sock -u root -pHappy888888
+```
+
+### 验证连接
+
+```bash
+# 在容器内测试
+docker exec -it xiand-xd01 bash
+mysql -h 172.17.0.1 -u root -pHappy888888 -e "SHOW DATABASES;"
+```

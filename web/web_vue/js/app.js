@@ -2326,8 +2326,8 @@ createApp({
                 return;
             }
 
-            // 发送 perform 命令
-            await this.sendJsonCommand(`perform ${perform.id}`);
+            // 发送 use_perform 命令（xiand使用use_perform而非perform）
+            await this.sendJsonCommand(`use_perform ${perform.id}`);
 
             // 关闭招式列表，但保持全屏战斗窗口
             this.closePerformsList();

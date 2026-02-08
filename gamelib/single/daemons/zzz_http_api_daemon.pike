@@ -692,11 +692,14 @@ void handle_api(Protocols.HTTP.Server.Request req)
 
 void handle_api_html(Protocols.HTTP.Server.Request req)
 {
+    http_werror("========== handle_api_html called! ==========\n");
     mapping params = get_params(req);
+    http_werror("  params: %O\n", params);
     string txd = url_decode(params["txd"]);
     string userid = params["userid"];
     string password = params["password"];
     string cmd = params["cmd"];
+    http_werror("  cmd=%s userid=%s\n", cmd || "none", userid || "none");
     if(!cmd || cmd == "") cmd = "look";
 
     string client_ip = req->remote_addr || "unknown";

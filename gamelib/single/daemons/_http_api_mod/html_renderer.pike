@@ -20,6 +20,7 @@
  */
 string response_to_html(string response, string userid, string cmd)
 {
+    http_werror("========== response_to_html called! cmd=%s userid=%s ==========\n", cmd || "none", userid || "none");
     string txd = generate_txd(userid);
     string html = "";
     string area = getenv("GAME_AREA");

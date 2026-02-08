@@ -342,9 +342,9 @@ createApp({
                 // 使用challenge对密码进行哈希
                 const passwordHash = await sha256(challenge + this.registerForm.password);
 
-                // 发送注册命令: login_regnew gamenv fullUserid passwordHash challenge sessionId
+                // 发送注册命令: login_regnew gamelib fullUserid passwordHash sessionId challenge
                 // 注意：注册不需要txd，直接发送cmd参数
-                const cmd = `login_regnew gamenv ${fullUserid} ${passwordHash} ${sessionId} ${challenge}`;
+                const cmd = `login_regnew gamelib ${fullUserid} ${passwordHash} ${sessionId} ${challenge}`;
                 let url = this.apiBase + '/api/html?cmd=' + encodeURIComponent(cmd);
 
                 // 如果有推荐码，添加到URL参数

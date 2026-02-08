@@ -719,28 +719,29 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
             return;
         }
 
-        // 解析参数: Vue发送 login_regnew gamenv xd01username password sid challenge
-        // JSP发送: login_regnew gamenv user password sid game_pre m_key userip userua
+        // 解析参数: Vue发送 login_regnew gamenv xd01username password sid challenge (6个部分)
+        // JSP发送: login_regnew gamenv user password sid game_pre m_key userip userua (9个部分)
         // 先初始化所有变量为空字符串
         string projname = "", user_name = "", pswd = "", sid = "";
         string game_pre = "", m_key = "", userip = "", userua = "";
+        string challenge = "";
 
-        // 尝试解析JSP格式（8个参数）
-        int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s %s %s %s",
+        // 先尝试Vue格式（更常见，6个部分）
+        int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s %s",
+                                  projname, user_name, pswd, sid, challenge, game_pre);
+        http_werror(" sscanf Vue format result: %d\n", parse_result);
+
+        // 如果Vue格式解析失败（少于5个参数），尝试JSP格式（9个部分）
+        if(parse_result < 5) {
+            parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s %s %s %s",
                                   projname, user_name, pswd, sid, game_pre, m_key, userip, userua);
-        http_werror(" sscanf JSP format result: %d\n", parse_result);
-
-        // 如果JSP格式解析失败，尝试Vue格式（5-6个参数）
-        if(parse_result < 4) {
-            string challenge = "";
-            parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s",
-                                  projname, user_name, pswd, sid, challenge);
-            http_werror(" sscanf Vue format result: %d\n", parse_result);
+            http_werror(" sscanf JSP format result: %d\n", parse_result);
         }
 
         http_werror(" projname=%s, user=%s, pswd_len=%d, sid=%s, game_pre=%s\n",
                     projname || "", user_name || "", sizeof(pswd), sid || "", game_pre || "");
-        http_werror(" m_key=%s, userip=%s, userua=%s\n", m_key || "", userip || "", userua || "");
+        http_werror(" m_key=%s, userip=%s, userua=%s, challenge=%s\n",
+                    m_key || "", userip || "", userua || "", challenge || "");
 
         if(parse_result >= 3) {
             // 解析用户名和分区前缀

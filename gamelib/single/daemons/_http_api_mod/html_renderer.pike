@@ -267,16 +267,28 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                             string action_cmd = content[pos+1..];
 
                             // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                            // 使用仙岛原生的 sscanf 解析方式
-                            string img_name, img_href;
-                            if(sscanf(content, "miniimg %s:%s", img_name, img_href) == 2) {
-                                html += sprintf("<img src=\"%s\" alt=\"%s\" height=\"20\" width=\"20\" align=\"middle\"/>",
-                                                   img_href, img_name);
+                            if(has_prefix(content, "miniimg ")) {
+                                int colon_pos = search(content[8..], ":");
+                                if(colon_pos >= 0) {
+                                    string img_name = content[8..8+colon_pos-1];
+                                    string img_href = content[8+colon_pos+1..];
+                                    html += sprintf("<img src=\"%s\" alt=\"%s\" height=\"20\" width=\"20\" align=\"middle\"/>",
+                                                       img_href, img_name);
+                                } else {
+                                    html += format_html_button(label, action_cmd, txd, userid);
+                                }
                             }
                             // 图片加载 [imgurl name:/path/to/image.gif]
-                            else if(sscanf(content, "imgurl %s:%s", img_name, img_href) == 2) {
-                                html += sprintf("<img src=\"%s\" alt=\"%s\"/>",
-                                                   img_href, img_name);
+                            else if(has_prefix(content, "imgurl ")) {
+                                int colon_pos = search(content[7..], ":");
+                                if(colon_pos >= 0) {
+                                    string img_name = content[7..7+colon_pos-1];
+                                    string img_href = content[7+colon_pos+1..];
+                                    html += sprintf("<img src=\"%s\" alt=\"%s\"/>",
+                                                       img_href, img_name);
+                                } else {
+                                    html += format_html_button(label, action_cmd, txd, userid);
+                                }
                             }
                             // URL链接 [url 显示文本:https://...]
                             else if(search(label, "url ") == 0 &&
@@ -613,24 +625,44 @@ mapping parse_response_to_json(string response, string userid)
                         string action_cmd = content[pos+1..];
 
                         // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                        // 使用仙岛原生的 sscanf 解析方式
-                        string img_name, img_href;
-                        if(sscanf(content, "miniimg %s:%s", img_name, img_href) == 2) {
-                            mapping img = ([
-                                "type": "image",
-                                "src": img_href,
-                                "alt": img_name
-                            ]);
-                            result["images"] += ({img});
+                        if(has_prefix(content, "miniimg ")) {
+                            int colon_pos = search(content[8..], ":");
+                            if(colon_pos >= 0) {
+                                string img_name = content[8..8+colon_pos-1];
+                                string img_href = content[8+colon_pos+1..];
+                                mapping img = ([
+                                    "type": "image",
+                                    "src": img_href,
+                                    "alt": img_name
+                                ]);
+                                result["images"] += ({img});
+                            } else {
+                                mapping action = ([ ]);
+                                action["label"] = label;
+                                action["command"] = action_cmd;
+                                action["style"] = get_action_style(label);
+                                result["actions"] += ({action});
+                            }
                         }
                         // 图片加载 [imgurl name:/path/to/image.gif]
-                        else if(sscanf(content, "imgurl %s:%s", img_name, img_href) == 2) {
-                            mapping img = ([
-                                "type": "image",
-                                "src": img_href,
-                                "alt": img_name
-                            ]);
-                            result["images"] += ({img});
+                        else if(has_prefix(content, "imgurl ")) {
+                            int colon_pos = search(content[7..], ":");
+                            if(colon_pos >= 0) {
+                                string img_name = content[7..7+colon_pos-1];
+                                string img_href = content[7+colon_pos+1..];
+                                mapping img = ([
+                                    "type": "image",
+                                    "src": img_href,
+                                    "alt": img_name
+                                ]);
+                                result["images"] += ({img});
+                            } else {
+                                mapping action = ([ ]);
+                                action["label"] = label;
+                                action["command"] = action_cmd;
+                                action["style"] = get_action_style(label);
+                                result["actions"] += ({action});
+                            }
                         }
                         else if(is_direction(label)) {
                             mapping exit = ([ ]);

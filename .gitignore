@@ -4,7 +4,9 @@ db_log/
 core.1096
 # gamelib/clone/item/ - track system files, ignore player-crafted files
 gamelib/clone/item/**/*.o
-gamelib/clone/item/**/**/*_c_*      # 玩家打造的装备(含_c_)
+# 玩家打造的装备 - 使用精确匹配
+**/*00*
+**/*_c_*
 # gamelib/data/  # removed to track data files
 data_xiand/u/
 data_xiand/new_users/

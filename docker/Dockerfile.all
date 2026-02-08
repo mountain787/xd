@@ -141,6 +141,11 @@ COPY . /app/xiand/
 # 复制前端文件到 Tomcat ROOT
 COPY web /usr/local/tomcat/webapps/ROOT
 
+# 复制游戏图片到 Tomcat ROOT/xd/images/ (游戏代码使用 /xd/images/ 路径)
+RUN mkdir -p /usr/local/tomcat/webapps/ROOT/xd/images && \
+    cp /app/xiand/images/* /usr/local/tomcat/webapps/ROOT/xd/images/ && \
+    echo "Copied $(ls /usr/local/tomcat/webapps/ROOT/xd/images/ | wc -l) images to ROOT/xd/images/"
+
 # 设置权限
 RUN chmod -R 755 /usr/local/tomcat/webapps/ROOT && \
     chmod +x /app/xiand/docker/docker-startup.sh 2>/dev/null || true && \

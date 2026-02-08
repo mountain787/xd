@@ -770,11 +770,21 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
             // HTTP API 模式下直接实现注册逻辑
             // 注意：存储明文密码，登录时用challenge做哈希验证
             string result;
+            string error_msg = "";  // 详细错误信息
+
             // 验证实际用户名长度（不含分区前缀）
-            if(sizeof(actual_user) < 2 || sizeof(actual_user) > 12 || sizeof(pswd) < 2) {
-                http_werror(" VALIDATION FAILED: actual_user_len=%d (need 2-12), password_len=%d (need >=2)\n",
-                            sizeof(actual_user), sizeof(pswd));
+            if(sizeof(actual_user) < 2) {
+                http_werror(" VALIDATION FAILED: actual_user_len=%d (need >=2)\n", sizeof(actual_user));
                 result = "error2";
+                error_msg = "用户名过短，最少2个字符";
+            } else if(sizeof(actual_user) > 12) {
+                http_werror(" VALIDATION FAILED: actual_user_len=%d (need <=12)\n", sizeof(actual_user));
+                result = "error2";
+                error_msg = "用户名过长，最多12个字符（当前" + sizeof(actual_user) + "个）";
+            } else if(sizeof(pswd) < 2) {
+                http_werror(" VALIDATION FAILED: password_len=%d (need >=2)\n", sizeof(pswd));
+                result = "error2";
+                error_msg = "密码过短，最少2个字符";
             } else {
                 // 检查用户名只包含字母数字（检查实际用户名，不含前缀）
                 int valid_name = 1;
@@ -789,6 +799,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                 if(!valid_name) {
                     http_werror(" VALIDATION FAILED: invalid characters in actual_user\n");
                     result = "error2";
+                    error_msg = "用户名只能包含字母和数字";
                 } else {
                     // full_username已在上面定义: game_fg + actual_user
                     // 检查用户是否已存在 - 使用 gamelib 路径
@@ -800,6 +811,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                         // 用户已存在
                         http_werror(" User already exists: %s\n", full_username);
                         result = "error1";
+                        error_msg = "用户名已存在";
                     } else {
                         // 检查内存中是否有在线用户
                         http_werror(" Checking if user in memory...\n");
@@ -807,6 +819,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                         if(user_in_memory) {
                             http_werror(" User already in memory: %s\n", full_username);
                             result = "error1";
+                            error_msg = "用户已在线";
                         } else {
                             // 创建新用户 - 直接创建用户文件
                             http_werror(" Creating new user...\n");
@@ -846,6 +859,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                             if(!u) {
                                 http_werror(" FATAL: Cannot load user program!\n");
                                 result = "error2";
+                                error_msg = "系统错误: 无法加载用户程序";
                             } else {
                                 http_werror(" Step 3: Creating user instance...\n");
                                 mixed err = catch {
@@ -854,6 +868,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                                     if(!me) {
                                         http_werror(" FATAL: u() returned NULL!\n");
                                         result = "error2";
+                                        error_msg = "系统错误: 无法创建用户对象";
                                     } else {
                                         http_werror(" Step 4: Setting user properties...\n");
 
@@ -891,17 +906,20 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                                             } else {
                                                 http_werror("  setup() returned FALSE\n");
                                                 result = "error2";
+                                                error_msg = "用户初始化失败";
                                             }
                                         };
                                         if(setup_err) {
                                             http_werror("  setup() EXCEPTION: %s\n", describe_error(setup_err));
                                             result = "error2";
+                                            error_msg = "用户初始化异常: " + describe_error(setup_err);
                                         }
                                     }
                                 };
                                 if(err) {
                                     http_werror(" User creation EXCEPTION: %s\n", describe_error(err));
                                     result = "error2";
+                                    error_msg = "创建用户异常: " + describe_error(err);
                                 }
                             }
                         }
@@ -909,10 +927,14 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                 }
             }
 
-            http_werror(" Registration result: %s\n", result);
+            http_werror(" Registration result: %s, error_msg: %s\n", result, error_msg);
 
-            // 返回注册结果
-            string html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>注册</title></head><body><div>" + result + "</div></body></html>";
+            // 返回注册结果 - 格式: result 或 result,error_msg
+            string response_data = result;
+            if(error_msg && sizeof(error_msg) > 0) {
+                response_data = result + "," + error_msg;
+            }
+            string html = "<!DOCTYPE html><html><head><meta charset=\"UTF-8\"><title>注册</title></head><body><div>" + response_data + "</div></body></html>";
             mapping resp = ([ ]);
             resp["type"] = "text/html; charset=UTF-8";
             resp["data"] = html;

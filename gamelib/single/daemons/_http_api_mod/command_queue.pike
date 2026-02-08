@@ -122,7 +122,7 @@ void execute_queued_command(string userid, string cmd, string request_id)
     http_werror(" Executing queued command: %s for %s\n", cmd, userid);
 
     // 获取主文件的 execute_command 函数
-    object main_daemon = find_object(ROOT + "/gamelib/single/daemons/zzz_http_api_daemon.pike");
+    object main_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
     string result = "";
     mixed err = catch {
         if(main_daemon && functionp(main_daemon->execute_command)) {

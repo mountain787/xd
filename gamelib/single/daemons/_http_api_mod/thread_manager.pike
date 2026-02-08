@@ -142,7 +142,7 @@ void _execute_in_thread(string userid, string password, string cmd, object resul
 {
     string result = "";
     mixed err = catch {
-        object main_daemon = find_object(ROOT + "/gamelib/single/daemons/zzz_http_api_daemon.pike");
+        object main_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
         if(main_daemon && functionp(main_daemon->execute_command_sync)) {
             result = main_daemon->execute_command_sync(userid, password, cmd);
         } else {
@@ -170,7 +170,7 @@ string execute_core_command(string userid, string password, string cmd)
     object key = core_lock->lock();
 
     mixed err = catch {
-        object main_daemon = find_object(ROOT + "/gamelib/single/daemons/zzz_http_api_daemon.pike");
+        object main_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
         if(main_daemon && functionp(main_daemon->execute_command_sync)) {
             string result = main_daemon->execute_command_sync(userid, password, cmd);
             destruct(key);

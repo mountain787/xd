@@ -16,7 +16,8 @@ object LOG;
 Sql.Sql db;
 //#define GAME_NAME		"xd"//游戏区名
 //string dbSql = "mysql://root:password@game_database:22334/"+GAME_NAME; //远程数据库服务器
-string mysql_password ="Happy888888";
+// 从环境变量读取数据库密码，如果未设置则使用默认值
+string mysql_password = getenv("MYSQL_PASSWORD") || "Happy888888";
 string dbSql = "mysql://root:"+mysql_password+"@127.0.0.1/"+GAME_AREA;
 
 //mapping optionsMap = (["mysql_charset_name":"gb2312"]);

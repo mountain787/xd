@@ -27,7 +27,9 @@
 
 set -e
 
+# ============================================
 # 配置参数
+# ============================================
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # ============================================
@@ -111,19 +113,10 @@ build_image() {
 push_to_docker_hub() {
     # Docker Hub 配置
     local docker_user="${DOCKER_USER:-lijingmt}"
-    local docker_token="${DOCKER_TOKEN:-}"
     local docker_registry="${DOCKER_REGISTRY:-docker.io}"
 
     # 私有仓库配置（默认为私有）
     local is_private="${IS_PRIVATE_REPO:-true}"
-
-    # 验证必要的 token
-    if [ -z "$docker_token" ]; then
-        print_error "错误：未设置 DOCKER_TOKEN 环境变量"
-        print_info "请设置 DOCKER_TOKEN 环境变量或在脚本中配置"
-        print_info "或使用 SKIP_PUSH=1 ./rebuild-image.sh 跳过推送"
-        return 1
-    fi
 
     # 获取日期标签（格式：YYYY-MM-DD，不包含时分）
     local date_tag=$(date +%Y-%m-%d)
@@ -147,27 +140,17 @@ push_to_docker_hub() {
     echo ""
 
     # 标记镜像
-    print_info "[1/3] 标记镜像..."
+    print_info "[1/2] 标记镜像..."
     docker tag xiand-all:latest ${docker_user}/xiand-all:latest
     print_success "镜像已标记"
     echo ""
 
-    # 登录 Docker Hub
-    print_info "[2/3] 登录 Docker Hub..."
-    if echo "$docker_token" | docker login -u "$docker_user" --password-stdin > /dev/null 2>&1; then
-        print_success "Docker Hub 登录成功"
-    else
-        print_error "Docker Hub 登录失败，请检查 token 是否正确"
-        return 1
-    fi
-    echo ""
-
-    # 推送统一镜像
-    print_info "[3/3] 推送统一镜像 (MUD + Tomcat)..."
+    # 推送统一镜像（使用已保存的 Docker 认证）
+    print_info "[2/2] 推送统一镜像 (MUD + Tomcat)..."
     if docker push ${docker_user}/xiand-all:latest; then
         print_success "统一镜像推送完成: ${docker_user}/xiand-all:latest"
     else
-        print_error "统一镜像推送失败，请检查网络连接"
+        print_error "统一镜像推送失败，请检查网络连接或先运行 docker login"
         return 1
     fi
     echo ""

@@ -8,13 +8,12 @@
 # 2. 启动 MUD 和 Tomcat 容器（使用已有镜像）
 #
 # 用法：
-#   ./restart-docker.sh [GAME_AREA] [TOMCAT_PORT] [API_PORT] [IMAGE_TAG]
+#   ./restart-docker.sh [GAME_AREA] [TOMCAT_PORT] [API_PORT]
 #
 # 参数说明：
 #   GAME_AREA    - 游戏区号（默认：xd01）
 #   TOMCAT_PORT  - Tomcat HTTP 端口（默认：9001）
 #   API_PORT     - HTTP API 端口（默认：8888）
-#   IMAGE_TAG    - Docker 镜像标签（默认：latest）
 #
 # 示例：
 #   ./restart-docker.sh                    # 使用默认值 xd01 9001 8888
@@ -28,7 +27,9 @@
 
 set -e
 
+# ============================================
 # 配置参数
+# ============================================
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
 # 自动定位项目根目录
@@ -46,7 +47,10 @@ DOCKER_COMPOSE_FILE="$PROJECT_ROOT/docker/docker-compose.yml"
 GAME_AREA_INPUT="${1:-${GAME_AREA:-xd01}}"
 TOMCAT_HTTP_PORT="${2:-${TOMCAT_HTTP_PORT:-9001}}"
 HTTP_API_PORT="${3:-${HTTP_API_PORT:-8888}}"
-DOCKER_IMAGE_TAG="${4:-${DOCKER_IMAGE_TAG:-latest}}"  # Docker 镜像版本标签
+
+# Docker Hub 配置
+DOCKER_USER="${DOCKER_USER:-lijingmt}"
+DOCKER_TOKEN="${DOCKER_TOKEN:-}"
 
 # 分区列表配置（用于 Vue 前端下拉框）
 # 格式：xd01,xd02,xd03,xd04,xd05 或 xd01-05
@@ -199,21 +203,21 @@ pull_docker_images() {
     print_info "拉取 Docker 镜像..."
     echo ""
 
-    # 确定镜像名称
-    local image_name
-    if [ "$DOCKER_IMAGE_TAG" = "latest" ]; then
-        image_name="xiand-all:latest"
-    elif [[ "$DOCKER_IMAGE_TAG" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}(-v[0-9]+)?$ ]]; then
-        image_name="xiand-all-${DOCKER_IMAGE_TAG}"
-    else
-        image_name="$DOCKER_IMAGE_TAG"
+    # 如果有 token，先登录 Docker Hub
+    if [ -n "$DOCKER_TOKEN" ]; then
+        print_info "登录 Docker Hub ($DOCKER_USER)..."
+        if echo "$DOCKER_TOKEN" | docker login -u "$DOCKER_USER" --password-stdin > /dev/null 2>&1; then
+            print_success "Docker Hub 登录成功"
+        else
+            print_warning "Docker Hub 登录失败，尝试直接拉取镜像..."
+        fi
     fi
 
     # 拉取统一镜像（MUD + Tomcat）
-    print_info "拉取统一镜像 (lijingmt/${image_name})..."
-    if docker pull "lijingmt/${image_name}" 2>/dev/null; then
+    print_info "拉取统一镜像 (${DOCKER_USER}/xiand-all:latest)..."
+    if docker pull ${DOCKER_USER}/xiand-all:latest 2>/dev/null; then
         print_success "统一镜像拉取成功"
-        docker tag "lijingmt/${image_name}" xiand-all:latest 2>/dev/null || true
+        docker tag ${DOCKER_USER}/xiand-all:latest xiand-all:latest 2>/dev/null || true
     else
         print_warning "远程镜像拉取失败，使用本地构建的镜像..."
         if docker image inspect xiand-all:latest >/dev/null 2>&1; then
@@ -240,22 +244,35 @@ prepare_data_directories() {
         area_num="${area_num#xd}"
     fi
 
+    # 创建统一的 item 目录（所有区共享）
+    local shared_item_dir="/usr/local/games/allxd/item"
+    if [ ! -d "$shared_item_dir" ] || [ -z "$(ls -A "$shared_item_dir" 2>/dev/null)" ]; then
+        print_warning "共享 item 目录为空或不存在: $shared_item_dir"
+        print_info "请执行: rsync -av /usr/local/games/xiand/gamelib/clone/item/ /usr/local/games/allxd/item/"
+    fi
+    chmod -R 755 "$shared_item_dir" 2>/dev/null || true
+
     # 检查是否是范围格式（01-05）
     if [[ $area_num =~ ^([0-9]+)-([0-9]+)$ ]]; then
         # 合服目录: /usr/local/games/allxd/xd01-05/
         local area_dir="/usr/local/games/allxd/xd$area_num"
         mkdir -p "$area_dir/data_xiand"
-        mkdir -p "$area_dir/item"
         chmod -R 755 "$area_dir" 2>/dev/null || true
         print_success "已创建合服目录: /usr/local/games/allxd/xd$area_num/"
     else
         # 单区目录: /usr/local/games/allxd/xd01/
         local area_dir="/usr/local/games/allxd/xd$area_num"
         mkdir -p "$area_dir/data_xiand"
-        mkdir -p "$area_dir/item"
         chmod -R 755 "$area_dir" 2>/dev/null || true
         print_success "已创建目录: /usr/local/games/allxd/xd$area_num/"
     fi
+
+    # 创建用户数据子目录（u 和 bangpai）
+    local data_dir="/usr/local/games/allxd/xd$area_num/data_xiand"
+    mkdir -p "$data_dir/u"
+    mkdir -p "$data_dir/bangpai"
+    chmod -R 777 "$data_dir" 2>/dev/null || true
+    print_success "已创建用户数据目录: u/ 和 bangpai/"
 
     # 创建日志目录: /usr/local/games/allxd/log/xd01/
     local log_dir="/usr/local/games/allxd/log/xd$area_num"
@@ -265,7 +282,6 @@ prepare_data_directories() {
     # 修改权限
     chmod -R 777 "/usr/local/games/allxd/log/xd$area_num" 2>/dev/null || true
     chmod -R 777 "/usr/local/games/allxd/xd$area_num/data_xiand" 2>/dev/null || true
-    chmod -R 777 "/usr/local/games/allxd/xd$area_num/item" 2>/dev/null || true
 
     print_success "数据目录权限已修改"
 }
@@ -279,22 +295,20 @@ main() {
 
     # 显示使用说明
     echo "用法："
-    echo "  $0 [GAME_AREA] [TOMCAT_HTTP_PORT] [HTTP_API_PORT] [DOCKER_IMAGE_TAG]"
+    echo "  $0 [GAME_AREA] [TOMCAT_HTTP_PORT] [HTTP_API_PORT]"
     echo ""
     echo "示例："
-    echo "  $0                                  # 使用默认值 xd01、端口 9001、API 8888、最新镜像"
+    echo "  $0                                  # 使用默认值 xd01、端口 9001、API 8888"
     echo "  $0 xd01                             # 指定区号 xd01，其他使用默认值"
     echo "  $0 xd01 9001                        # 指定区号 xd01、端口 9001、API 8888"
     echo "  $0 xd01 9001 8888                   # 指定区号 xd01、端口 9001、API 8888"
     echo "  $0 xd02 9002 8889                   # 指定区号 xd02、端口 9002、API 8889"
-    echo "  $0 xd02 9002 8889 2025-12-20        # 指定镜像版本 2025-12-20"
     echo ""
     echo "环境变量："
     echo "  GAME_AREAS='xd01,xd02,xd03,xd04,xd05'  # Vue 前端分区列表"
     echo ""
-    echo "镜像标签说明："
-    echo "  latest                          # lijingmt/xiand-all:latest（默认）"
-    echo "  2025-12-20                      # lijingmt/xiand-all-2025-12-20（历史版本）"
+    echo "镜像说明："
+    echo "  使用 lijingmt/xiand-all:latest 统一镜像"
     echo ""
 
     # ============================================
@@ -326,7 +340,7 @@ main() {
     echo "  分区列表：$GAME_AREAS"
     echo "  Tomcat HTTP 端口：$TOMCAT_HTTP_PORT"
     echo "  HTTP API 端口：$HTTP_API_PORT"
-    echo "  Docker 镜像标签：$DOCKER_IMAGE_TAG"
+    echo "  Docker 镜像：lijingmt/xiand-all:latest"
     echo ""
 
     # 执行步骤 - 自动化初始化和启动流程
@@ -343,6 +357,7 @@ main() {
     print_info "[3.5/5] 配置防火墙端口..."
     open_firewall_port "$HTTP_API_PORT"
     open_firewall_port "$TOMCAT_HTTP_PORT"
+    open_firewall_port "$((TOMCAT_HTTP_PORT + 10000))"
 
     print_info "[4/5] 清理旧容器..."
 
@@ -366,15 +381,8 @@ main() {
 
     print_info "[5/6] 启动统一容器 (Pike MUD + Tomcat)..."
 
-    # 确定镜像名称
-    local docker_image
-    if [ "$DOCKER_IMAGE_TAG" = "latest" ]; then
-        docker_image="lijingmt/xiand-all:latest"
-    elif [[ "$DOCKER_IMAGE_TAG" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}(-v[0-9]+)?$ ]]; then
-        docker_image="lijingmt/xiand-all-${DOCKER_IMAGE_TAG}"
-    else
-        docker_image="lijingmt/${DOCKER_IMAGE_TAG}"
-    fi
+    # 使用统一镜像
+    local docker_image="lijingmt/xiand-all:latest"
 
     docker run -d \
         --name "xiand-${GAME_AREA}" \
@@ -382,14 +390,14 @@ main() {
         --memory-swap=16g \
         --ulimit stack=-1:-1 \
         --ulimit nofile=65535:65535 \
-        -p "13800:13800" \
+        -p "$((TOMCAT_HTTP_PORT + 10000)):13800" \
         -p "${HTTP_API_PORT}:8888" \
         -p "${TOMCAT_HTTP_PORT}:8080" \
         -p "$((TOMCAT_HTTP_PORT + 443)):8443" \
         -e GAME_AREA="$GAME_AREA" \
         -e GAME_AREAS="$GAME_AREAS" \
         -v /usr/local/games/allxd/${GAME_AREA}/data_xiand:/app/xiand/data_xiand \
-        -v /usr/local/games/allxd/${GAME_AREA}/item:/app/xiand/gamelib/clone/item \
+        -v /usr/local/games/allxd/item:/app/xiand/gamelib/clone/item \
         -v /usr/local/games/allxd/log/${GAME_AREA}:/app/xiand/log \
         "${docker_image}" >/dev/null 2>&1
 
@@ -445,7 +453,7 @@ main() {
     echo ""
     echo "相关信息："
     echo "  容器名称：xiand-${GAME_AREA}"
-    echo "  MUD 地址：localhost:13800"
+    echo "  MUD 地址：localhost:$((TOMCAT_HTTP_PORT + 10000))"
     echo "  HTTP API：localhost:${HTTP_API_PORT}"
     echo "  Web 地址：http://localhost:${TOMCAT_HTTP_PORT}/"
     echo "  分区列表：$GAME_AREAS"

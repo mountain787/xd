@@ -12,6 +12,9 @@ data_xiand/
 *.s
 *.o
 
+# 游戏物品数据（通过卷映射，不打包到镜像）
+gamelib/clone/item/
+
 # 临时文件
 tmp/
 *.tmp

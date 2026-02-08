@@ -712,6 +712,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
     if(search(cmd, "login_regnew ") == 0) {
         http_werror("=== REGISTER REQUEST ===\n");
         http_werror(" RAW CMD: %s\n", cmd);
+        http_werror(" REQ headers: %O\n", req->headers);
 
         if(check_register_rate_limit(client_ip)) {
             http_werror(" RATE LIMIT EXCEEDED for IP: %s\n", client_ip);
@@ -719,41 +720,44 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
             return;
         }
 
-        // 解析Vue发送的参数: login_regnew gamenv fullUserid plaintextPassword [session] [challenge]
-        // 注意：Vue发送的是明文密码，HTTP API会存储明文，登录时用challenge做哈希验证
-        string path, full_userid, plaintext_password, session_id, challenge;
-        int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s", path, full_userid, plaintext_password, session_id, challenge);
-        http_werror(" sscanf result: %d\n", parse_result);
-        http_werror(" path=%s, full_userid=%s, password_len=%d, ip=%s\n",
-                    path, full_userid, plaintext_password ? sizeof(plaintext_password) : 0, client_ip);
+        // 解析JSP发送的参数: login_regnew projname user pswd sid game_pre m_key userip userua
+        // 共9个部分（包括命令名）
+        string projname, user_name, pswd, sid, game_pre, m_key, userip, userua;
+        int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s %s %s %s",
+                                  projname, user_name, pswd, sid, game_pre, m_key, userip, userua);
+        http_werror(" sscanf result: %d (expected 8)\n", parse_result);
+        http_werror(" projname=%s, user=%s, pswd_len=%d, sid=%s, game_pre=%s, m_key=%s\n",
+                    projname, user_name, pswd ? sizeof(pswd) : 0, sid, game_pre, m_key);
+        http_werror(" userip=%s, userua=%s\n", userip, userua);
+
+        // 如果解析失败，尝试旧格式（兼容性）
+        if(parse_result < 4) {
+            http_werror(" Trying old format parsing...\n");
+            string path, full_userid, plaintext_password, session_id, challenge;
+            parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s", path, full_userid, plaintext_password, session_id, challenge);
+            http_werror(" Old format sscanf result: %d\n", parse_result);
+            if(parse_result >= 3) {
+                user_name = full_userid;
+                pswd = plaintext_password;
+                sid = session_id;
+                game_pre = "";
+                projname = path || "gamelib";
+            }
+        }
 
         if(parse_result >= 3) {
-            // 从 full_userid 中提取分区前缀和实际用户名
-            string game_fg = "";  // 分区前缀如 xd01, tx01
-            string user_name = ""; // 实际用户名
-            int zone_num = 0;
-            string zone_prefix = "";
-
-            // 尝试匹配分区前缀: xd01, tx01, xy01 等 (字母后跟2位数字)
-            if(sscanf(full_userid, "%[a-zA-Z]%d%s", zone_prefix, zone_num, string actual_name) == 3 &&
-               sizeof(zone_prefix) == 2 && zone_num >= 1 && zone_num <= 99) {
-                // 匹配成功: zone_prefix 如 "xd", zone_num 如 1, actual_name 如 "jinghaha158"
-                game_fg = sprintf("%s%02d", zone_prefix, zone_num);
-                user_name = actual_name;
-            } else {
-                // 没有分区前缀，直接使用完整 userid
-                user_name = full_userid;
-            }
+            // 使用JSP传递的game_pre作为分区前缀
+            string game_fg = game_pre || "";  // 分区前缀如 xd01, tx01
 
             http_werror(" Parsed: game_fg=%s, user_name=%s (len=%d), password_len=%d\n",
-                        game_fg, user_name, sizeof(user_name), sizeof(plaintext_password));
+                        game_fg, user_name, sizeof(user_name), sizeof(pswd));
 
             // HTTP API 模式下直接实现注册逻辑
             // 注意：存储明文密码，登录时用challenge做哈希验证
             string result;
-            if(sizeof(user_name) < 2 || sizeof(user_name) > 12 || sizeof(plaintext_password) < 2) {
+            if(sizeof(user_name) < 2 || sizeof(user_name) > 12 || sizeof(pswd) < 2) {
                 http_werror(" VALIDATION FAILED: user_name_len=%d (need 2-12), password_len=%d (need >=2)\n",
-                            sizeof(user_name), sizeof(plaintext_password));
+                            sizeof(user_name), sizeof(pswd));
                 result = "error2";
             } else {
                 // 检查用户名只包含字母数字
@@ -785,6 +789,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                         result = "error1";
                     } else {
                         // 检查内存中是否有在线用户
+                        http_werror(" Checking if user in memory...\n");
                         object user_in_memory = find_player(full_username);
                         if(user_in_memory) {
                             http_werror(" User already in memory: %s\n", full_username);
@@ -792,51 +797,99 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                         } else {
                             // 创建新用户 - 直接创建用户文件
                             http_werror(" Creating new user...\n");
+                            http_werror(" ROOT=%s\n", ROOT);
+
                             program u;
                             object m;
 
                             // 尝试加载 master.pike（如果失败则忽略）
-                            catch {
+                            http_werror(" Step 1: Loading master.pike...\n");
+                            mixed master_err = catch {
                                 m = (object)(ROOT + "/gamelib/master.pike");
                                 http_werror(" master.pike loaded: %O\n", m);
+                                if(m) http_werror(" master.pike functions: %O\n", indices(m));
                             };
-                            if(m && m->connect) {
+                            if(master_err) {
+                                http_werror(" master.pike load ERROR: %s\n", describe_error(master_err));
+                            }
+
+                            http_werror(" Step 2: Getting user program...\n");
+                            if(m && functionp(m->connect)) {
+                                http_werror(" Found master->connect function\n");
                                 u = m->connect();
                                 http_werror(" Using master.pike->connect(): %O\n", u);
                             }
                             if(!u) {
-                                u = (program)(ROOT + "/gamelib/clone/user.pike");
-                                http_werror(" Using user.pike: %O\n", u);
+                                http_werror(" No master->connect, loading user.pike directly...\n");
+                                mixed user_prog_err = catch {
+                                    u = (program)(ROOT + "/gamelib/clone/user.pike");
+                                    http_werror(" Using user.pike: %O\n", u);
+                                };
+                                if(user_prog_err) {
+                                    http_werror(" user.pike load ERROR: %s\n", describe_error(user_prog_err));
+                                }
                             }
 
-                            mixed err = catch {
-                                object me = u();
-                                http_werror(" user object created: %O\n", me);
-                                me->set_name(full_username);  // 使用完整用户名
-                                me->set_password(plaintext_password);  // 存储明文密码
-                                me->set_project("gamelib");  // 使用 gamelib
-                                me->set_userip(client_ip);
+                            if(!u) {
+                                http_werror(" FATAL: Cannot load user program!\n");
+                                result = "error2";
+                            } else {
+                                http_werror(" Step 3: Creating user instance...\n");
+                                mixed err = catch {
+                                    object me = u();
+                                    http_werror(" user object created: %O\n", me);
+                                    if(!me) {
+                                        http_werror(" FATAL: u() returned NULL!\n");
+                                        result = "error2";
+                                    } else {
+                                        http_werror(" Step 4: Setting user properties...\n");
 
-                                // 初始化必要字段，避免 query_desc() 出错
-                                if(!me->query("sid")) me->set("sid", "tmpUser");
-                                http_werror(" Initialized sid: tmpUser\n");
+                                        http_werror("  Calling set_name(%s)...\n", full_username);
+                                        me->set_name(full_username);
 
-                                http_werror(" Calling setup()...\n");
-                                if(me->setup(plaintext_password)) {
-                                    // 注册成功
-                                    if(environment(me) == 0)
-                                        me->move(LOW_VOID_OB);
+                                        http_werror("  Calling set_password()...\n");
+                                        me->set_password(pswd);
 
-                                    http_werror(" Registration SUCCESS: %s\n", full_username);
-                                    result = user_name + "," + plaintext_password;  // 返回不含前缀的用户名
-                                } else {
-                                    http_werror(" setup() FAILED for user: %s\n", full_username);
+                                        http_werror("  Calling set_project(%s)...\n", projname || "gamelib");
+                                        me->set_project(projname || "gamelib");
+
+                                        http_werror("  Calling set_userip(%s)...\n", client_ip);
+                                        me->set_userip(client_ip);
+
+                                        // 初始化必要字段，避免 query_desc() 出错
+                                        http_werror("  Initializing basic fields...\n");
+                                        if(!me->query("sid")) {
+                                            me->set("sid", sid || "tmpUser");
+                                            http_werror("  Initialized sid: %s\n", sid || "tmpUser");
+                                        }
+
+                                        http_werror(" Step 5: Calling setup()...\n");
+                                        mixed setup_err = catch {
+                                            if(me->setup(pswd)) {
+                                                // 注册成功
+                                                http_werror("  setup() returned SUCCESS\n");
+                                                if(environment(me) == 0) {
+                                                    http_werror("  Moving to LOW_VOID_OB...\n");
+                                                    me->move(LOW_VOID_OB);
+                                                }
+
+                                                http_werror(" Registration SUCCESS: %s\n", full_username);
+                                                result = user_name + "," + pswd;  // 返回不含前缀的用户名
+                                            } else {
+                                                http_werror("  setup() returned FALSE\n");
+                                                result = "error2";
+                                            }
+                                        };
+                                        if(setup_err) {
+                                            http_werror("  setup() EXCEPTION: %s\n", describe_error(setup_err));
+                                            result = "error2";
+                                        }
+                                    }
+                                };
+                                if(err) {
+                                    http_werror(" User creation EXCEPTION: %s\n", describe_error(err));
                                     result = "error2";
                                 }
-                            };
-                            if(err) {
-                                http_werror(" Registration EXCEPTION: %s\n", describe_error(err));
-                                result = "error2";
                             }
                         }
                     }

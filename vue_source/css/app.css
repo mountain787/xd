@@ -1993,14 +1993,14 @@ body {
 }
 
 .quick-btn {
-    flex: 0 0 calc(20% - 5px);
+    flex: 1;
     min-width: 0;
-    padding: 10px 4px;
+    padding: 12px 8px;
     border: none;
-    border-radius: 6px;
+    border-radius: 8px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    font-size: 11px;
+    font-size: 14px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
@@ -2065,8 +2065,8 @@ body {
 .quick-actions-inner {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    margin-top: 6px;
+    gap: 10px;
+    margin-top: 8px;
 }
 
 /* 折叠状态 */

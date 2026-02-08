@@ -2500,11 +2500,11 @@ body {
 
 /* 子容器 - 固定宽度，模仿iframe的child样式 */
 .mud-child {
-    display: inline-block;
+    display: block;
     width: 95%;
     max-width: 800px;
     text-align: left;
-    vertical-align: top;
+    margin: 0 auto;
 }
 
 .mud-parent:before,

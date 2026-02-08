@@ -279,6 +279,11 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                                 if(colon_pos >= 0) {
                                     string img_name = content[8..8+colon_pos-1];
                                     string img_href = content[8+colon_pos+1..];
+                                    // 移除游戏前缀 /xd/ 或 /tx/，转换为正确的Web路径
+                                    // 例如: /xd/images/humanlike_male.gif -> /images/humanlike_male.gif
+                                    if(sscanf(img_href, "/%*s/images/%s", string rest) == 2) {
+                                        img_href = "/images/" + rest;
+                                    }
                                     http_werror("[DEBUG] img_name='" + img_name + "' img_href='" + img_href + "'\n");
                                     html += sprintf("<img src=\"%s\" alt=\"%s\" height=\"20\" width=\"20\" align=\"middle\"/>",
                                                        img_href, img_name);
@@ -295,6 +300,11 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                                 if(colon_pos >= 0) {
                                     string img_name = content[7..7+colon_pos-1];
                                     string img_href = content[7+colon_pos+1..];
+                                    // 移除游戏前缀 /xd/ 或 /tx/，转换为正确的Web路径
+                                    // 例如: /xd/images/humanlike_male.gif -> /images/humanlike_male.gif
+                                    if(sscanf(img_href, "/%*s/images/%s", string rest) == 2) {
+                                        img_href = "/images/" + rest;
+                                    }
                                     http_werror("[DEBUG] img_name='" + img_name + "' img_href='" + img_href + "'\n");
                                     html += sprintf("<img src=\"%s\" alt=\"%s\"/>",
                                                        img_href, img_name);
@@ -644,6 +654,10 @@ mapping parse_response_to_json(string response, string userid)
                             if(colon_pos >= 0) {
                                 string img_name = content[8..8+colon_pos-1];
                                 string img_href = content[8+colon_pos+1..];
+                                // 移除游戏前缀 /xd/ 或 /tx/，转换为正确的Web路径
+                                if(sscanf(img_href, "/%*s/images/%s", string rest) == 2) {
+                                    img_href = "/images/" + rest;
+                                }
                                 mapping img = ([
                                     "type": "image",
                                     "src": img_href,
@@ -664,6 +678,10 @@ mapping parse_response_to_json(string response, string userid)
                             if(colon_pos >= 0) {
                                 string img_name = content[7..7+colon_pos-1];
                                 string img_href = content[7+colon_pos+1..];
+                                // 移除游戏前缀 /xd/ 或 /tx/，转换为正确的Web路径
+                                if(sscanf(img_href, "/%*s/images/%s", string rest) == 2) {
+                                    img_href = "/images/" + rest;
+                                }
                                 mapping img = ([
                                     "type": "image",
                                     "src": img_href,

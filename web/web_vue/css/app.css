@@ -2582,14 +2582,14 @@ body {
 /* MUD按钮 - 经典模式 */
 .mud-btn {
     text-decoration: none;
-    margin: 1px auto;
+    margin: 2px auto;
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 10px 18px;
+    border-radius: 10px;
     border: 1px solid #8B7765;
     background: #E8D9C6;
     color: #3d2914;
-    font-size: 14px;
+    font-size: 18px;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -2666,12 +2666,12 @@ body {
 
 /* MUD输入框 */
 .mud-input {
-    padding: 4px 8px;
+    padding: 8px 12px;
     border: 1px solid #8B7765;
-    border-radius: 4px;
+    border-radius: 8px;
     background: #FFFEF8;
     color: #3d2914;
-    font-size: 14px;
+    font-size: 18px;
     outline: none;
     margin: 2px;
 }
@@ -2722,8 +2722,8 @@ body {
 }
 
 .mud-confirm-btn {
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: 16px;
 }
 
 .mud-cmd-input {

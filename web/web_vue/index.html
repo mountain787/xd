@@ -284,7 +284,7 @@
 
             <!-- 战斗面板 (JSON模式专用) -->
             <div v-if="useJsonMode && isInBattle" class="battle-panel" :class="{ 'mini-mode': !battleFullscreen, 'fullscreen-mode': battleFullscreen }">
-                <!-- 迷你模式: 只显示HP条和法力条 -->
+                <!-- 迷你模式: 只显示HP条和内力条 -->
                 <div v-if="!battleFullscreen" class="battle-mini">
                     <div class="battle-side player-side">
                         <span class="battle-name">{{ playerStats?.name_cn || loginForm.userid }}</span>
@@ -292,11 +292,11 @@
                             <div class="hp-bar-fill player-hp" :style="{ width: playerStats ? (playerStats.hp / playerStats.hp_max * 100) + '%' : '0%' }"></div>
                         </div>
                         <span class="hp-text">{{ playerStats?.hp || 0 }}/{{ playerStats?.hp_max || 0 }}</span>
-                        <!-- 法力条 -->
-                        <div class="mana-bar-container">
-                            <div class="mana-bar-fill player-mana" :style="{ width: playerStats ? (playerStats.mana / playerStats.mana_max * 100) + '%' : '0%' }"></div>
+                        <!-- 内力条 -->
+                        <div class="neili-bar-container">
+                            <div class="neili-bar-fill player-neili" :style="{ width: playerStats ? (playerStats.neili / playerStats.neili_max * 100) + '%' : '0%' }"></div>
                         </div>
-                        <span class="mana-text">{{ playerStats?.mana || 0 }}/{{ playerStats?.mana_max || 0 }}</span>
+                        <span class="neili-text">{{ playerStats?.neili || 0 }}/{{ playerStats?.neili_max || 0 }}</span>
                     </div>
                     <div class="battle-vs">⚔️</div>
                     <div class="battle-side enemy-side">
@@ -371,16 +371,16 @@
                                     <div class="hp-bar-fill player-hp" :style="{ width: playerStats ? (playerStats.hp / playerStats.hp_max * 100) + '%' : '0%' }"></div>
                                 </div>
                             </div>
-                            <!-- 法力条 -->
-                            <div class="mana-bar-wrapper-vertical">
-                                <div class="mana-bar-track-vertical">
-                                    <div class="mana-bar-fill player-mana" :style="{ width: playerStats ? (playerStats.mana / playerStats.mana_max * 100) + '%' : '0%' }"></div>
+                            <!-- 内力条 -->
+                            <div class="neili-bar-wrapper-vertical">
+                                <div class="neili-bar-track-vertical">
+                                    <div class="neili-bar-fill player-neili" :style="{ width: playerStats ? (playerStats.neili / playerStats.neili_max * 100) + '%' : '0%' }"></div>
                                 </div>
                             </div>
                             <div class="combatant-stats" v-if="battlePlayerFull" style="margin-top: 6px;">
-                                <span class="stat-item">法力: {{ battlePlayerFull.mana || 0 }}/{{ battlePlayerFull.mana_max || 0 }}</span>
-                                <span class="stat-item">精力: {{ battlePlayerFull.energy || 0 }}</span>
-                                <span class="stat-item">经验: {{ battlePlayerFull.exp || 0 }}/{{ battlePlayerFull.exp_need || 0 }}</span>
+                                <span class="stat-item">精神: {{ battlePlayerFull.spirit || 0 }}/{{ battlePlayerFull.spirit_max || 0 }}</span>
+                                <span class="stat-item">潜能: {{ battlePlayerFull.potential || 0 }}/{{ battlePlayerFull.potential_max || 0 }}</span>
+                                <span class="stat-item">内力: {{ battlePlayerFull.neili || 0 }}/{{ battlePlayerFull.neili_max || 0 }}</span>
                             </div>
                         </div>
                     </div>
@@ -546,11 +546,11 @@
                     {{ quickActionsCollapsed ? '▲' : '▼' }}
                 </button>
                 <div class="quick-actions-inner" v-show="!quickActionsCollapsed">
-                    <button class="quick-btn" @click="sendQuickCommand('look')">👁️ 查看</button>
-                    <button class="quick-btn" @click="sendQuickCommand('myhp')">❤️ 状态</button>
-                    <button class="quick-btn" @click="sendQuickCommand('inventory')">🎒 背包</button>
-                    <button class="quick-btn" @click="sendQuickCommand('qqlist')">👥 好友</button>
-                    <button class="quick-btn" @click="sendQuickCommand('coustom')">⚙️ 设置</button>
+                    <button class="quick-btn" @click="sendQuickCommand('look')">查看</button>
+                    <button class="quick-btn" @click="sendQuickCommand('myhp')">状态</button>
+                    <button class="quick-btn" @click="sendQuickCommand('inventory')">背包</button>
+                    <button class="quick-btn" @click="sendQuickCommand('qqlist')">好友</button>
+                    <button class="quick-btn" @click="sendQuickCommand('coustom')">设置</button>
                 </div>
             </footer>
         </template>

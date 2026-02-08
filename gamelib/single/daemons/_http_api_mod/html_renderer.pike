@@ -266,27 +266,39 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                             string label = content[0..pos-1];
                             string action_cmd = content[pos+1..];
 
+                            // DEBUG LOG
+                            http_werror("[DEBUG] content='" + content + "'\n");
+                            http_werror("[DEBUG] label='" + label + "' action_cmd='" + action_cmd + "'\n");
+
                             // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
                             if(search(content, "miniimg ") == 0) {
+                                http_werror("[DEBUG] Found miniimg prefix\n");
                                 int colon_pos = search(content[8..], ":");
+                                http_werror("[DEBUG] colon_pos=" + (string)colon_pos + "\n");
                                 if(colon_pos >= 0) {
                                     string img_name = content[8..8+colon_pos-1];
                                     string img_href = content[8+colon_pos+1..];
+                                    http_werror("[DEBUG] img_name='" + img_name + "' img_href='" + img_href + "'\n");
                                     html += sprintf("<img src=\"%s\" alt=\"%s\" height=\"20\" width=\"20\" align=\"middle\"/>",
                                                        img_href, img_name);
                                 } else {
+                                    http_werror("[DEBUG] colon_pos < 0, falling back to button\n");
                                     html += format_html_button(label, action_cmd, txd, userid);
                                 }
                             }
                             // 图片加载 [imgurl name:/path/to/image.gif]
                             else if(search(content, "imgurl ") == 0) {
+                                http_werror("[DEBUG] Found imgurl prefix\n");
                                 int colon_pos = search(content[7..], ":");
+                                http_werror("[DEBUG] colon_pos=" + (string)colon_pos + "\n");
                                 if(colon_pos >= 0) {
                                     string img_name = content[7..7+colon_pos-1];
                                     string img_href = content[7+colon_pos+1..];
+                                    http_werror("[DEBUG] img_name='" + img_name + "' img_href='" + img_href + "'\n");
                                     html += sprintf("<img src=\"%s\" alt=\"%s\"/>",
                                                        img_href, img_name);
                                 } else {
+                                    http_werror("[DEBUG] colon_pos < 0, falling back to button\n");
                                     html += format_html_button(label, action_cmd, txd, userid);
                                 }
                             }
@@ -297,6 +309,7 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                                 html += sprintf("<a href=\"javascript:void(0)\" onclick=\"window.top.location='%s';return false;\" class=\"btn btn-outline-info btn-sm\">%s</a>",
                                                    action_cmd, format_text(display_text));
                             } else {
+                                http_werror("[DEBUG] No match, using format_html_button\n");
                                 html += format_html_button(label, action_cmd, txd, userid);
                             }
                         } else {

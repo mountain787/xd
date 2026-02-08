@@ -125,46 +125,51 @@ class pikenv_master{
 		}
 		return ob;
 	}
+	*/
 	void handle_error(array(mixed)|object trace,void|string header)
 	{
+		if(header=="WARNING") return;
 		if(header==0)
 			header="ERROR";
 		if(mixed x=catch {
-				//werror("\n-----"+String.trim_all_whites(ctime(time()))+"-----\n"+header+": *"+describe_backtrace(trace));
-//				log->write(ctime(time())+":"+describe_backtrace(trace));
-				}) {
+			string log_msg = "\n-----"+String.trim_all_whites(ctime(time()))+"-----\n"+header+": *"+describe_backtrace(trace);
+			werror(log_msg);
+			log->write(log_msg);
+		}) {
 			// One reason for this might be too little stack space, which
 			// easily can occur for "out of stack" errors. It should help to
 			// tune up the STACK_MARGIN values in interpret.c then.
-			//werror("Error in handle_error in master object:\n");
+			werror("Error in handle_error in master object:\n");
 			if(catch {
 					catch {
 					if (catch {
 						string msg = [string]x[0];
 						array bt = [array]x[1];
-						//werror("%s%O\n", msg, bt);
+						werror("%s%O\n", msg, bt);
 						log->write("%s%O\n", msg, bt);
 						}) {
-					//werror("%O\n", x);
-//					log->write("%O\n", x);
+					werror("%O\n", x);
+					log->write("%O\n", x);
 					}
 					};
-					//werror("Original error:\n"
-						//"%O\n", trace);
-//					log->write("Original error:\n"
-//						"%O\n", trace);
+					werror("Original error:\n"
+						"%O\n", trace);
+					log->write("Original error:\n"
+						"%O\n", trace);
 					}) {
-				//werror("sprintf() failed to write error.\n");
+				werror("sprintf() failed to write error.\n");
 			}
 		}
 	}
-	*/
 	Stdio.File log;
+	Stdio.File debug_log;
 	protected void create(string ROOT,string postfix)
 	{
 		Stdio.mkdirhier(ROOT+"/log");
 		log=Stdio.File(ROOT+"/log/error."+postfix,"wca");
-		log->dup2(Stdio.stderr);
+		debug_log=Stdio.File(ROOT+"/log/stderr."+postfix,"wca");
+		debug_log->dup2(Stdio.stderr);
+		// log->dup2(Stdio.stderr);  // 真正的错误不输出到终端
 		/* You need to copy the values from the old master to the new */
 		/* NOTE: At this point we are still using the old master */
 		object old_master = master();

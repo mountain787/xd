@@ -9,7 +9,7 @@ int main(string arg)
 	s += "[［人物属性］:myinfo]\n";
 	s += me->query_user_picture_url()+"\n";
 	s += me->query_name_cn()+"\n";
-	s += "ID:"+me->query_name()-me->game_fg+"\n";
+	s += "ID:"+me->query_name()+(string)(me->game_fg||0)+"\n";
 	s += "性别："+me->query_gender()+"\n";
 	s += "称谓："+WAP_HONERD->query_honer_level_desc(me->honerlv,me->query_raceId())+"\n";
 	s += "种族："+me->query_race_cn(me->query_raceId())+"\n";

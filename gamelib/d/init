@@ -405,7 +405,8 @@ int choice_profe(string arg){
 		me->set_profeId(u_p);
 
 		//针对妖族推广的用户注册记录，07/05/2007 liaocheng添加
-		array(string) sid_tmp = (me->sid || "")/"_"; 
+		string sid_str = (string)(me->sid || "");
+		array(string) sid_tmp = sid_str/"_"; 
 		if(sizeof(sid_tmp) == 3 && sid_tmp[0] == "monst" && sid_tmp[1] == "intro"){
 			string from = sid_tmp[2];
 			newuser_monst(me->query_name(),from);

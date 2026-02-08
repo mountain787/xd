@@ -1,5 +1,4 @@
-<%@ page import="org.apache.log4j.*,                                                                                         
-	org.apache.commons.lang.StringUtils,
+<%@ page import="org.apache.log4j.*,
 	java.net.URL,
 	java.net.HttpURLConnection,
 	javax.naming.*,

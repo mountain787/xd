@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html;charset=UTF-8" pageEncoding="UTF-8"%>
 <%@include file="includes/header.inc"%>
-<%@include file="common.inc"%>
+<%@include file="includes/common.inc"%>
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
@@ -26,8 +26,10 @@
         @media (min-width: 768px) {
             body {
                 display: flex;
+                flex-direction: column;
                 align-items: center;
                 justify-content: center;
+                width: 100%;
             }
         }
 
@@ -301,7 +303,7 @@
                     <div class="ui-card-desc">现代化 Vue 界面</div>
                 </div>
 
-                <div class="ui-card old-ui" onclick="selectUI('old')">
+                <div class="ui-card old-ui" onclick="selectUI('old')" style="display:none;">
                     <div class="ui-card-icon">📜</div>
                     <div class="ui-card-title">经典界面</div>
                     <div class="ui-card-desc">传统 JSP 界面</div>
@@ -389,6 +391,18 @@ if(p_pswd == null)
 <script>
     // Check saved UI choice
     function checkSavedUI() {
+        // Check URL parameter FIRST (优先检查 URL 参数，避免循环跳转)
+        var urlParams = new URLSearchParams(window.location.search);
+        var uiParam = urlParams.get('ui');
+        if (uiParam === 'back') {
+            localStorage.removeItem('mud_ui_choice');
+            localStorage.removeItem('mud_ui_choice_time');
+            // 确保显示界面选择页面
+            document.getElementById('uiSelection').style.display = 'block';
+            document.getElementById('oldLoginForm').style.display = 'none';
+            return false;
+        }
+
         var savedUI = localStorage.getItem('mud_ui_choice');
         var savedTime = localStorage.getItem('mud_ui_choice_time');
 
@@ -397,7 +411,7 @@ if(p_pswd == null)
             var daysSince = (Date.now() - parseInt(savedTime)) / (1000 * 60 * 60 * 24);
             if (daysSince < 30) {
                 if (savedUI === 'new') {
-                    window.location.href = '/web/web_vue/index.html';
+                    window.location.href = 'web_vue/index.html';
                     return true;
                 } else if (savedUI === 'old') {
                     document.getElementById('uiSelection').style.display = 'none';
@@ -405,15 +419,6 @@ if(p_pswd == null)
                     return true;
                 }
             }
-        }
-
-        // Check URL parameter
-        var urlParams = new URLSearchParams(window.location.search);
-        var uiParam = urlParams.get('ui');
-        if (uiParam === 'back') {
-            localStorage.removeItem('mud_ui_choice');
-            localStorage.removeItem('mud_ui_choice_time');
-            return false;
         }
 
         return false;
@@ -431,7 +436,7 @@ if(p_pswd == null)
                 localStorage.removeItem('mud_ui_choice');
                 localStorage.removeItem('mud_ui_choice_time');
             }
-            window.location.href = '/web/web_vue/index.html';
+            window.location.href = 'web_vue/index.html';
         } else if (ui === 'old') {
             if (remember) {
                 localStorage.setItem('mud_ui_choice', 'old');

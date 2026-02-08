@@ -45,7 +45,11 @@ int query_auto_learn_dazuo(){
 int max_yao;
 int query_max_yao(){
 	object me=this_player();
-	max_yao=5*(me->query_vip_flag()+1);
+	int vip_flag = 0;
+	if(me && me->query_vip_flag) {
+		vip_flag = me->query_vip_flag();
+	}
+	max_yao=5*(vip_flag+1);
 	//werror("========me->query_vip_flag() "+me->query_vip_flag()+"\n");
 	return max_yao;
 }
@@ -721,7 +725,7 @@ string query_links(void|int count)
 	if(tp&&this_object()->query_raceId()==tp->query_raceId()){
 		//增加了帮战杀戮的显示，由liaocheng于08/08/30添加
 		object env=environment(this_object());
-		if(env->room_race == "third" && this_object()->bangid && this_player()->bangid && BANGZHAND->is_in_bangzhan(this_object()->bangid,this_player()->bangid))
+		if(env && env->room_race == "third" && this_object()->bangid && this_player()->bangid && BANGZHAND->is_in_bangzhan(this_object()->bangid,this_player()->bangid))
 			out += "[杀戮:kill "+this_object()->query_name()+" "+count+"]\n";
 		//添加跟随链接，由liaocheng于07/09/21添加
 		else if(this_player()->follow == "_none" && this_player()->query_term()==this_object()->query_term() && this_player()->query_term() != "noterm")

@@ -15,9 +15,15 @@ string query_desc(){
 	object me=this_player();
 	string desc="";
 
-	//针对妖族推广07/04/2007 liaocheng添加
-	array(string) sid_tmp = this_player()->sid/"_"; 
-	if(sizeof(sid_tmp) == 3 && sid_tmp[0]=="monst" && sid_tmp[1]=="intro")
+	// 安全检查：确保 me 存在
+	if(!me) {
+		return "欢迎加入仙道世界！\n[妖魔:choice_race monst]\n[人类:choice_race human]\n";
+	}
+
+	// 针对妖族推广07/04/2007 laocheng添加
+	array(string) sid_tmp = me->sid ? me->sid/"_" : ({});
+
+		if(sizeof(sid_tmp) == 3 && sid_tmp[0]=="monst" && sid_tmp[1]=="intro")
 	{
 		if(!me->query_raceId() || me->query_raceId() == ""){
 			me->set_raceId("monst");

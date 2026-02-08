@@ -1,5 +1,4 @@
-<%@ page import="org.apache.log4j.*,            
-	org.apache.commons.lang.StringUtils,
+<%@ page import="org.apache.log4j.*,
 	java.net.URL,
 	java.net.HttpURLConnection,
 	javax.naming.*,
@@ -11,6 +10,17 @@
 	java.io.InputStreamReader" %>
 	<%!
 	String[] heads = {"xxxxxxxx"};
+
+// Simple string join utility
+String joinArgs(String[] args, String separator) {
+	if (args == null || args.length == 0) return "";
+	StringBuilder sb = new StringBuilder();
+	for (int i = 0; i < args.length; i++) {
+		if (i > 0) sb.append(separator);
+		sb.append(args[i]);
+	}
+	return sb.toString();
+}
 
 String[] parse(String moContent)
 {
@@ -53,10 +63,10 @@ String exec_pike(String ...args) {
 			result += line;
 		}
 		long cost = System.currentTimeMillis() - set1;
-		logger.info("[exec_pike:" + StringUtils.join(args,' ') +  "] [result:" + result + "] [" + cost + "ms]");
+		logger.info("[exec_pike:" + joinArgs(args,' ') +  "] [result:" + result + "] [" + cost + "ms]");
 		return result;
 	} catch (Throwable e) {
-		logger.error("[exec_pike:" + StringUtils.join(args,' ') +  "] [error] [" + (System.currentTimeMillis() - set1) + "ms]",e);
+		logger.error("[exec_pike:" + joinArgs(args,' ') +  "] [error] [" + (System.currentTimeMillis() - set1) + "ms]",e);
 		return "0";
 	}
 }

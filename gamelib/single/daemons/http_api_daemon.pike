@@ -600,6 +600,10 @@ void handle_request(Protocols.HTTP.Server.Request req)
                 else if(search(path, "/api/performs") == 0) {
                     handle_api_performs(req);
                 }
+                // 处理 /api/invite/seturl 格式 - 设置邀请URL
+                else if(path == "/api/invite/seturl") {
+                    handle_api_invite_seturl(req);
+                }
                 // translate.js 从 http_api 目录提供（始终允许，不受api_only_mode限制）
                 else if(path == "/includes/translate.js") {
                     serve_file(req, "gamelib/single/d/http_api/translate.js", "application/javascript");
@@ -706,19 +710,50 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
 
     // 注册命令处理 - 直接实现注册逻辑（xiand没有login_regnew命令）
     if(search(cmd, "login_regnew ") == 0) {
+        http_werror("=== REGISTER REQUEST ===\n");
+        http_werror(" RAW CMD: %s\n", cmd);
+
         if(check_register_rate_limit(client_ip)) {
+            http_werror(" RATE LIMIT EXCEEDED for IP: %s\n", client_ip);
             send_html_error(req, "注册尝试过于频繁，请稍后再试");
             return;
         }
 
-        // 解析Vue发送的参数
-        string path, user_name, password_hash, session_id, challenge;
-        if(sscanf(cmd, "login_regnew %s %s %s %s %s", path, user_name, password_hash, session_id, challenge) == 5) {
-            http_werror(" Registration params: path=%s, user=%s, ip=%s\n", path, user_name, client_ip);
+        // 解析Vue发送的参数: login_regnew gamenv fullUserid plaintextPassword [session] [challenge]
+        // 注意：Vue发送的是明文密码，HTTP API会存储明文，登录时用challenge做哈希验证
+        string path, full_userid, plaintext_password, session_id, challenge;
+        int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s", path, full_userid, plaintext_password, session_id, challenge);
+        http_werror(" sscanf result: %d\n", parse_result);
+        http_werror(" path=%s, full_userid=%s, password_len=%d, ip=%s\n",
+                    path, full_userid, plaintext_password ? sizeof(plaintext_password) : 0, client_ip);
+
+        if(parse_result >= 3) {
+            // 从 full_userid 中提取分区前缀和实际用户名
+            string game_fg = "";  // 分区前缀如 xd01, tx01
+            string user_name = ""; // 实际用户名
+            int zone_num = 0;
+            string zone_prefix = "";
+
+            // 尝试匹配分区前缀: xd01, tx01, xy01 等 (字母后跟2位数字)
+            if(sscanf(full_userid, "%[a-zA-Z]%d%s", zone_prefix, zone_num, string actual_name) == 3 &&
+               sizeof(zone_prefix) == 2 && zone_num >= 1 && zone_num <= 99) {
+                // 匹配成功: zone_prefix 如 "xd", zone_num 如 1, actual_name 如 "jinghaha158"
+                game_fg = sprintf("%s%02d", zone_prefix, zone_num);
+                user_name = actual_name;
+            } else {
+                // 没有分区前缀，直接使用完整 userid
+                user_name = full_userid;
+            }
+
+            http_werror(" Parsed: game_fg=%s, user_name=%s (len=%d), password_len=%d\n",
+                        game_fg, user_name, sizeof(user_name), sizeof(plaintext_password));
 
             // HTTP API 模式下直接实现注册逻辑
+            // 注意：存储明文密码，登录时用challenge做哈希验证
             string result;
-            if(sizeof(user_name) < 2 || sizeof(password_hash) < 2) {
+            if(sizeof(user_name) < 2 || sizeof(user_name) > 12 || sizeof(plaintext_password) < 2) {
+                http_werror(" VALIDATION FAILED: user_name_len=%d (need 2-12), password_len=%d (need >=2)\n",
+                            sizeof(user_name), sizeof(plaintext_password));
                 result = "error2";
             } else {
                 // 检查用户名只包含字母数字
@@ -726,55 +761,81 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                 for(int i = 0; i < sizeof(user_name); i++) {
                     int c = user_name[i];
                     if(!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))) {
+                        http_werror(" INVALID CHAR at position %d: %c (%d)\n", i, c, c);
                         valid_name = 0;
                         break;
                     }
                 }
                 if(!valid_name) {
+                    http_werror(" VALIDATION FAILED: invalid characters in user_name\n");
                     result = "error2";
                 } else {
-                    // 检查用户是否已存在
-                    string user_file_path = ROOT + "/" + path + "/u/" + user_name[sizeof(user_name)-2..] + "/" + user_name + ".o";
+                    // 构建完整的用户名（含分区前缀）用于文件检查
+                    string full_username = game_fg + user_name;
+                    http_werror(" Full username: %s\n", full_username);
+
+                    // 检查用户是否已存在 - 使用 gamelib 路径
+                    string user_file_path = ROOT + "/gamelib/u/" + full_username[sizeof(full_username)-2..] + "/" + full_username + ".o";
+                    http_werror(" Checking user file: %s\n", user_file_path);
                     string existing_user = Stdio.read_file(user_file_path);
 
                     if(existing_user) {
                         // 用户已存在
+                        http_werror(" User already exists: %s\n", full_username);
                         result = "error1";
                     } else {
                         // 检查内存中是否有在线用户
-                        object user_in_memory = find_player(user_name);
+                        object user_in_memory = find_player(full_username);
                         if(user_in_memory) {
+                            http_werror(" User already in memory: %s\n", full_username);
                             result = "error1";
                         } else {
                             // 创建新用户 - 直接创建用户文件
+                            http_werror(" Creating new user...\n");
                             program u;
-                            mixed err = catch {
-                                object m = (object)(ROOT + "/" + path + "/master.pike");
-                                if(m) u = m->connect();
-                                if(!u) u = (program)(ROOT + "/" + path + "/clone/user.pike");
+                            object m;
 
+                            // 尝试加载 master.pike（如果失败则忽略）
+                            catch {
+                                m = (object)(ROOT + "/gamelib/master.pike");
+                                http_werror(" master.pike loaded: %O\n", m);
+                            };
+                            if(m && m->connect) {
+                                u = m->connect();
+                                http_werror(" Using master.pike->connect(): %O\n", u);
+                            }
+                            if(!u) {
+                                u = (program)(ROOT + "/gamelib/clone/user.pike");
+                                http_werror(" Using user.pike: %O\n", u);
+                            }
+
+                            mixed err = catch {
                                 object me = u();
-                                me->set_name(user_name);
-                                me->set_name_newbei("test");
-                                me->set_password(password_hash);
-                                me->set_project(path);
+                                http_werror(" user object created: %O\n", me);
+                                me->set_name(full_username);  // 使用完整用户名
+                                me->set_password(plaintext_password);  // 存储明文密码
+                                me->set_project("gamelib");  // 使用 gamelib
                                 me->set_userip(client_ip);
 
-                                if(me->setup(user_name)) {
+                                // 初始化必要字段，避免 query_desc() 出错
+                                if(!me->query("sid")) me->set("sid", "tmpUser");
+                                http_werror(" Initialized sid: tmpUser\n");
+
+                                http_werror(" Calling setup()...\n");
+                                if(me->setup(plaintext_password)) {
                                     // 注册成功
                                     if(environment(me) == 0)
                                         me->move(LOW_VOID_OB);
 
-                                    // xiand does not have promotion/referral system
-                                    // This section removed
-
-                                    result = user_name + "," + password_hash;
+                                    http_werror(" Registration SUCCESS: %s\n", full_username);
+                                    result = user_name + "," + plaintext_password;  // 返回不含前缀的用户名
                                 } else {
+                                    http_werror(" setup() FAILED for user: %s\n", full_username);
                                     result = "error2";
                                 }
                             };
                             if(err) {
-                                http_werror(" Registration error: %s\n", describe_error(err));
+                                http_werror(" Registration EXCEPTION: %s\n", describe_error(err));
                                 result = "error2";
                             }
                         }
@@ -796,7 +857,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
         }
 
         // 参数格式错误或加载失败
-        http_werror(" Registration failed: invalid parameters or command not loaded\n");
+        http_werror(" Registration FAILED: invalid parameters (sscanf returned %d, need >=3)\n", parse_result);
         send_html_error(req, "error2");
         return;
     }
@@ -1929,6 +1990,61 @@ void handle_api_performs(Protocols.HTTP.Server.Request req)
 
     if(err) {
         werror("[API] /api/performs EXCEPTION: %s\n", describe_error(err));
+        send_json(req, ([ "error": "服务器错误" ]), 500);
+    }
+}
+
+/**
+ * ========================================================================
+ * 设置邀请URL API
+ * ========================================================================
+ *
+ * 用于设置玩家的邀请链接URL
+ *
+ * 请求参数:
+ *   - txd: 认证token
+ *   - url: 邀请链接URL
+ *
+ * ========================================================================
+ */
+void handle_api_invite_seturl(Protocols.HTTP.Server.Request req)
+{
+    mixed err = catch {
+        mapping params = get_params(req);
+        string txd = url_decode(params["txd"]);
+        string invite_url = url_decode(params["url"]);
+
+        if(!txd || txd == "" || txd == " ") {
+            send_json(req, ([ "error": "需要认证信息：txd" ]), 400);
+            return;
+        }
+
+        mapping auth = decode_txd(txd);
+        if(!auth) {
+            send_json(req, ([ "error": "TXD认证信息无效" ]), 401);
+            return;
+        }
+
+        string userid = auth["userid"];
+
+        if(!invite_url || invite_url == "") {
+            send_json(req, ([ "error": "缺少url参数" ]), 400);
+            return;
+        }
+
+        http_werror("[API] /api/invite/seturl: userid=%s, url=%s\n", userid, invite_url);
+
+        // 这里可以将邀请URL保存到用户数据或做其他处理
+        // 目前暂时返回成功响应
+        send_json(req, ([
+            "status": "success",
+            "userid": userid,
+            "url": invite_url
+        ]));
+    };
+
+    if(err) {
+        http_werror("[API] /api/invite/seturl EXCEPTION: %s\n", describe_error(err));
         send_json(req, ([ "error": "服务器错误" ]), 500);
     }
 }

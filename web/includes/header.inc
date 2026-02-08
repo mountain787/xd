@@ -1,5 +1,4 @@
 <%@ page import="org.apache.log4j.*,
-	org.apache.commons.lang.StringUtils.*,
 	java.net.*,
 	java.util.*,
 	javax.naming.*,
@@ -217,5 +216,6 @@ try
 }
 String mobile=request.getHeader("ia");
 String paraString=queryParameterString(request);
-String paraStringESC=queryParameterStringESC(request);                                                                      
+String paraStringESC=queryParameterStringESC(request);
+String favicon = "<link rel=\"icon\" type=\"image/x-icon\" href=\"images/favicon.ico\">";
 %>

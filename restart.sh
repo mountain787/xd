@@ -10,14 +10,13 @@ echo "==== Restarting MUD server ===="
 
 # Graceful shutdown via telnet
 echo "Sending shutdown command..."
-{
-    sleep 0.5
-    echo "login_fee $PROJECT fhwl111"
-    sleep 0.5
-    echo "shutdown"
-    sleep 0.5
-    echo "quit"
-} | nc "$IP" "$PORT" 2>/dev/null
+SHUTDOWN_RESULT=$(echo -e "login_fee $PROJECT fhwl111\nshutdown\nquit\n" | nc "$IP" "$PORT" 2>&1)
+
+if [ $? -eq 0 ]; then
+    echo "✓ Shutdown successful"
+else
+    echo "✗ Shutdown failed (server may not be running)"
+fi
 
 # Wait for shutdown to complete
 echo "Waiting for shutdown..."
@@ -26,5 +25,11 @@ sleep 3
 # Start server
 echo "Starting server..."
 ./startup.sh
+
+if [ $? -eq 0 ]; then
+    echo "✓ Server started successfully"
+else
+    echo "✗ Server start failed"
+fi
 
 echo "==== MUD server restarted ===="

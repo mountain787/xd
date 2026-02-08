@@ -743,27 +743,43 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
         http_werror(" m_key=%s, userip=%s, userua=%s\n", m_key || "", userip || "", userua || "");
 
         if(parse_result >= 3) {
-            // 使用JSP传递的game_pre作为分区前缀，如果为空则从user_name中提取
+            // 解析用户名和分区前缀
+            // Vue发送: tx01jinghaha152 (已含前缀), JSP发送: jinghaha152 (不含前缀，game_pre单独传)
             string game_fg = game_pre || "";  // 分区前缀如 xd01, tx01
-            if(game_fg == "" && sscanf(user_name, "%[a-zA-Z]%d%s", string prefix, int num, string rest) == 3) {
-                game_fg = prefix + sprintf("%02d", num);
+            string actual_user = user_name;   // 实际用户名（不含前缀）
+
+            // 如果user_name包含分区前缀(字母+2位数字)，提取出来
+            string prefix = "";
+            int num = 0;
+            string rest = "";
+            if(sscanf(user_name, "%[a-zA-Z]%d%s", prefix, num, rest) == 3 && sizeof(prefix) == 2 && num >= 1 && num <= 99) {
+                // user_name包含前缀，如 tx01jinghaha152
+                if(game_fg == "") {
+                    game_fg = prefix + sprintf("%02d", num);
+                }
+                actual_user = rest;  // 实际用户名是去掉前缀的部分
             }
 
-            http_werror(" Parsed: game_fg=%s, user_name=%s (len=%d), password_len=%d\n",
-                        game_fg, user_name, sizeof(user_name), sizeof(pswd));
+            http_werror(" Parsed: game_fg=%s, user_name=%s (len=%d), actual_user=%s (len=%d), password_len=%d\n",
+                        game_fg, user_name, sizeof(user_name), actual_user, sizeof(actual_user), sizeof(pswd));
+
+            // 构建完整用户名（含分区前缀）用于存储
+            string full_username = game_fg + actual_user;
+            http_werror(" Full username for storage: %s\n", full_username);
 
             // HTTP API 模式下直接实现注册逻辑
             // 注意：存储明文密码，登录时用challenge做哈希验证
             string result;
-            if(sizeof(user_name) < 2 || sizeof(user_name) > 12 || sizeof(pswd) < 2) {
-                http_werror(" VALIDATION FAILED: user_name_len=%d (need 2-12), password_len=%d (need >=2)\n",
-                            sizeof(user_name), sizeof(pswd));
+            // 验证实际用户名长度（不含分区前缀）
+            if(sizeof(actual_user) < 2 || sizeof(actual_user) > 12 || sizeof(pswd) < 2) {
+                http_werror(" VALIDATION FAILED: actual_user_len=%d (need 2-12), password_len=%d (need >=2)\n",
+                            sizeof(actual_user), sizeof(pswd));
                 result = "error2";
             } else {
-                // 检查用户名只包含字母数字
+                // 检查用户名只包含字母数字（检查实际用户名，不含前缀）
                 int valid_name = 1;
-                for(int i = 0; i < sizeof(user_name); i++) {
-                    int c = user_name[i];
+                for(int i = 0; i < sizeof(actual_user); i++) {
+                    int c = actual_user[i];
                     if(!((c >= 'a' && c <= 'z') || (c >= 'A' && c <= 'Z') || (c >= '0' && c <= '9'))) {
                         http_werror(" INVALID CHAR at position %d: %c (%d)\n", i, c, c);
                         valid_name = 0;
@@ -771,13 +787,10 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                     }
                 }
                 if(!valid_name) {
-                    http_werror(" VALIDATION FAILED: invalid characters in user_name\n");
+                    http_werror(" VALIDATION FAILED: invalid characters in actual_user\n");
                     result = "error2";
                 } else {
-                    // 构建完整的用户名（含分区前缀）用于文件检查
-                    string full_username = game_fg + user_name;
-                    http_werror(" Full username: %s\n", full_username);
-
+                    // full_username已在上面定义: game_fg + actual_user
                     // 检查用户是否已存在 - 使用 gamelib 路径
                     string user_file_path = ROOT + "/gamelib/u/" + full_username[sizeof(full_username)-2..] + "/" + full_username + ".o";
                     http_werror(" Checking user file: %s\n", user_file_path);
@@ -874,7 +887,7 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                                                 }
 
                                                 http_werror(" Registration SUCCESS: %s\n", full_username);
-                                                result = user_name + "," + pswd;  // 返回不含前缀的用户名
+                                                result = actual_user + "," + pswd;  // 返回不含前缀的用户名
                                             } else {
                                                 http_werror("  setup() returned FALSE\n");
                                                 result = "error2";

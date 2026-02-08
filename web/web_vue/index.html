@@ -546,20 +546,26 @@
                     {{ quickActionsCollapsed ? '▲' : '▼' }}
                 </button>
                 <div class="quick-actions-inner" v-show="!quickActionsCollapsed">
-                    <button class="quick-btn" @click="sendQuickCommand('look')">刷新</button>
-                    <button class="quick-btn" @click="sendQuickCommand('myhp')">状态</button>
-                    <button class="quick-btn" @click="sendQuickCommand('inventory')">物品</button>
-                    <button class="quick-btn" @click="sendQuickCommand('myskills')">技能</button>
-                    <button class="quick-btn" @click="sendQuickCommand('map_display')">地图</button>
-                    <button class="quick-btn" @click="sendQuickCommand('my_term')">队伍</button>
-                    <button class="quick-btn" @click="sendQuickCommand('yushi_change')">玉石</button>
-                    <button class="quick-btn" @click="sendQuickCommand('mytasks')">任务</button>
-                    <button class="quick-btn" @click="sendQuickCommand('my_bang')">帮派</button>
-                    <button class="quick-btn" @click="sendQuickCommand('my_games')">江湖</button>
-                    <button class="quick-btn" @click="sendQuickCommand('userlist')">传送</button>
-                    <button class="quick-btn" @click="sendQuickCommand('yushi_myzone')">仙玉</button>
-                    <button class="quick-btn" @click="sendQuickCommand('game_detail')">设置</button>
-                    <button class="quick-btn" @click="sendQuickCommand('vip_service_list')">会员</button>
+                    <div class="quick-btn-row">
+                        <button class="quick-btn" @click="sendQuickCommand('look')">🔄 刷新</button>
+                        <button class="quick-btn" @click="sendQuickCommand('myhp')">❤️ 状态</button>
+                        <button class="quick-btn" @click="sendQuickCommand('inventory')">🎒 物品</button>
+                        <button class="quick-btn" @click="sendQuickCommand('myskills')">⚔️ 技能</button>
+                        <button class="quick-btn" @click="sendQuickCommand('map_display')">🗺️ 地图</button>
+                    </div>
+                    <div class="quick-btn-row">
+                        <button class="quick-btn" @click="sendQuickCommand('my_term')">👥 队伍</button>
+                        <button class="quick-btn" @click="sendQuickCommand('yushi_change')">💎 玉石</button>
+                        <button class="quick-btn" @click="sendQuickCommand('mytasks')">📜 任务</button>
+                        <button class="quick-btn" @click="sendQuickCommand('my_bang')">🏰 帮派</button>
+                        <button class="quick-btn" @click="sendQuickCommand('my_games')">🌊 江湖</button>
+                    </div>
+                    <div class="quick-btn-row">
+                        <button class="quick-btn" @click="sendQuickCommand('userlist')">🌀 传送</button>
+                        <button class="quick-btn" @click="sendQuickCommand('yushi_myzone')">🪙 仙玉</button>
+                        <button class="quick-btn" @click="sendQuickCommand('game_detail')">⚙️ 设置</button>
+                        <button class="quick-btn" @click="sendQuickCommand('vip_service_list')">👑 会员</button>
+                    </div>
                 </div>
             </footer>
         </template>

@@ -1995,18 +1995,22 @@ body {
 .quick-btn {
     flex: 1;
     min-width: 0;
-    padding: 12px 8px;
+    padding: 10px 6px;
     border: none;
     border-radius: 8px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 2px;
 }
 
 /* 经典模式按钮 */
@@ -2064,9 +2068,21 @@ body {
 /* 快捷菜单内部容器 */
 .quick-actions-inner {
     display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
+    flex-direction: column;
+    gap: 8px;
     margin-top: 8px;
+}
+
+/* 快捷按钮行 */
+.quick-btn-row {
+    display: flex;
+    gap: 8px;
+    justify-content: space-between;
+}
+
+.quick-btn-row .quick-btn {
+    flex: 1;
+    min-width: 0;
 }
 
 /* 折叠状态 */

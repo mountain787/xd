@@ -2,10 +2,12 @@ log/
 db_bak/
 db_log/
 core.1096
-# gamelib/clone/item/ - track system files, ignore player-crafted files (contains "00")
+# gamelib/clone/item/ - track system files, ignore player-crafted files
 gamelib/clone/item/**/*.o
-gamelib/clone/item/**/*00*
+gamelib/clone/item/**/*00*       # 玩家打造的装备(含00)
+gamelib/clone/item/**/*_c_*      # 玩家打造的装备(含_c_)
 # gamelib/data/  # removed to track data files
 data_xiand/u/
+data_xiand/new_users/
 gamelib/clone/convert_count.txt
 gamelib/clone/convert_utf8.log

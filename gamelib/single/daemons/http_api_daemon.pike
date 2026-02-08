@@ -886,23 +886,9 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
 
                                         // 初始化必要字段，避免 query_desc() 出错
                                         http_werror("  Initializing basic fields...\n");
-                                        mixed sid_value;
-                                        mixed sid_err = catch {
-                                            sid_value = me->query("sid");
-                                        };
-                                        if(sid_err) {
-                                            http_werror("  query(sid) failed: %s\n", describe_error(sid_err));
-                                            sid_value = 0;
-                                        }
-                                        if(!sid_value) {
-                                            mixed set_err = catch {
-                                                me->set("sid", sid || "tmpUser");
-                                            };
-                                            if(set_err) {
-                                                http_werror("  set(sid) failed: %s\n", describe_error(set_err));
-                                            } else {
-                                                http_werror("  Initialized sid: %s\n", sid || "tmpUser");
-                                            }
+                                        if(!me->sid) {
+                                            me->sid = sid || "tmpUser";
+                                            http_werror("  Initialized sid: %s\n", sid || "tmpUser");
                                         }
 
                                         http_werror(" Step 5: Calling setup()...\n");

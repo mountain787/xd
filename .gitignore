@@ -11,4 +11,5 @@ gamelib/clone/item/**/*.o
 data_xiand/u/
 data_xiand/new_users/
 gamelib/clone/convert_count.txt
+data_xiand/topten.s
 gamelib/clone/convert_utf8.log

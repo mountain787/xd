@@ -1,0 +1,51 @@
+# Git 相关
+.git
+.gitignore
+.gitattributes
+
+# 日志文件
+log/
+*.log
+
+# 数据文件
+data_xiand/
+*.s
+*.o
+
+# 临时文件
+tmp/
+*.tmp
+*.bak
+*.swp
+*~
+
+# IDE 配置
+.idea/
+.vscode/
+*.iml
+
+# Node modules (vue_source 会在构建时处理)
+vue_source/node_modules/
+
+# 编译产物
+dist/
+
+# Docker 相关（避免递归）
+docker/
+
+# 脚本输出
+*.pid
+*.state
+
+# 数据库备份
+db_bak/
+db_log/
+
+# 核心 dump 文件
+core.*
+
+# macOS
+.DS_Store
+
+# Linux
+*~

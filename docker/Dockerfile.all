@@ -1,0 +1,236 @@
+# ============================================
+# xiand 统一镜像 - Pike MUD + Tomcat Web
+# ============================================
+# 在一个容器内同时运行 Pike MUD 和 Tomcat
+# JSP 可以通过 127.0.0.1:13800 直接连接到 MUD
+# 基于 CentOS Stream 10
+
+# ============================================
+# Stage 1: 编译 Pike 9.0 + MySQL 支持
+# ============================================
+FROM quay.io/centos/centos:stream10 AS pike-builder
+
+# 设置工作目录
+WORKDIR /tmp/build
+
+# 安装编译依赖
+# 启用 PowerTools/CRB 仓库以获取更多开发包
+RUN dnf install -y dnf-plugins-core && \
+    dnf config-manager --set-enabled crb && \
+    dnf install -y \
+    gcc gcc-c++ make autoconf bison flex \
+    gmp-devel nettle-devel \
+    mariadb-devel mariadb-connector-c-devel \
+    libpng-devel libjpeg-devel \
+    sqlite-devel \
+    zlib-devel \
+    git && \
+    dnf clean all
+
+# 下载 Pike 9.0.11 预编译源码包（相比git版本更稳定）
+RUN cd /tmp/build && \
+    curl -sL https://pike.lysator.liu.se/pub/pike/beta/9.0.11/Pike-v9.0.11.tar.gz | tar xz && \
+    mv Pike-v9.0.11 pike9
+
+# 编译 Pike 9.0.11
+WORKDIR /tmp/build/pike9
+
+# 从源码编译完整版 nettle 获得 nettle_sm3 支持
+RUN cd /tmp/build && \
+    curl -sL https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz | tar xz && \
+    cd nettle-3.10.1 && \
+    ./configure --prefix=/usr --libdir=/usr/lib64 --enable-shared && \
+    make -j4 && \
+    make install && \
+    ldconfig
+
+# Pike 9.0.11 编译
+RUN export CFLAGS="-O2" && \
+    export CXXFLAGS="-O2" && \
+    rm -rf src/post_modules/GI src/post_modules/FFI && \
+    mkdir -p /tmp/build/pike9/build && \
+    cd /tmp/build/pike9/build && \
+    /tmp/build/pike9/src/configure --prefix=/usr/local/pike9 \
+      --with-mysql \
+      --with-gmp \
+      --with-nettle \
+      --with-sqlite \
+      --without-java \
+      --without-gtk2 \
+      --without-gl \
+      --without-glut \
+      --disable-rpath && \
+    make -j4 2>&1 && \
+    make install 2>&1
+
+# 验证 MySQL 模块
+RUN /usr/local/pike9/bin/pike -e 'int main() { \
+    object sql = master()->resolv("Sql")["Sql"]; \
+    if(sql && sql->_mysql) { \
+        write("✓ MySQL module compiled successfully\n"); \
+        return 0; \
+    } else { \
+        write("✗ MySQL module not found\n"); \
+        return 1; \
+    } \
+}'
+
+# ============================================
+# Stage 2: 统一运行时镜像
+# ============================================
+FROM quay.io/centos/centos:stream10
+
+# 安装运行时依赖（包括编译好的 nettle 库）
+COPY --from=pike-builder /usr/lib64/libnettle.so.8* /usr/lib64/
+COPY --from=pike-builder /usr/lib64/libhogweed.so.6* /usr/lib64/
+
+RUN dnf install -y \
+    java-21-openjdk \
+    java-21-openjdk-devel \
+    mariadb-connector-c \
+    mariadb-connector-odbc \
+    mariadb \
+    gmp \
+    gdbm-libs \
+    sqlite-libs \
+    zlib \
+    socat \
+    tzdata && \
+    ldconfig && \
+    dnf clean all
+
+# 从编译阶段复制 Pike
+COPY --from=pike-builder /usr/local/pike9 /usr/local/pike9
+
+# 安装 Tomcat 11
+ENV TOMCAT_VERSION="11.0.2"
+RUN cd /tmp && \
+    curl -sL https://archive.apache.org/dist/tomcat/tomcat-11/v${TOMCAT_VERSION}/bin/apache-tomcat-${TOMCAT_VERSION}.tar.gz | tar xz && \
+    mv apache-tomcat-${TOMCAT_VERSION} /usr/local/tomcat && \
+    rm -rf /tmp/apache-tomcat-* && \
+    chmod +x /usr/local/tomcat/bin/*.sh
+
+# 设置 PATH 包含 Pike 和时区
+ENV PATH="/usr/local/pike9/bin:${PATH}" \
+    PIKE_INCLUDE_PATH="/usr/local/pike9/include/pike" \
+    PIKE_MODULE_PATH="/usr/local/pike9/lib/pike/modules" \
+    CATALINA_HOME="/usr/local/tomcat" \
+    TZ="Asia/Shanghai"
+
+# 设置系统时区
+RUN echo "Asia/Shanghai" > /etc/timezone && \
+    ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
+
+# 创建 MUD 运行用户
+RUN useradd -m -u 2000 -s /bin/bash muduser 2>/dev/null || true
+
+# 创建必要的目录
+RUN mkdir -p /app/xiand /var/lib/mysql && \
+    chmod 755 /app && \
+    chmod 755 /app/xiand && \
+    chmod 777 /var/lib/mysql && \
+    chown -R muduser:muduser /app /var/lib/mysql 2>/dev/null || true
+
+# 创建数据目录挂载点（用于卷映射）
+RUN mkdir -p /app/xiand/data_xiand /app/xiand/gamelib/clone/item && \
+    chmod 777 /app/xiand/data_xiand /app/xiand/gamelib/clone/item
+
+# 复制整个 xiand 项目到容器
+COPY . /app/xiand/
+
+# 复制前端文件到 Tomcat ROOT
+COPY web /usr/local/tomcat/webapps/ROOT
+
+# 设置权限
+RUN chmod -R 755 /usr/local/tomcat/webapps/ROOT && \
+    chmod +x /app/xiand/docker/docker-startup.sh 2>/dev/null || true && \
+    chmod 777 /app/xiand
+
+# 工作目录
+WORKDIR /app/xiand
+
+# 暴露端口
+EXPOSE 13800 8080 8443
+
+# 创建统一的启动脚本
+RUN cat > /app/start-unified.sh << 'EOF'
+#!/bin/bash
+set -e
+
+export PATH="/usr/local/pike9/bin:${PATH}"
+
+# 解析游戏区号
+GAME_AREA_INPUT="${GAME_AREA:-xd01}"
+if [[ $GAME_AREA_INPUT =~ ^xd ]]; then
+    GAME_PREFIX="$GAME_AREA_INPUT"
+    GAME_AREA="${GAME_AREA_INPUT#xd}"
+else
+    GAME_PREFIX="xd${GAME_AREA_INPUT}"
+    GAME_AREA="$GAME_AREA_INPUT"
+fi
+
+export GAME_PREFIX GAME_AREA
+
+# 读取 MySQL 配置
+MYSQL_HOST="${MYSQL_HOST:-172.17.0.1}"
+MYSQL_PORT="${MYSQL_PORT:-3306}"
+MYSQL_USER="${MYSQL_USER:-root}"
+MYSQL_PASSWORD="${MYSQL_PASSWORD:-Happy888888}"
+
+# 创建必要目录
+mkdir -p /app/xiand/log /var/lib/mysql
+chmod 777 /app/xiand/log /var/lib/mysql
+chmod -R 777 /app/xiand/data_xiand 2>/dev/null || true
+
+# 启动 socat 来将 Unix socket 转发到 TCP MySQL
+rm -f /tmp/.mysql_sock /var/lib/mysql/mysql.sock /run/mysqld/mysqld.sock 2>/dev/null || true
+mkdir -p /run/mysqld
+socat UNIX-LISTEN:/tmp/.mysql_sock,fork,reuseaddr,mode=666 TCP:${MYSQL_HOST}:${MYSQL_PORT} > /tmp/socat.log 2>&1 &
+sleep 1
+# 创建多个 socket 符号链接以兼容不同的连接路径
+ln -sf /tmp/.mysql_sock /var/lib/mysql/mysql.sock 2>/dev/null || true
+ln -sf /tmp/.mysql_sock /run/mysqld/mysqld.sock 2>/dev/null || true
+
+# 初始化数据库
+DB_NAME="${GAME_PREFIX}"
+mariadb -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -e "CREATE DATABASE IF NOT EXISTS \`${DB_NAME}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;" 2>/dev/null || true
+
+# 检查数据库是否为空，如果为空则导入 xd.sql
+TABLE_COUNT=$(mariadb -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USER} -p${MYSQL_PASSWORD} -N -B -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${DB_NAME}';" 2>/dev/null || echo "0")
+if [ "$TABLE_COUNT" -eq 0 ]; then
+    echo "数据库 ${DB_NAME} 为空，正在导入 xd.sql..."
+    if [ -f /app/xiand/xd.sql ]; then
+        mariadb -h ${MYSQL_HOST} -P ${MYSQL_PORT} -u ${MYSQL_USER} -p${MYSQL_PASSWORD} "${DB_NAME}" < /app/xiand/xd.sql 2>/dev/null && \
+        echo "✓ 数据库导入成功" || \
+        echo "✗ 数据库导入失败"
+    else
+        echo "⚠ xd.sql 文件不存在，跳过导入"
+    fi
+else
+    echo "数据库 ${DB_NAME} 已有 ${TABLE_COUNT} 张表，跳过导入"
+fi
+
+# 启动Pike MUD
+echo "启动Pike MUD (区号: ${GAME_PREFIX})..."
+cd /app/xiand
+# 设置堆栈限制为无限，防止编译大文件时栈溢出
+ulimit -s unlimited
+pike /app/xiand/lowlib/driver.pike -i 127.0.0.1 -p 13800 /app/xiand/ > /app/xiand/log/pike.log 2>&1 &
+PIKE_PID=$!
+echo "✓ Pike MUD 已启动 (PID: $PIKE_PID)"
+
+sleep 10
+
+
+# 启动Tomcat
+exec /usr/local/tomcat/bin/catalina.sh run
+EOF
+
+RUN chmod +x /app/start-unified.sh
+
+# 健康检查
+HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
+    CMD pike -e 'exit(0);' || exit 1
+
+# 启动脚本
+CMD ["/app/start-unified.sh"]

@@ -1,0 +1,61 @@
+services:
+  # xiand 统一服务 - MUD + Tomcat Web 在同一容器内
+  # 这样 JSP 可以直接通过 127.0.0.1:13800 连接到 Pike MUD
+  xiand:
+    image: lijingmt/xiand-all:latest
+    container_name: xiand-${GAME_AREA:-xd01}
+    pull_policy: always
+    restart: unless-stopped
+    # 内存限制
+    deploy:
+      resources:
+        limits:
+          memory: 6G
+        reservations:
+          memory: 2G
+    # 设置堆栈限制为无限，防止 Pike 编译大文件时栈溢出
+    # 设置文件描述符限制，防止 "Too many open files" 错误
+    ulimits:
+      stack:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65535
+        hard: 65535
+    ports:
+      - "${MUD_PORT:-13800}:13800"
+      - "${HTTP_API_PORT:-8888}:8888"
+      - "${TOMCAT_HTTP_PORT:-9001}:8080"
+      - "${TOMCAT_HTTPS_PORT:-8443}:8443"
+    extra_hosts:
+      - "localhost:host-gateway"
+    volumes:
+      # 持久化数据 - 映射到 /usr/local/games/allxd/xd01/ (对应区号)
+      # 容器内 /app/xiand/data_xiand -> 宿主机 /usr/local/games/allxd/{GAME_AREA}/data_xiand
+      # 容器内 /app/xiand/gamelib/clone/item -> 宿主机 /usr/local/games/allxd/{GAME_AREA}/item
+      - /usr/local/games/allxd/${GAME_AREA:-xd01}/data_xiand:/app/xiand/data_xiand
+      - /usr/local/games/allxd/${GAME_AREA:-xd01}/item:/app/xiand/gamelib/clone/item
+      # 日志输出 - 映射到 allxd/log 目录
+      - /usr/local/games/allxd/log/${GAME_AREA:-xd01}:/app/xiand/log
+    security_opt:
+      # 禁用用户命名空间隔离以允许修改挂载卷的权限
+      - label=disable
+    environment:
+      # 时区配置 - 使用上海时区
+      - TZ=Asia/Shanghai
+      # MySQL 连接配置 - 使用 TCP 连接到本机 MySQL
+      - MYSQL_HOST=172.17.0.1
+      - MYSQL_PORT=3306
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=Happy888888
+      - MYSQL_DATABASE=${GAME_AREA:-xd01}
+      # MUD 配置
+      - MUD_PORT=${MUD_PORT:-13800}
+      - DEBUG=0
+      # 游戏区号和日志配置
+      - GAME_AREA=${GAME_AREA:-xd01}
+      # Tomcat 配置
+      - TOMCAT_HTTP_PORT=8080
+      - TOMCAT_HTTPS_PORT=8443
+
+# 不需要 MySQL 卷，使用本机 MySQL

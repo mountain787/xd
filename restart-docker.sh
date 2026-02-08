@@ -1,0 +1,460 @@
+#!/bin/bash
+
+# ============================================
+# xiand Docker 启动脚本（不重建镜像）
+# ============================================
+# 此脚本将：
+# 1. 停止现有的 Docker 容器
+# 2. 启动 MUD 和 Tomcat 容器（使用已有镜像）
+#
+# 用法：
+#   ./restart-docker.sh [GAME_AREA] [TOMCAT_PORT] [API_PORT] [IMAGE_TAG]
+#
+# 参数说明：
+#   GAME_AREA    - 游戏区号（默认：xd01）
+#   TOMCAT_PORT  - Tomcat HTTP 端口（默认：9001）
+#   API_PORT     - HTTP API 端口（默认：8888）
+#   IMAGE_TAG    - Docker 镜像标签（默认：latest）
+#
+# 示例：
+#   ./restart-docker.sh                    # 使用默认值 xd01 9001 8888
+#   ./restart-docker.sh xd01 9001 8888     # 指定区号、端口、API端口
+#   ./restart-docker.sh xd02 9002 8889     # xd02 区，端口 9002，API 8889
+#
+# 环境变量：
+#   GAME_AREAS  - 游戏分区列表，逗号分隔（默认：xd01,xd02,xd03,xd04,xd05）
+#   例：GAME_AREAS="xd01,xd02,xd03" ./restart-docker.sh xd01 9001 8888
+# ============================================
+
+set -e
+
+# 配置参数
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+# 自动定位项目根目录
+PROJECT_ROOT="$SCRIPT_DIR"
+if [ ! -f "$PROJECT_ROOT/docker/docker-compose.yml" ]; then
+    if [ -f "$SCRIPT_DIR/../docker/docker-compose.yml" ]; then
+        PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+    fi
+fi
+
+DOCKER_COMPOSE_FILE="$PROJECT_ROOT/docker/docker-compose.yml"
+
+# 从命令行参数或环境变量读取配置
+# 优先级：命令行参数 > 环境变量 > 默认值
+GAME_AREA_INPUT="${1:-${GAME_AREA:-xd01}}"
+TOMCAT_HTTP_PORT="${2:-${TOMCAT_HTTP_PORT:-9001}}"
+HTTP_API_PORT="${3:-${HTTP_API_PORT:-8888}}"
+DOCKER_IMAGE_TAG="${4:-${DOCKER_IMAGE_TAG:-latest}}"  # Docker 镜像版本标签
+
+# 分区列表配置（用于 Vue 前端下拉框）
+# 格式：xd01,xd02,xd03,xd04,xd05 或 xd01-05
+GAME_AREAS="${GAME_AREAS:-xd01,xd02,xd03,xd04,xd05}"
+
+# 标准化 GAME_AREA 格式（支持 xd01、01、1 或范围 xd01-05、01-05）
+if [[ $GAME_AREA_INPUT =~ ^xd[0-9]+(-[0-9]+)?$ ]]; then
+    # 格式: xd01 或 xd01-05
+    GAME_AREA="$GAME_AREA_INPUT"
+elif [[ $GAME_AREA_INPUT =~ ^[0-9]+(-[0-9]+)?$ ]]; then
+    # 格式: 01 或 01-05 或 1 或 1-5
+    GAME_AREA=$(echo "$GAME_AREA_INPUT" | sed 's/^/xd/')
+    # 确保两位数格式（如果是范围，两个数字都要处理）
+    if [[ $GAME_AREA =~ ^xd([0-9]+)-([0-9]+)$ ]]; then
+        start=$(printf "%02d" "${BASH_REMATCH[1]}")
+        end=$(printf "%02d" "${BASH_REMATCH[2]}")
+        GAME_AREA="xd${start}-${end}"
+    else
+        GAME_AREA=$(printf "xd%02d" "${GAME_AREA#xd}")
+    fi
+else
+    GAME_AREA="xd01"
+fi
+
+# 提取数字部分作为 AREA（用于某些地方需要纯数字或范围）
+AREA="${GAME_AREA#xd}"
+
+# 颜色定义
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[1;33m'
+BLUE='\033[0;34m'
+NC='\033[0m' # No Color
+
+# 函数：打印带颜色的消息
+print_info() {
+    echo -e "${BLUE}[INFO]${NC} $1"
+}
+
+print_success() {
+    echo -e "${GREEN}[SUCCESS]${NC} $1"
+}
+
+print_warning() {
+    echo -e "${YELLOW}[WARNING]${NC} $1"
+}
+
+print_error() {
+    echo -e "${RED}[ERROR]${NC} $1"
+}
+
+# 函数：检查必要的命令
+check_commands() {
+    local commands=("docker")
+    for cmd in "${commands[@]}"; do
+        if ! command -v $cmd &> /dev/null; then
+            print_error "$cmd 命令未找到，请先安装"
+            exit 1
+        fi
+    done
+}
+
+# 函数：初始化游戏数据库
+initialize_game_database() {
+    local game_area="$1"
+
+    # 解析游戏区号
+    local db_name="$game_area"
+
+    # 检查 MySQL 是否可用
+    if ! command -v mysql &> /dev/null && ! command -v mariadb &> /dev/null; then
+        print_warning "MySQL 客户端未安装，跳过数据库初始化"
+        return 0
+    fi
+
+    local mysql_cmd="mysql"
+    command -v mysql &> /dev/null || mysql_cmd="mariadb"
+
+    # 尝试创建数据库
+    if $mysql_cmd -u root -pHappy888888 -e "CREATE DATABASE IF NOT EXISTS \`${db_name}\` CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;" 2>/dev/null; then
+        print_success "数据库 '${db_name}' 已创建"
+    else
+        print_warning "无法创建数据库（MySQL 可能不可用或凭证错误）"
+    fi
+
+    # 检查数据库是否为空，如果为空则导入 xd.sql
+    local sql_script="${PROJECT_ROOT}/xd.sql"
+    if [ -f "$sql_script" ]; then
+        TABLE_COUNT=$($mysql_cmd -u root -pHappy888888 -N -B -e "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='${db_name}';" 2>/dev/null || echo "0")
+        if [ "$TABLE_COUNT" -eq 0 ]; then
+            print_info "数据库 '${db_name}' 为空，正在导入 xd.sql..."
+            if $mysql_cmd -u root -pHappy888888 "$db_name" < "$sql_script" 2>/dev/null; then
+                print_success "数据库 '${db_name}' 导入成功"
+            else
+                print_warning "数据库 '${db_name}' 导入失败"
+            fi
+        else
+            print_info "数据库 '${db_name}' 已有 ${TABLE_COUNT} 张表，跳过导入"
+        fi
+    else
+        print_warning "SQL 文件不存在: $sql_script"
+    fi
+}
+
+# 函数：准备游戏数据目录（保留用于兼容，实际由 prepare_data_directories 处理）
+prepare_game_directories() {
+    local game_area="$1"
+
+    local base_path="/usr/local/games/allxd"
+    local game_path="${base_path}/${game_area}"
+    local log_path="${base_path}/log/${game_area}"
+
+    # 创建目录
+    mkdir -p "${game_path}" 2>/dev/null || print_warning "无法创建目录 ${game_path}"
+    mkdir -p "${log_path}" 2>/dev/null || print_warning "无法创建目录 ${log_path}"
+
+    # 设置权限
+    chmod 777 "${game_path}" "${log_path}" 2>/dev/null || true
+    chmod -R 777 "${log_path}" 2>/dev/null || true
+
+    print_success "游戏数据目录已准备就绪"
+}
+
+# 函数：打开防火墙端口
+open_firewall_port() {
+    local port=$1
+    print_info "打开防火墙端口: $port"
+
+    if command -v firewall-cmd &> /dev/null; then
+        if sudo firewall-cmd --query-port=$port/tcp 2>/dev/null | grep -q "yes"; then
+            print_info "端口 $port 已开放"
+        else
+            if sudo firewall-cmd --permanent --add-port=$port/tcp > /dev/null 2>&1; then
+                if sudo firewall-cmd --reload > /dev/null 2>&1; then
+                    print_success "端口 $port 已成功打开"
+                else
+                    print_warning "防火墙重新加载失败，请手动运行: sudo firewall-cmd --reload"
+                fi
+            else
+                print_warning "无法打开端口 $port，请检查权限或手动运行: sudo firewall-cmd --permanent --add-port=$port/tcp && sudo firewall-cmd --reload"
+            fi
+        fi
+    else
+        print_warning "未检测到 firewalld，请手动打开端口 $port"
+    fi
+}
+
+# 函数：拉取 Docker 镜像
+pull_docker_images() {
+    print_info "拉取 Docker 镜像..."
+    echo ""
+
+    # 确定镜像名称
+    local image_name
+    if [ "$DOCKER_IMAGE_TAG" = "latest" ]; then
+        image_name="xiand-all:latest"
+    elif [[ "$DOCKER_IMAGE_TAG" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}(-v[0-9]+)?$ ]]; then
+        image_name="xiand-all-${DOCKER_IMAGE_TAG}"
+    else
+        image_name="$DOCKER_IMAGE_TAG"
+    fi
+
+    # 拉取统一镜像（MUD + Tomcat）
+    print_info "拉取统一镜像 (lijingmt/${image_name})..."
+    if docker pull "lijingmt/${image_name}" 2>/dev/null; then
+        print_success "统一镜像拉取成功"
+        docker tag "lijingmt/${image_name}" xiand-all:latest 2>/dev/null || true
+    else
+        print_warning "远程镜像拉取失败，使用本地构建的镜像..."
+        if docker image inspect xiand-all:latest >/dev/null 2>&1; then
+            print_success "使用本地 xiand-all:latest 镜像"
+        else
+            print_error "无法找到 xiand-all 镜像，请先运行 ./rebuild-image.sh 构建镜像"
+            exit 1
+        fi
+    fi
+    echo ""
+
+    # 显示镜像信息
+    print_info "已有的 Docker 镜像："
+    docker images | grep -E "xiand-all|REPOSITORY" | head -3
+    echo ""
+}
+
+# 函数：创建必要的数据目录
+prepare_data_directories() {
+    print_info "准备数据目录..."
+
+    local area_num="$AREA"
+    if [[ "$area_num" =~ ^xd ]]; then
+        area_num="${area_num#xd}"
+    fi
+
+    # 检查是否是范围格式（01-05）
+    if [[ $area_num =~ ^([0-9]+)-([0-9]+)$ ]]; then
+        # 合服目录: /usr/local/games/allxd/xd01-05/
+        local area_dir="/usr/local/games/allxd/xd$area_num"
+        mkdir -p "$area_dir/data_xiand"
+        mkdir -p "$area_dir/item"
+        chmod -R 755 "$area_dir" 2>/dev/null || true
+        print_success "已创建合服目录: /usr/local/games/allxd/xd$area_num/"
+    else
+        # 单区目录: /usr/local/games/allxd/xd01/
+        local area_dir="/usr/local/games/allxd/xd$area_num"
+        mkdir -p "$area_dir/data_xiand"
+        mkdir -p "$area_dir/item"
+        chmod -R 755 "$area_dir" 2>/dev/null || true
+        print_success "已创建目录: /usr/local/games/allxd/xd$area_num/"
+    fi
+
+    # 创建日志目录: /usr/local/games/allxd/log/xd01/
+    local log_dir="/usr/local/games/allxd/log/xd$area_num"
+    mkdir -p "$log_dir"
+    chmod 755 "$log_dir"
+
+    # 修改权限
+    chmod -R 777 "/usr/local/games/allxd/log/xd$area_num" 2>/dev/null || true
+    chmod -R 777 "/usr/local/games/allxd/xd$area_num/data_xiand" 2>/dev/null || true
+    chmod -R 777 "/usr/local/games/allxd/xd$area_num/item" 2>/dev/null || true
+
+    print_success "数据目录权限已修改"
+}
+
+# 主流程
+main() {
+    echo -e "${BLUE}╔════════════════════════════════════════╗${NC}"
+    echo -e "${BLUE}║   xiand Docker 启动脚本             ║${NC}"
+    echo -e "${BLUE}╚════════════════════════════════════════╝${NC}"
+    echo ""
+
+    # 显示使用说明
+    echo "用法："
+    echo "  $0 [GAME_AREA] [TOMCAT_HTTP_PORT] [HTTP_API_PORT] [DOCKER_IMAGE_TAG]"
+    echo ""
+    echo "示例："
+    echo "  $0                                  # 使用默认值 xd01、端口 9001、API 8888、最新镜像"
+    echo "  $0 xd01                             # 指定区号 xd01，其他使用默认值"
+    echo "  $0 xd01 9001                        # 指定区号 xd01、端口 9001、API 8888"
+    echo "  $0 xd01 9001 8888                   # 指定区号 xd01、端口 9001、API 8888"
+    echo "  $0 xd02 9002 8889                   # 指定区号 xd02、端口 9002、API 8889"
+    echo "  $0 xd02 9002 8889 2025-12-20        # 指定镜像版本 2025-12-20"
+    echo ""
+    echo "环境变量："
+    echo "  GAME_AREAS='xd01,xd02,xd03,xd04,xd05'  # Vue 前端分区列表"
+    echo ""
+    echo "镜像标签说明："
+    echo "  latest                          # lijingmt/xiand-all:latest（默认）"
+    echo "  2025-12-20                      # lijingmt/xiand-all-2025-12-20（历史版本）"
+    echo ""
+
+    # ============================================
+    # 打包 vue_source 前端
+    # ============================================
+    print_info "[0/6] 打包 vue_source 前端..."
+    cd "${PROJECT_ROOT}/vue_source" && node build.js
+    if [ $? -eq 0 ]; then
+        print_success "vue_source 打包成功！"
+    else
+        print_error "vue_source 打包失败！"
+        exit 1
+    fi
+    cd "${PROJECT_ROOT}"
+    echo ""
+
+    # 检查必要命令
+    check_commands
+
+    # 验证 docker-compose 文件存在
+    if [ ! -f "$DOCKER_COMPOSE_FILE" ]; then
+        print_error "docker-compose 文件不存在：$DOCKER_COMPOSE_FILE"
+        exit 1
+    fi
+
+    print_info "使用配置："
+    echo "  项目根目录：$PROJECT_ROOT"
+    echo "  游戏区号：$GAME_AREA"
+    echo "  分区列表：$GAME_AREAS"
+    echo "  Tomcat HTTP 端口：$TOMCAT_HTTP_PORT"
+    echo "  HTTP API 端口：$HTTP_API_PORT"
+    echo "  Docker 镜像标签：$DOCKER_IMAGE_TAG"
+    echo ""
+
+    # 执行步骤 - 自动化初始化和启动流程
+    print_info "[1/5] 初始化游戏数据库..."
+    initialize_game_database "$GAME_AREA"
+
+    print_info "[2/5] 准备游戏数据目录..."
+    prepare_game_directories "$GAME_AREA"
+    prepare_data_directories
+
+    print_info "[3/5] 拉取 Docker 镜像..."
+    pull_docker_images
+
+    print_info "[3.5/5] 配置防火墙端口..."
+    open_firewall_port "$HTTP_API_PORT"
+    open_firewall_port "$TOMCAT_HTTP_PORT"
+
+    print_info "[4/5] 清理旧容器..."
+
+    # 优雅地停止相同区号的旧容器
+    if docker ps --filter "name=xiand-$GAME_AREA" --format "{{.Names}}" 2>/dev/null | grep -q "xiand-$GAME_AREA"; then
+        print_info "停止旧的 xiand-$GAME_AREA 容器..."
+        docker stop "xiand-$GAME_AREA" 2>/dev/null || true
+        print_success "旧容器已停止"
+    fi
+
+    # 清理已停止的相同区号容器
+    if docker ps -a --filter "name=xiand-$GAME_AREA" --format "{{.Names}}" 2>/dev/null | grep -q "xiand-$GAME_AREA"; then
+        docker rm -f "xiand-$GAME_AREA" 2>/dev/null || true
+    fi
+
+    # 兼容旧的容器名称
+    if docker ps -a --filter "name=^xiand$" --format "{{.Names}}" 2>/dev/null | grep -q "^xiand$"; then
+        print_info "清理旧的 xiand 容器..."
+        docker rm -f xiand 2>/dev/null || true
+    fi
+
+    print_info "[5/6] 启动统一容器 (Pike MUD + Tomcat)..."
+
+    # 确定镜像名称
+    local docker_image
+    if [ "$DOCKER_IMAGE_TAG" = "latest" ]; then
+        docker_image="lijingmt/xiand-all:latest"
+    elif [[ "$DOCKER_IMAGE_TAG" =~ ^[0-9]{4}-[0-9]{2}-[0-9]{2}(-v[0-9]+)?$ ]]; then
+        docker_image="lijingmt/xiand-all-${DOCKER_IMAGE_TAG}"
+    else
+        docker_image="lijingmt/${DOCKER_IMAGE_TAG}"
+    fi
+
+    docker run -d \
+        --name "xiand-${GAME_AREA}" \
+        --memory=6g \
+        --memory-swap=16g \
+        --ulimit stack=-1:-1 \
+        --ulimit nofile=65535:65535 \
+        -p "13800:13800" \
+        -p "${HTTP_API_PORT}:8888" \
+        -p "${TOMCAT_HTTP_PORT}:8080" \
+        -p "$((TOMCAT_HTTP_PORT + 443)):8443" \
+        -e GAME_AREA="$GAME_AREA" \
+        -e GAME_AREAS="$GAME_AREAS" \
+        -v /usr/local/games/allxd/${GAME_AREA}/data_xiand:/app/xiand/data_xiand \
+        -v /usr/local/games/allxd/${GAME_AREA}/item:/app/xiand/gamelib/clone/item \
+        -v /usr/local/games/allxd/log/${GAME_AREA}:/app/xiand/log \
+        "${docker_image}" >/dev/null 2>&1
+
+    if [ $? -eq 0 ]; then
+        print_success "容器已启动"
+    else
+        print_error "容器启动失败"
+        exit 1
+    fi
+
+    print_info "[6/7] 更新Vue前端分区配置..."
+    CONTAINER_NAME="xiand-${GAME_AREA}"
+
+    # 检查容器是否运行
+    if docker ps --format '{{.Names}}' | grep -q "^${CONTAINER_NAME}$"; then
+        # Vue app.js在容器内的路径（Tomcat webapps目录）
+        VUE_JS_PATH="/usr/local/tomcat/webapps/ROOT/web_vue/js/app.js"
+
+        # 使用sed替换分区列表
+        # 替换 getDefaultPartitions 函数返回的分区列表
+        docker exec "${CONTAINER_NAME}" \
+            sed -i "s/defaultPartitions() {/\/* AUTO-GENERATED *\n    defaultPartitions() {/" \
+            "${VUE_JS_PATH}" 2>/dev/null || true
+
+        # 生成新的分区列表 JS 代码
+        local areas_array=$(echo "$GAME_AREAS" | sed 's/,/","/g' | sed 's/^/"/' | sed 's/$/"/')
+        local partitions_js=""
+        IFS=',' read -ra AREAS <<< "$GAME_AREAS"
+        for area in "${AREAS[@]}"; do
+            local num="${area#xd}"
+            partitions_js="${partitions_js}{ value: '${area}', label: '${num}区' },"
+        done
+
+        # 替换默认分区列表
+        docker exec "${CONTAINER_NAME}" \
+            sed -i "s/{ value: 'tx01', label: '原1区' },.*{ value: 'tx06', label: '原6区' }/$(echo "$partitions_js" | sed 's/&/\%26/g' | sed 's/ /\\ /g')/" \
+            "${VUE_JS_PATH}" 2>/dev/null || print_warning "分区配置更新失败，使用默认配置"
+
+        # 同时替换 API 端口
+        docker exec "${CONTAINER_NAME}" \
+            sed -i "s/'8888'/'${HTTP_API_PORT}'/g; s|:8888|:${HTTP_API_PORT}|g" \
+            "${VUE_JS_PATH}" 2>/dev/null
+
+        print_success "Vue前端配置已更新: 分区=$GAME_AREAS, API端口=$HTTP_API_PORT"
+    else
+        print_warning "容器未运行，跳过Vue配置"
+    fi
+
+    echo ""
+    echo -e "${GREEN}╔════════════════════════════════════════╗${NC}"
+    echo -e "${GREEN}║   xiand 统一容器已启动！            ║${NC}"
+    echo -e "${GREEN}╚════════════════════════════════════════╝${NC}"
+    echo ""
+    echo "相关信息："
+    echo "  容器名称：xiand-${GAME_AREA}"
+    echo "  MUD 地址：localhost:13800"
+    echo "  HTTP API：localhost:${HTTP_API_PORT}"
+    echo "  Web 地址：http://localhost:${TOMCAT_HTTP_PORT}/"
+    echo "  分区列表：$GAME_AREAS"
+    echo "  数据库：${GAME_AREA}"
+    echo ""
+    echo "查看日志："
+    echo "  docker logs -f xiand-${GAME_AREA}"
+    echo ""
+}
+
+# 执行主函数
+main "$@"

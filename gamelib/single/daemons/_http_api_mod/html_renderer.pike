@@ -267,12 +267,16 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                             string action_cmd = content[pos+1..];
 
                             // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                            // label 可能是 "miniimg " (有空格)，需要 trim
-                            string trimmed_label = String.trim_all_whites(label);
-                            if(trimmed_label == "miniimg" && has_prefix(action_cmd, "minipicture:")) {
-                                string image_path = action_cmd[11..]; // 跳过 "minipicture:"
-                                html += sprintf("<img src=\"/images%s\" style=\"max-width:32px;max-height:32px;vertical-align:middle;\" alt=\"item\"/>",
-                                                   image_path);
+                            // 使用仙岛原生的 sscanf 解析方式
+                            string img_name, img_href;
+                            if(sscanf(content, "miniimg %s:%s", img_name, img_href) == 2) {
+                                html += sprintf("<img src=\"%s\" alt=\"%s\" height=\"20\" width=\"20\" align=\"middle\"/>",
+                                                   img_href, img_name);
+                            }
+                            // 图片加载 [imgurl name:/path/to/image.gif]
+                            else if(sscanf(content, "imgurl %s:%s", img_name, img_href) == 2) {
+                                html += sprintf("<img src=\"%s\" alt=\"%s\"/>",
+                                                   img_href, img_name);
                             }
                             // URL链接 [url 显示文本:https://...]
                             else if(search(label, "url ") == 0 &&
@@ -609,14 +613,22 @@ mapping parse_response_to_json(string response, string userid)
                         string action_cmd = content[pos+1..];
 
                         // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
-                        // label 可能是 "miniimg " (有空格)，需要 trim
-                        string trimmed_label = String.trim_all_whites(label);
-                        if(trimmed_label == "miniimg" && has_prefix(action_cmd, "minipicture:")) {
-                            string image_path = action_cmd[11..]; // 跳过 "minipicture:"
+                        // 使用仙岛原生的 sscanf 解析方式
+                        string img_name, img_href;
+                        if(sscanf(content, "miniimg %s:%s", img_name, img_href) == 2) {
                             mapping img = ([
                                 "type": "image",
-                                "src": "/images" + image_path,
-                                "alt": "item"
+                                "src": img_href,
+                                "alt": img_name
+                            ]);
+                            result["images"] += ({img});
+                        }
+                        // 图片加载 [imgurl name:/path/to/image.gif]
+                        else if(sscanf(content, "imgurl %s:%s", img_name, img_href) == 2) {
+                            mapping img = ([
+                                "type": "image",
+                                "src": img_href,
+                                "alt": img_name
                             ]);
                             result["images"] += ({img});
                         }

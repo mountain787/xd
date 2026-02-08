@@ -2481,6 +2481,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
 }
 
 /* 经典模式 - 浅色主题 */

@@ -390,6 +390,7 @@ main() {
         --memory-swap=16g \
         --ulimit stack=-1:-1 \
         --ulimit nofile=65535:65535 \
+        --add-host=host.docker.internal:host-gateway \
         -p "$((TOMCAT_HTTP_PORT + 10000)):13800" \
         -p "${HTTP_API_PORT}:8888" \
         -p "${TOMCAT_HTTP_PORT}:8080" \

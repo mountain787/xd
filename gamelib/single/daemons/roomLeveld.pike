@@ -41,6 +41,7 @@ void load_file()
 	room_level = ([]);
 	quick_room_level = ([]);
 	string fileData = Stdio.read_file(ROOM_LEV);
+	if(!fileData) return;  // 文件不存在或读取失败
 	array(string) lines = fileData/"\n";
 	if(lines && sizeof(lines)){
 		lines = lines-({""});

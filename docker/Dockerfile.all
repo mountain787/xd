@@ -186,6 +186,8 @@ chmod -R 777 /app/xiand/data_xiand 2>/dev/null || true
 rm -f /tmp/.mysql_sock /var/lib/mysql/mysql.sock /run/mysqld/mysqld.sock 2>/dev/null || true
 mkdir -p /run/mysqld
 socat UNIX-LISTEN:/tmp/.mysql_sock,fork,reuseaddr,mode=666 TCP:${MYSQL_HOST}:${MYSQL_PORT} > /tmp/socat.log 2>&1 &
+# 启动 socat 将容器内 127.0.0.1:3306 转发到宿主机 MySQL
+socat TCP-LISTEN:3306,fork,reuseaddr,bind=127.0.0.1 TCP:${MYSQL_HOST}:${MYSQL_PORT} > /tmp/socat_3306.log 2>&1 &
 sleep 1
 # 创建多个 socket 符号链接以兼容不同的连接路径
 ln -sf /tmp/.mysql_sock /var/lib/mysql/mysql.sock 2>/dev/null || true

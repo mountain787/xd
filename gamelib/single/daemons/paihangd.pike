@@ -32,16 +32,27 @@ array(string) all_type = ({"mark","account","all_fee","home_bi","home_yu","honer
 mapping(string:array(mapping(string:mixed))) all_info=([]);
 void create()
 {
-	db=Sql.Sql(dbSql,optionsMap);
+	mixed err = catch {
+		db=Sql.Sql(dbSql,optionsMap);
+	};
+	if(err) {
+		werror("[paihangd] MySQL连接失败: %s\n", describe_error(err));
+		db = 0;  // 标记为不可用
+	}
 	obt= System.Time();
-	
-	for(int i=0;i<sizeof(all_type);i++)
-	{
-		string type = all_type[i];
-		if(type&&sizeof(type))
+
+	// 只有在 MySQL 可用时才更新排行榜
+	if(db) {
+		for(int i=0;i<sizeof(all_type);i++)
 		{
-			update_toplist(type,1);
+			string type = all_type[i];
+			if(type&&sizeof(type))
+			{
+				update_toplist(type,1);
+			}
 		}
+	} else {
+		werror("[paihangd] MySQL不可用，跳过排行榜初始化\n");
 	}
 
 	mapping(string:int) now_time = localtime(time());
@@ -55,11 +66,13 @@ void create()
 	//由此获得距离现在还有多少时间更新
 	int need_time_mark = update_time_mark - time();
 	//	need_time_mark = 40; //测试用
-	for(int i=0;i<sizeof(all_type);i++)
-	{
-		string type = all_type[i];
-		if(type&&sizeof(type))
-			call_out(update_toplist,need_time_mark,type,0);
+	if(db) {
+		for(int i=0;i<sizeof(all_type);i++)
+		{
+			string type = all_type[i];
+			if(type&&sizeof(type))
+				call_out(update_toplist,need_time_mark,type,0);
+		}
 	}
 	
 
@@ -76,12 +89,15 @@ void create()
 	//捐赠排行
 	int update_time_fee = mktime(0,59,23,now_mday,now_mon,now_year);
 	int need_time_fee = update_time_fee - time();
-	
-	call_out(update_mark_toplist,need_time_mark);
-	call_out(update_account_toplist,need_time_account);
-	call_out(update_home_yushi_toplist,need_time_home_yushi);
-	call_out(update_home_money_toplist,need_time_home_money);
-	
+
+	// 只有在 MySQL 可用时才设置定时任务
+	if(db) {
+		call_out(update_mark_toplist,need_time_mark);
+		call_out(update_account_toplist,need_time_account);
+		call_out(update_home_yushi_toplist,need_time_home_yushi);
+		call_out(update_home_money_toplist,need_time_home_money);
+	}
+
 }
 //外部调用接口
 array(mapping(string:mixed)) query_toplist(string type)

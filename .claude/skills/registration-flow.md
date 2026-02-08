@@ -190,3 +190,4 @@ tail -f /usr/local/games/xiand/log/http_api.log
 - ✅ 优先解析Vue格式参数
 - ✅ 支持带分区前缀的用户名验证
 - ✅ 返回详细错误信息
+- ✅ 修复游戏图片路径：自动移除/xd/前缀（/xd/images/xxx.gif → /images/xxx.gif）

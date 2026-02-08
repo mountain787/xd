@@ -1968,8 +1968,8 @@ body {
 .quick-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    padding: 10px 12px;
+    gap: 0;
+    padding: 8px 8px 6px 8px;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
 }
@@ -1995,12 +1995,12 @@ body {
 .quick-btn {
     flex: 1;
     min-width: 0;
-    padding: 10px 6px;
+    padding: 14px 10px;
     border: none;
-    border-radius: 8px;
+    border-radius: 10px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    font-size: 13px;
+    font-size: 17px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
@@ -2010,7 +2010,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 2px;
+    gap: 4px;
 }
 
 /* 经典模式按钮 */
@@ -2069,14 +2069,14 @@ body {
 .quick-actions-inner {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-top: 8px;
+    gap: 6px;
+    margin-top: 6px;
 }
 
 /* 快捷按钮行 */
 .quick-btn-row {
     display: flex;
-    gap: 8px;
+    gap: 6px;
     justify-content: space-between;
 }
 

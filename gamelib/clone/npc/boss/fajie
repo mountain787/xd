@@ -1,6 +1,5 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
-#define ITEM_PATH "/usr/local/games/xiand/gamelib/clone/item/"
 inherit GAMELIB_NPC;
 void create(){
 	name=object_name(this_object());

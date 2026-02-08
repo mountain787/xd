@@ -81,12 +81,12 @@
 //大额充值数据库相关模块
 #define DBD ((object)(ROOT "/gamelib/single/daemons/dbd"))
 //大额充值记录文件
-#define LOG_BIG_FEE LOG_P(ROOT "/log/fee_log/bigfee") 
+#define LOG_BIG_FEE LOG_P(ROOT "/log/fee_log/bigfee")
 #define LOG_DBD LOG_P(ROOT "/log/fee_log/dbd")
-//用于规范日志文件格式
-#define LOG_P ((program)(ROOT "/gamelib/cmds/log"))
 //用于刷野外boss的守护模块
 #define YWBOSS_FLUSHD ((object)(ROOT "/gamelib/single/daemons/yewaiboss_flushd"))
+//物品克隆路径
+#define ITEM_PATH ROOT "/gamelib/clone/item/"
 //购买物品模块
 #define BUYD ((object)(ROOT "/gamelib/single/daemons/buyd.pike"))
 //广播系统

@@ -187,10 +187,16 @@ $(player->view_qqlist_move(arg))
 private void _create()
 {
 	mkdir(ROOT+"/gamelib/single/daemons");
+	werror("[MASTER] Loading daemons from: "+ROOT+"/gamelib/single/daemons/\n");
 	foreach(get_dir(ROOT+"/gamelib/single/daemons"),string s){
-		catch{
+		mixed err = catch{
+			werror("[MASTER] Loading daemon: %s\n", s);
 			object ob=(object)(ROOT+"/gamelib/single/daemons/"+s);
+			werror("[MASTER]   Loaded: %s -> %O\n", s, ob);
 		};
+		if(err) {
+			werror("[MASTER] ERROR loading %s: %O\n", s, err);
+		}
 	}
 	//技能初始化
 	mkdir(ROOT+"/gamelib/single/skills");

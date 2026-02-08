@@ -25,7 +25,31 @@ program connect()
 }
 array hosts_list;
 void create(){
+	// Load hosts list
 	hosts_list=filter(Stdio.read_file(SROOT+"/etc/hosts_list")/"\n",`!=,"");
+
+	// Load daemons from gamelib/single/daemons/
+	werror("========================================\n");
+	werror("[MASTER] Loading daemons from: "+ROOT+"/gamelib/single/daemons/\n");
+	call_out(load_daemons, 2);
+}
+
+void load_daemons()
+{
+	array files = get_dir(ROOT+"/gamelib/single/daemons");
+	werror("[MASTER] get_dir() returned %d files\n", sizeof(files));
+	foreach(files,string s){
+		mixed err = catch{
+			werror("[MASTER] Loading daemon: %s\n", s);
+			object ob=(object)(ROOT+"/gamelib/single/daemons/"+s);
+			werror("[MASTER]   Loaded: %s -> %O\n", s, ob);
+		};
+		if(err) {
+			werror("[MASTER] ERROR loading %s: %O\n", s, err);
+		}
+	}
+	werror("[MASTER] All daemons loaded\n");
+	werror("========================================\n");
 }
 string ip;
 int port;

@@ -1426,6 +1426,11 @@ mapping parse_bracket_content(string content, string txd, string userid)
                 if(colon_in_path >= 0) {
                     image_path = image_path[colon_in_path+1..];
                 }
+                // 移除游戏前缀 /xd/ 或 /tx/ 等，转换为正确的Web路径
+                // 例如: /xd/images/humanlike_male.gif -> /images/humanlike_male.gif
+                if(sscanf(image_path, "/%*s/images/%s", string rest) == 2) {
+                    image_path = "/images/" + rest;
+                }
                 return ([
                     "type": "image",
                     "src": image_path,

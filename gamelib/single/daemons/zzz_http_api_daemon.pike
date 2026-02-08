@@ -1491,6 +1491,11 @@ void handle_api_status(Protocols.HTTP.Server.Request req)
     string userid = auth["userid"];
     object player = get_player_from_connection(userid);
 
+    // 如果虚拟连接池中没有，尝试从 find_player 获取
+    if(!player) {
+        player = find_player(userid);
+    }
+
     if(!player) {
         send_json(req, ([ "error": "玩家未登录" ]), 401);
         return;

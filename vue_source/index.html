@@ -117,11 +117,9 @@
                         <span class="divider">·</span>
                         <span class="player-name-cn" v-if="playerStats && playerStats.name_cn">{{ playerStats.name_cn }}</span>
                         <span class="divider" v-if="playerStats && playerStats.name_cn">·</span>
+                        <span class="player-level" v-if="playerStats && playerStats.level">Lv.{{ playerStats.level }}</span>
+                        <span class="divider" v-if="playerStats && playerStats.level">·</span>
                         <span class="server-info">{{ areaName }}</span>
-                        <span class="divider">·</span>
-                        <span class="autofight-status-text" :class="{ active: playerStats && playerStats.autofight }" @click="toggleAutofight">
-                            自动战斗: {{ playerStats && playerStats.autofight ? '开' : '关' }}
-                        </span>
                     </div>
                     <!-- 玩家状态信息 - 血槽显示 -->
                     <div class="player-stats" v-if="playerStats">
@@ -132,21 +130,21 @@
                             </div>
                         </div>
                         <div class="stat-bar">
-                            <span class="stat-label">精神</span>
+                            <span class="stat-label">法力</span>
                             <div class="bar-container">
-                                <div class="bar-fill spirit-bar" :style="{ width: (playerStats.spirit / playerStats.spirit_max * 100) + '%' }"></div>
+                                <div class="bar-fill mana-bar" :style="{ width: (playerStats.mana / playerStats.mana_max * 100) + '%' }"></div>
                             </div>
                         </div>
                         <div class="stat-bar">
-                            <span class="stat-label">潜能</span>
+                            <span class="stat-label">精力</span>
                             <div class="bar-container">
-                                <div class="bar-fill potential-bar" :style="{ width: (playerStats.potential / playerStats.potential_max * 100) + '%' }"></div>
+                                <div class="bar-fill energy-bar" :style="{ width: Math.min(100, playerStats.energy) + '%' }"></div>
                             </div>
                         </div>
                         <div class="stat-bar">
-                            <span class="stat-label">内力</span>
+                            <span class="stat-label">经验</span>
                             <div class="bar-container">
-                                <div class="bar-fill neili-bar" :style="{ width: (playerStats.neili / playerStats.neili_max * 100) + '%' }"></div>
+                                <div class="bar-fill exp-bar" :style="{ width: (playerStats.exp / playerStats.exp_need * 100) + '%' }"></div>
                             </div>
                         </div>
                     </div>
@@ -549,15 +547,10 @@
                 </button>
                 <div class="quick-actions-inner" v-show="!quickActionsCollapsed">
                     <button class="quick-btn" @click="sendQuickCommand('look')">👁️ 查看</button>
-                    <button class="quick-btn" @click="sendQuickCommand('inventory yao')">💊 吃药</button>
                     <button class="quick-btn" @click="sendQuickCommand('myhp')">❤️ 状态</button>
                     <button class="quick-btn" @click="sendQuickCommand('inventory')">🎒 背包</button>
-                    <button class="quick-btn" @click="sendQuickCommand('skills')">⚔️ 武功</button>
-                    <button class="quick-btn" @click="sendQuickCommand('task_info')">📜 任务</button>
-                    <button class="quick-btn" @click="sendQuickCommand('temai_shop')">🛒 商城</button>
-                    <button class="quick-btn" @click="sendQuickCommand('qqlist_menu')">🎮 功能</button>
+                    <button class="quick-btn" @click="sendQuickCommand('qqlist')">👥 好友</button>
                     <button class="quick-btn" @click="sendQuickCommand('coustom')">⚙️ 设置</button>
-                    <button class="quick-btn" @click="sendQuickCommand('huanmafu_list')">🐎 唤马</button>
                 </div>
             </footer>
         </template>

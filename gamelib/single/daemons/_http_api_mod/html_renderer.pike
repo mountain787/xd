@@ -266,8 +266,16 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                             string label = content[0..pos-1];
                             string action_cmd = content[pos+1..];
 
+                            // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
+                            // label 可能是 "miniimg " (有空格)，需要 trim
+                            string trimmed_label = String.trim_all_whites(label);
+                            if(trimmed_label == "miniimg" && has_prefix(action_cmd, "minipicture:")) {
+                                string image_path = action_cmd[11..]; // 跳过 "minipicture:"
+                                html += sprintf("<img src=\"/images%s\" style=\"max-width:32px;max-height:32px;vertical-align:middle;\" alt=\"item\"/>",
+                                                   image_path);
+                            }
                             // URL链接 [url 显示文本:https://...]
-                            if(search(label, "url ") == 0 &&
+                            else if(search(label, "url ") == 0 &&
                                (search(action_cmd, "http://") == 0 || search(action_cmd, "https://") == 0)) {
                                 string display_text = label[4..];
                                 html += sprintf("<a href=\"javascript:void(0)\" onclick=\"window.top.location='%s';return false;\" class=\"btn btn-outline-info btn-sm\">%s</a>",
@@ -550,6 +558,7 @@ mapping parse_response_to_json(string response, string userid)
     result["timestamp"] = time();
     result["messages"] = ({});
     result["actions"] = ({});
+    result["images"] = ({});
     result["navigation"] = ([ "exits": ({}) ]);
 
     if(!response) response = "";
@@ -599,7 +608,19 @@ mapping parse_response_to_json(string response, string userid)
                         string label = content[0..pos-1];
                         string action_cmd = content[pos+1..];
 
-                        if(is_direction(label)) {
+                        // 图片链接 [miniimg minipicture:/xd/images/xxx.gif]
+                        // label 可能是 "miniimg " (有空格)，需要 trim
+                        string trimmed_label = String.trim_all_whites(label);
+                        if(trimmed_label == "miniimg" && has_prefix(action_cmd, "minipicture:")) {
+                            string image_path = action_cmd[11..]; // 跳过 "minipicture:"
+                            mapping img = ([
+                                "type": "image",
+                                "src": "/images" + image_path,
+                                "alt": "item"
+                            ]);
+                            result["images"] += ({img});
+                        }
+                        else if(is_direction(label)) {
                             mapping exit = ([ ]);
                             exit["direction"] = label;
                             exit["label"] = label;
@@ -639,7 +660,7 @@ mapping parse_response_to_json(string response, string userid)
 }
 
 /**
- * 查询玩家状态 (完全按照原始逻辑)
+ * 查询玩家状态 (xiand 版本 - 仙道游戏)
  */
 mapping query_player_state(object player)
 {
@@ -647,55 +668,141 @@ mapping query_player_state(object player)
 
     mapping result = ([ ]);
 
-    // 玩家中文名
-    string name_cn = "";
-    if(functionp(player->query_name_cn)) {
-        name_cn = player->query_name_cn();
-    } else if(player->name_cn) {
-        name_cn = player->name_cn;
+    // 使用 catch 防止属性不存在时报错
+    mixed err = catch {
+        // 玩家中文名
+        string name_cn = "";
+        if(functionp(player->query_name_cn)) {
+            name_cn = player->query_name_cn();
+        } else if(player["name_cn"]) {
+            name_cn = player["name_cn"];
+        }
+        result["name_cn"] = name_cn || "";
+
+        // 性别
+        string gender = "";
+        if(functionp(player->query_gender)) {
+            gender = player->query_gender();
+        } else if(player["gender"]) {
+            gender = player["gender"];
+        }
+        result["gender"] = gender || "";
+
+        // 称谓
+        string honer = "";
+        if(functionp(player->honerlv) && functionp(player->query_raceId)) {
+            honer = WAP_HONERD->query_honer_level_desc(player->honerlv, player->query_raceId());
+        } else if(player["honerlv"]) {
+            honer = sprintf("%d", player->honerlv);
+        }
+        result["honer"] = honer || "";
+
+        // 种族
+        string race = "";
+        if(functionp(player->query_raceId) && functionp(player->query_race_cn)) {
+            race = player->query_race_cn(player->query_raceId());
+        } else if(player["raceId"]) {
+            race = sprintf("%d", player->raceId);
+        }
+        result["race"] = race || "";
+
+        // 职业
+        string profe = "";
+        if(functionp(player->query_profeId) && functionp(player->query_profe_cn)) {
+            profe = player->query_profe_cn(player->query_profeId());
+        } else if(player["profeId"]) {
+            profe = sprintf("%d", player->profeId);
+        }
+        result["profe"] = profe || "";
+
+        // 等级
+        int level = 0;
+        if(functionp(player->query_level)) {
+            level = player->query_level();
+        } else if(player["level"]) {
+            level = player["level"];
+        }
+        result["level"] = level;
+
+        // 生命值 HP (xiand 使用 life 而不是 jing)
+        int hp = 0, hp_max = 0;
+        if(functionp(player->get_cur_life)) {
+            hp = player->get_cur_life();
+        } else if(player["life"]) {
+            hp = player["life"];
+        }
+        if(functionp(player->query_life_max)) {
+            hp_max = player->query_life_max();
+        } else if(player["life_max"]) {
+            hp_max = player["life_max"];
+        }
+        result["hp"] = hp;
+        result["hp_max"] = hp_max;
+
+        // 法力值 Mana (xiand 使用 mofa 而不是 qi)
+        int mana = 0, mana_max = 0;
+        if(functionp(player->get_cur_mofa)) {
+            mana = player->get_cur_mofa();
+        } else if(player["mofa"]) {
+            mana = player["mofa"];
+        }
+        if(functionp(player->query_mofa_max)) {
+            mana_max = player->query_mofa_max();
+        } else if(player["mofa_max"]) {
+            mana_max = player["mofa_max"];
+        }
+        result["mana"] = mana;
+        result["mana_max"] = mana_max;
+
+        // 精力值 Energy
+        int energy = 0;
+        if(functionp(player->query_jingli)) {
+            energy = player->query_jingli();
+        } else if(player["jingli"]) {
+            energy = player["jingli"];
+        }
+        result["energy"] = energy;
+
+        // 经验值
+        int exp = 0;
+        if(player["current_exp"]) {
+            exp = player["current_exp"];
+        }
+        result["exp"] = exp;
+
+        // 升级所需经验
+        int exp_need = 0;
+        if(functionp(player->query_levelUp_need_exp)) {
+            exp_need = player->query_levelUp_need_exp();
+        }
+        result["exp_need"] = exp_need;
+
+        // 仙气/妖气
+        int honerpt = 0;
+        if(player["honerpt"]) {
+            honerpt = player["honerpt"];
+        }
+        result["honerpt"] = honerpt;
+
+        // 杀敌数
+        int killcount = 0;
+        if(player["killcount"]) {
+            killcount = player["killcount"];
+        }
+        result["killcount"] = killcount;
+
+        // 轮回值
+        int lunhuipt = 0;
+        if(player["lunhuipt"]) {
+            lunhuipt = player["lunhuipt"];
+        }
+        result["lunhuipt"] = lunhuipt;
+    };
+
+    if(err) {
+        http_werror("[HTTP_API] query_player_state error: %s\n", describe_error(err));
+        result["error"] = "获取状态失败";
     }
-    result["name_cn"] = name_cn || "";
-
-    // 自动战斗状态
-    int autofight = 0;
-    if(functionp(player->query_autofight)) {
-        string af = player->query_autofight();
-        autofight = (af == "enable") ? 1 : 0;
-    }
-    result["autofight"] = autofight;
-
-    // 生命 HP
-    int jing = player->jing;
-    int jing_max = player->jing_max;
-    result["hp"] = jing;
-    result["hp_max"] = jing_max;
-
-    // 精神 Spirit
-    int shen = player->shen;
-    int shen_max = player->shen_max;
-    result["spirit"] = shen;
-    result["spirit_max"] = shen_max;
-
-    // 潜能 Potential
-    int potential = player->potential;
-    int limit_pot = player->query_limit_pot();
-    result["potential"] = potential;
-    result["potential_max"] = limit_pot;
-
-    // 修为 Cultivation (中文显示)
-    string daoheng_cn = "";
-    if(functionp(player->daoheng_cn)) {
-        daoheng_cn = player->daoheng_cn();
-    } else if(player->daoheng_cn) {
-        daoheng_cn = player->daoheng_cn;
-    }
-    result["cultivation"] = daoheng_cn || "未知";
-
-    // 内力 Neili
-    int qi = player->qi;
-    int qi_max = player->query_qi_maxnum();
-    result["neili"] = qi;
-    result["neili_max"] = qi_max;
 
     return result;
 }

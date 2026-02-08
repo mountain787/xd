@@ -1332,7 +1332,7 @@ private void heart_beat()
 	call_out(heart_beat,2);
 }
 
-private void _destruct(void|object ob)
+protected void _destruct(void|object ob)
 {
 	if(ob){
 		array(object) inventory=all_inventory(ob);
@@ -1502,7 +1502,7 @@ int os_load(object o,string path)
 	return 1;
 }
 #define SIGALRM 14
-void create(void|string _logfile_prefix)
+private void create(void|string _logfile_prefix)
 {
 	if(_logfile_prefix)
 		logfile_postfix=_logfile_prefix;

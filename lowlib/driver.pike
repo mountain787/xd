@@ -5,7 +5,7 @@
 #define IP "0.0.0.0"
 Stdio.Port port;
 object lib_master;
-void create()
+protected void create()
 {
 	port=Stdio.Port();
 }
@@ -160,7 +160,7 @@ class pikenv_master{
 	}
 	*/
 	Stdio.File log;
-	void create(string ROOT,string postfix)
+	protected void create(string ROOT,string postfix)
 	{
 		Stdio.mkdirhier(ROOT+"/log");
 		log=Stdio.File(ROOT+"/log/error."+postfix,"wca");
@@ -175,10 +175,15 @@ class pikenv_master{
 		}
 		//saved_objects=set_weak_flag(([]),Pike.WEAK_VALUES);
 	}
+	void compile_warning(string file, int line, string msg)
+	{
+		// 屏蔽所有编译警告
+		return;
+	}
 };
 int main(int argc, array(string) argv)
 {
-	Process.system("cd "+dirname(argv[0])+";make 2>/dev/null >/dev/null");
+	Process.create_process(({"sh", "-c", "cd "+dirname(argv[0])+";make 2>/dev/null >/dev/null"}))->wait();
 	array a=Getopt.find_all_options(argv,({
 				({"port",Getopt.HAS_ARG,({"-p","--port"})})
 				,({"ip",Getopt.HAS_ARG,({"-i","--ip"})})
@@ -222,7 +227,6 @@ int main(int argc, array(string) argv)
 	efuns->logfile_postfix=opts["port"]?(opts["port"]):(string)(PORT);
 	replace_master(pikenv_master(mudlib_root,opts["port"]?(opts["port"]):(string)(PORT)));
 	lib_master=((object)master);
-	object ob;
 	int retval=-1;
 	string ip_str,port_str;
 	if(sizeof(lib_master->hosts_list)&&sscanf(lib_master->hosts_list[0],"%s:%s",ip_str,port_str)==2){

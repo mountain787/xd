@@ -2,8 +2,9 @@ log/
 db_bak/
 db_log/
 core.1096
-# gamelib/clone/item/ - track .pike files, ignore player-crafted .o files
+# gamelib/clone/item/ - track system files, ignore player-crafted files (contains "00")
 gamelib/clone/item/**/*.o
+gamelib/clone/item/**/*00*
 # gamelib/data/  # removed to track data files
 data_xiand/u/
 gamelib/clone/convert_count.txt

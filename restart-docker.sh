@@ -292,9 +292,30 @@ prepare_data_directories() {
 
     chmod 755 "$log_dir"
 
+    # 创建 etc 目录: /usr/local/games/allxd/xd01/etc/
+    local etc_dir="/usr/local/games/allxd/xd$area_num/etc"
+    local source_etc_dir="/usr/local/games/xiand/gamelib/etc"
+
+    mkdir -p "$etc_dir"
+
+    # 复制源 etc 目录的所有内容（如果目标为空）
+    if [ -d "$source_etc_dir" ]; then
+        # 检查目标目录是否为空
+        if [ -z "$(ls -A "$etc_dir" 2>/dev/null)" ]; then
+            print_info "复制初始化 etc 数据..."
+            cp -r "$source_etc_dir"/* "$etc_dir/" 2>/dev/null || true
+            print_success "已复制初始化 etc 数据"
+        else
+            print_info "etc 目录已存在数据，跳过复制"
+        fi
+    fi
+
+    chmod -R 755 "$etc_dir" 2>/dev/null || true
+
     # 修改权限
     chmod -R 777 "/usr/local/games/allxd/log/xd$area_num" 2>/dev/null || true
     chmod -R 777 "/usr/local/games/allxd/xd$area_num/data_xiand" 2>/dev/null || true
+    chmod -R 777 "/usr/local/games/allxd/xd$area_num/etc" 2>/dev/null || true
 
     print_success "数据目录权限已修改"
 }
@@ -411,6 +432,7 @@ main() {
         -e GAME_AREA="$GAME_AREA" \
         -e GAME_AREAS="$GAME_AREAS" \
         -v /usr/local/games/allxd/${GAME_AREA}/data_xiand:/app/xiand/data_xiand \
+        -v /usr/local/games/allxd/${GAME_AREA}/etc:/app/xiand/gamelib/etc \
         -v /usr/local/games/allxd/item:/app/xiand/gamelib/clone/item \
         -v /usr/local/games/allxd/log/${GAME_AREA}:/app/xiand/log \
         "${docker_image}" >/dev/null 2>&1

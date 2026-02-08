@@ -8,7 +8,7 @@ if [ -f /usr/local/games/xiand/.env ]; then
 fi
 
 # 如果没有设置MYSQL_PASSWORD，使用默认值
-export MYSQL_PASSWORD=${MYSQL_PASSWORD:-"888888"}
+export MYSQL_PASSWORD=${MYSQL_PASSWORD:-"Happy888888"}
 
 /bin/kill $(ps ax|grep pike|grep 13800|cut -d' ' -f1)
 /bin/kill $(ps ax|grep pike|grep 13800|cut -d' ' -f2)

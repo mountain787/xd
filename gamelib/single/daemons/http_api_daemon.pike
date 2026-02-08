@@ -712,7 +712,6 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
     if(search(cmd, "login_regnew ") == 0) {
         http_werror("=== REGISTER REQUEST ===\n");
         http_werror(" RAW CMD: %s\n", cmd);
-        http_werror(" REQ headers: %O\n", req->headers);
 
         if(check_register_rate_limit(client_ip)) {
             http_werror(" RATE LIMIT EXCEEDED for IP: %s\n", client_ip);
@@ -720,34 +719,35 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
             return;
         }
 
-        // 解析JSP发送的参数: login_regnew projname user pswd sid game_pre m_key userip userua
-        // 共9个部分（包括命令名）
-        string projname, user_name, pswd, sid, game_pre, m_key, userip, userua;
+        // 解析参数: Vue发送 login_regnew gamenv xd01username password sid challenge
+        // JSP发送: login_regnew gamenv user password sid game_pre m_key userip userua
+        // 先初始化所有变量为空字符串
+        string projname = "", user_name = "", pswd = "", sid = "";
+        string game_pre = "", m_key = "", userip = "", userua = "";
+
+        // 尝试解析JSP格式（8个参数）
         int parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s %s %s %s",
                                   projname, user_name, pswd, sid, game_pre, m_key, userip, userua);
-        http_werror(" sscanf result: %d (expected 8)\n", parse_result);
-        http_werror(" projname=%s, user=%s, pswd_len=%d, sid=%s, game_pre=%s, m_key=%s\n",
-                    projname, user_name, pswd ? sizeof(pswd) : 0, sid, game_pre, m_key);
-        http_werror(" userip=%s, userua=%s\n", userip, userua);
+        http_werror(" sscanf JSP format result: %d\n", parse_result);
 
-        // 如果解析失败，尝试旧格式（兼容性）
+        // 如果JSP格式解析失败，尝试Vue格式（5-6个参数）
         if(parse_result < 4) {
-            http_werror(" Trying old format parsing...\n");
-            string path, full_userid, plaintext_password, session_id, challenge;
-            parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s", path, full_userid, plaintext_password, session_id, challenge);
-            http_werror(" Old format sscanf result: %d\n", parse_result);
-            if(parse_result >= 3) {
-                user_name = full_userid;
-                pswd = plaintext_password;
-                sid = session_id;
-                game_pre = "";
-                projname = path || "gamelib";
-            }
+            string challenge = "";
+            parse_result = sscanf(cmd, "login_regnew %s %s %s %s %s",
+                                  projname, user_name, pswd, sid, challenge);
+            http_werror(" sscanf Vue format result: %d\n", parse_result);
         }
 
+        http_werror(" projname=%s, user=%s, pswd_len=%d, sid=%s, game_pre=%s\n",
+                    projname || "", user_name || "", sizeof(pswd), sid || "", game_pre || "");
+        http_werror(" m_key=%s, userip=%s, userua=%s\n", m_key || "", userip || "", userua || "");
+
         if(parse_result >= 3) {
-            // 使用JSP传递的game_pre作为分区前缀
+            // 使用JSP传递的game_pre作为分区前缀，如果为空则从user_name中提取
             string game_fg = game_pre || "";  // 分区前缀如 xd01, tx01
+            if(game_fg == "" && sscanf(user_name, "%[a-zA-Z]%d%s", string prefix, int num, string rest) == 3) {
+                game_fg = prefix + sprintf("%02d", num);
+            }
 
             http_werror(" Parsed: game_fg=%s, user_name=%s (len=%d), password_len=%d\n",
                         game_fg, user_name, sizeof(user_name), sizeof(pswd));

@@ -1073,20 +1073,21 @@ createApp({
 
         // 获取图片的完整URL
         getImageUrl(imagePath) {
-            // imagePath 格式: /images/user/0_100.gif
+            // imagePath 格式: /images/user/0_100.gif 或 /xd/images/...
             // 使用与当前页面相同的协议和主机名
             const protocol = window.location.protocol;
             const hostname = window.location.hostname;
             // HTTPS 时使用主域名，HTTP 时使用带端口的地址
+            // 注意：图片在Tomcat下(8080端口)，不是Pike HTTP API(8888端口)
             let baseUrl;
             if (protocol === 'https:') {
                 baseUrl = protocol + '//' + hostname;
             } else {
                 // 内网访问，需要判断是localhost还是其他
                 if (hostname === 'localhost' || hostname === '127.0.0.1') {
-                    baseUrl = protocol + '//localhost:8888';
+                    baseUrl = protocol + '//localhost:8080';
                 } else {
-                    baseUrl = protocol + '//' + hostname + ':8888';
+                    baseUrl = protocol + '//' + hostname + ':8080';
                 }
             }
             return baseUrl + imagePath;

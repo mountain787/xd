@@ -327,12 +327,24 @@ createApp({
 
             try {
                 const fullUserid = this.registerForm.partition + this.registerForm.userid;
-                // 生成一个随机的session ID
+                // 生成一个随机的session ID作为验证码
                 const sessionId = Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
 
-                // 注意：注册时发送明文密码，HTTP API会存储明文密码
-                // 登录时使用challenge做哈希验证
-                const cmd = `login_regnew gamenv ${fullUserid} ${this.registerForm.password} ${sessionId}`;
+                // 获取challenge用于密码哈希
+                const challengeResp = await fetch(this.apiBase + '/api/challenge');
+                if (!challengeResp.ok) {
+                    this.registerError = '获取安全挑战失败';
+                    return;
+                }
+                const challengeData = await challengeResp.json();
+                const challenge = challengeData.challenge;
+
+                // 使用challenge对密码进行哈希
+                const passwordHash = await sha256(challenge + this.registerForm.password);
+
+                // 发送注册命令: login_regnew gamenv fullUserid passwordHash challenge sessionId
+                // 注意：注册不需要txd，直接发送cmd参数
+                const cmd = `login_regnew gamenv ${fullUserid} ${passwordHash} ${sessionId} ${challenge}`;
                 let url = this.apiBase + '/api/html?cmd=' + encodeURIComponent(cmd);
 
                 // 如果有推荐码，添加到URL参数

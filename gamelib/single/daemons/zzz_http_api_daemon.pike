@@ -1263,17 +1263,18 @@ mapping parse_bracket_content(string content, string txd, string userid)
             label = content[0..pos-1];
             action_cmd = content[pos+1..];
 
-            // 图片链接 [imgurl picture:/images/...] 或 [miniimg minipicture:/images/...]
-            // 使用 search() 代替 has_prefix() (Pike没有has_prefix函数)
-            int is_imgurl = (label == "imgurl picture" || search(label, "imgurl picture ") == 0);
-            int is_miniimg = (label == "miniimg minipicture" || search(label, "miniimg minipicture ") == 0);
+            // 图片链接 [imgurl xxx:/images/...] 或 [miniimg xxx:/xd/images/...]
+            // 支持任意第二部分，如: imgurl picture, imgurl loading, miniimg minipicture 等
+            int is_imgurl = (search(label, "imgurl ") == 0);
+            int is_miniimg = (search(label, "miniimg ") == 0);
 
             if(is_imgurl || is_miniimg) {
                 // 提取图片路径
                 string image_path = action_cmd;
-                // 如果 action_cmd 以 picture: 开头，去掉前缀
-                if(search(action_cmd, "picture:") == 0) {
-                    image_path = action_cmd[8..]; // 跳过 "picture:"
+                // 如果 action_cmd 以 picture: 或 loading: 等开头，去掉前缀
+                int colon_in_path = search(image_path, ":");
+                if(colon_in_path >= 0) {
+                    image_path = image_path[colon_in_path+1..];
                 }
                 return ([
                     "type": "image",

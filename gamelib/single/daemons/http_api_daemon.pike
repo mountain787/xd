@@ -660,6 +660,7 @@ void handle_api(Protocols.HTTP.Server.Request req)
     if(!cmd || cmd == "") cmd = "look";
 
     string auth_userid, auth_password;
+    string challenge = params["challenge"];
 
     if(txd && txd != "" && txd != " ") {
         mapping auth = decode_txd(txd);
@@ -669,10 +670,40 @@ void handle_api(Protocols.HTTP.Server.Request req)
         }
         auth_userid = auth["userid"];
         auth_password = auth["password"];
+
+        // TXD 也需要验证密码
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_json(req, ([ "error": "用户不存在" ]), 401);
+            return;
+        }
+        if(auth_password != stored_password) {
+            send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+            return;
+        }
     }
     else if(userid && password && userid != "" && password != "") {
         auth_userid = userid;
         auth_password = password;
+
+        // 密码验证
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_json(req, ([ "error": "用户不存在" ]), 401);
+            return;
+        }
+        // 如果有 challenge，使用 challenge 验证；否则直接比较明文密码
+        if(challenge && sizeof(challenge) > 0) {
+            if(!verify_password_hash(challenge, password, stored_password)) {
+                send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+                return;
+            }
+        } else {
+            if(password != stored_password) {
+                send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+                return;
+            }
+        }
     }
     else {
         send_json(req, ([ "error": "缺少认证信息" ]), 400);
@@ -964,14 +995,37 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
         }
         auth_userid = auth["userid"];
         auth_password = auth["password"];
+
+        // TXD 也需要验证密码
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_html_error(req, "用户不存在");
+            return;
+        }
+        if(auth_password != stored_password) {
+            send_html_error(req, "用户名或密码错误");
+            return;
+        }
     }
     else if(userid && password && userid != "" && password != "") {
         auth_userid = userid;
         auth_password = password;
 
+        // 密码验证
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_html_error(req, "用户不存在");
+            return;
+        }
+        // 如果有 challenge，使用 challenge 验证；否则直接比较明文密码
         if(challenge && sizeof(challenge) > 0) {
-            string stored_password = get_user_password(auth_userid);
-            if(stored_password && !verify_password_hash(challenge, password, stored_password)) {
+            if(!verify_password_hash(challenge, password, stored_password)) {
+                send_html_error(req, "用户名或密码错误");
+                return;
+            }
+        } else {
+            // 没有 challenge 时，直接比较明文密码
+            if(password != stored_password) {
                 send_html_error(req, "用户名或密码错误");
                 return;
             }
@@ -1051,6 +1105,7 @@ void handle_api_json(Protocols.HTTP.Server.Request req)
 
     // 认证
     string auth_userid, auth_password;
+    string challenge = params["challenge"];
 
     if(txd && txd != "" && txd != " ") {
         mapping auth = decode_txd(txd);
@@ -1060,10 +1115,40 @@ void handle_api_json(Protocols.HTTP.Server.Request req)
         }
         auth_userid = auth["userid"];
         auth_password = auth["password"];
+
+        // TXD 也需要验证密码
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_json(req, ([ "error": "用户不存在" ]), 401);
+            return;
+        }
+        if(auth_password != stored_password) {
+            send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+            return;
+        }
     }
     else if(userid && password && userid != "" && password != "") {
         auth_userid = userid;
         auth_password = password;
+
+        // 密码验证
+        string stored_password = get_user_password(auth_userid);
+        if(!stored_password) {
+            send_json(req, ([ "error": "用户不存在" ]), 401);
+            return;
+        }
+        // 如果有 challenge，使用 challenge 验证；否则直接比较明文密码
+        if(challenge && sizeof(challenge) > 0) {
+            if(!verify_password_hash(challenge, password, stored_password)) {
+                send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+                return;
+            }
+        } else {
+            if(password != stored_password) {
+                send_json(req, ([ "error": "用户名或密码错误" ]), 401);
+                return;
+            }
+        }
     }
     else {
         send_json(req, ([ "error": "缺少认证信息" ]), 400);
@@ -1075,7 +1160,10 @@ void handle_api_json(Protocols.HTTP.Server.Request req)
 
     // 执行命令
     string response = execute_command(auth_userid, auth_password, actual_cmd);
-    string new_txd = generate_txd(auth_userid);
+
+    // 生成新的 TXD - 使用存储的明文密码（因为 auth_password 可能是哈希）
+    string stored_password = get_user_password(auth_userid);
+    string new_txd = generate_txd(auth_userid, stored_password || auth_password);
 
     // 解析MUD输出为结构化数据
     array(mapping) lines = parse_mud_to_json(response, new_txd, auth_userid);
@@ -1896,7 +1984,10 @@ void handle_api_performs(Protocols.HTTP.Server.Request req)
 
         // 执行 use_perform 命令获取技能列表（xiand使用use_perform）
         string response = execute_command(auth_userid, auth_password, "use_perform");
-        string new_txd = generate_txd(auth_userid);
+
+        // 生成新的 TXD - 使用存储的明文密码（因为 auth_password 可能是哈希）
+        string stored_password = get_user_password(auth_userid);
+        string new_txd = generate_txd(auth_userid, stored_password || auth_password);
 
         array performs_list = ({});
         string skill_name = "xiand";

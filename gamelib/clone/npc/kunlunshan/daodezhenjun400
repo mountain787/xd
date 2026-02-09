@@ -17,7 +17,9 @@ void create(){
 }
 string query_words(){
 	string s = ::query_words();
-	s += TASKD->query_words(this_player(),this_object());
+	object tp = this_player();
+	if(tp)  // 添加 NULL 检查
+		s += TASKD->query_words(tp,this_object());
 	return s;
 }
 string query_links(void|int count){

@@ -2,6 +2,8 @@ mapping(string:string) exits_chinese=([]);
 private mapping cwaym=(["east":"东→","west":"西←","north":"北↑","south":"南↓","northeast":"东北","southeast":"东南","northwest":"西北","southwest":"西南","in":"进","out":"出"]);
 string view_exits()
 {
+	object tp = this_player();
+	if(!tp) return "";  // 添加 NULL 检查 - 房间加载时可能无玩家
 	array(string) sorted_dir=({"in","out","north","west","east","south","southeast","northeast","southwest","northwest"});
 	array(string) dirs=indices(this_object()->exits);
 	mapping switch_exits=(this_object()->switch_exits);
@@ -18,22 +20,22 @@ string view_exits()
 	//自动跟随的显示，由liaocheng于07/09/21添加
 	int follow_f = 0;
 	object leader;
-	if(this_player()->follow != "_none"){
-		leader = find_player(this_player()->follow);
+	if(tp->follow != "_none"){
+		leader = find_player(tp->follow);
 		if(leader){
 			follow_f = 1;
 		}
 		else
-			this_player()->follow = "_none";
+			tp->follow = "_none";
 	}
 	if(follow_f)
 		out += "你正在跟随 "+leader->query_name_cn()+" [取消跟随:follow_cancel]\n";
 	else{
 		if(sizeof(ks))
 			out+="请选择你的行走方向：\n";
-			//out+=this_player()->query_mini_picture_url("xingzoufangxiang")+"请选择你的行走方向：\n";
+			//out+=tp->query_mini_picture_url("xingzoufangxiang")+"请选择你的行走方向：\n";
 		for(int i=0;i<sizeof(ks);i++){
-			if(hidden[ks[i]]&&!present(hidden[ks[i]],this_player()))
+			if(hidden[ks[i]]&&!present(hidden[ks[i]],tp))
 				;//don't show it
 			else{
 				if(closed[ks[i]]){
@@ -50,7 +52,7 @@ string view_exits()
 						foreach(switch_exits[ks[i]],array a){
 							int val;
 							if(a[0]!=""){
-								val=this_player()[a[0]];
+								val=tp[a[0]];
 								if(val>=a[1]&&val<=a[2]){
 									dest=a[3];
 									break;
@@ -64,7 +66,11 @@ string view_exits()
 						else
 							out+=("["+cwaym[ks[i]]);
 						mixed err = catch {
-							out+=("："+load_object(dest)->query_short());
+							object dest_obj = load_object(dest);
+							if(dest_obj)
+								out+=("："+dest_obj->query_short());
+							else
+								out+=("：未知区域");
 						};
 						if(err){
 							werror("load_object ERROR for %s: %s\n", dest, describe_error(err));
@@ -82,6 +88,6 @@ string view_exits()
 		}
 		if(sizeof(ks))
 			out+="\n";
-	}	
+	}
 	return out;
 }

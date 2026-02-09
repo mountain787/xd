@@ -190,7 +190,7 @@ string get_user_password(string userid)
         return 0;
     }
 
-    string user_file = SROOT + "/data_xiand/u/" + userid[sizeof(userid)-2..] + "/" + userid + ".o";
+    string user_file = ROOT + "/data_xiand/u/" + userid[sizeof(userid)-2..] + "/" + userid + ".o";
     // http_werror(" get_user_password: loading %s\n", user_file);
 
     if(!Stdio.exist(user_file)) {

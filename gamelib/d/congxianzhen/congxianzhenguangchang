@@ -18,8 +18,10 @@ int is_bedroom()
 {
 	return 1;
 }
+/*
 string query_links(){
 	object player=this_player();
+	if(!player) return "";  // 添加 NULL 检查
 	string tmp="";
 	if(player->have_name_cn() && player->set_pic_ok==0)
 		tmp+="[改头换面:set_pic]\n";
@@ -29,8 +31,8 @@ string query_links(){
 	}
 	//if(player->set_pic_ok==0)
 	//	tmp+="[更换图片:set_pic]\n";
-	
-	//由liaocheng于07/08/15添加，用于人推人系统 
+
+	//由liaocheng于07/08/15添加，用于人推人系统
 	if(player->set_presenter == "can_set")
 		tmp += "[填写推荐人:present_set]\n";
 
@@ -52,6 +54,7 @@ void init()
 	add_action(set_gender,"set_gender");
 	add_action(set_pic,"set_pic");
 }
+*/
 int set_name_cn(string arg)                                                                                       
 {
 	string s;                                                                                                        

@@ -109,11 +109,10 @@ int set_name_cn(string arg)
 				if(arg[i]>=0&&arg[i]<=127){
 					if(arg[i]>='a'&&arg[i]<='z'||arg[i]>='A'&&arg[i]<='Z'||arg[i]>='0'&&arg[i]<='9'){     
 					}
-					else{ 
-						arg=0;  
-						s = "请使用中文、英文字母或者数字取名。\n";     
+					else{
+						s = "请使用中文、英文字母或者数字取名。\n";
 						me->write_view(WAP_VIEWD["/emote"],0,0,s);
-						return 1; 
+						return 1;
 					}
 				}
 			}                                                                                                              

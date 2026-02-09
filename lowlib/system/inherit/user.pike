@@ -133,7 +133,10 @@ int setup(string arg){
     set_living_name(name);
     enable_commands();
     //add for password by calvin 2006-12-08
-    set_password(arg);
+   // 只在密码不存在时才设置（避免覆盖已有密码）
+    if(!password) {
+        set_password(arg);
+    }
 	//add for password by calvin 2006-12-08
 	set_this_player(this_object());
 

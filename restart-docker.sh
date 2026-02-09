@@ -452,6 +452,13 @@ main() {
         # Vue app.js在容器内的路径（Tomcat webapps目录）
         VUE_JS_PATH="/usr/local/tomcat/webapps/ROOT/web_vue/js/app.js"
 
+        # 复制本地编译的前端文件到容器（确保使用最新代码）
+        print_info "复制本地编译的前端文件到容器..."
+        docker cp "${PROJECT_ROOT}/web/web_vue/js/app.js" "${CONTAINER_NAME}:${VUE_JS_PATH}" 2>/dev/null || true
+        docker cp "${PROJECT_ROOT}/web/web_vue/manifest.json" "${CONTAINER_NAME}:/usr/local/tomcat/webapps/ROOT/web_vue/manifest.json" 2>/dev/null || true
+        docker cp "${PROJECT_ROOT}/web/web_vue/index.html" "${CONTAINER_NAME}:/usr/local/tomcat/webapps/ROOT/web_vue/index.html" 2>/dev/null || true
+        print_success "前端文件已复制到容器"
+
         # 使用sed替换分区列表
         # 替换 getDefaultPartitions 函数返回的分区列表
         docker exec "${CONTAINER_NAME}" \

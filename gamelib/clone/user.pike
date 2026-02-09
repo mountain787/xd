@@ -76,6 +76,18 @@ void set_auto_learn_xiuchan(int s)
 }
 //end of Evan 2008.11.20
 
+// HTTP API 模式标记：用于标识从 HTTP API 登录的玩家，跳过 exec() 避免 Request 对象被析构
+int http_api_mode;
+
+// 设置 HTTP API 模式
+void set_http_api_mode(int value) {
+    http_api_mode = value;
+}
+
+// 查询 HTTP API 模式状态
+int query_http_api_mode() {
+    return http_api_mode;
+}
 
 string inhome_pos;//玩家在某个home(家园系统)中的标志 Evan 2008.08.29 
 

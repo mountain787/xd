@@ -397,29 +397,30 @@ string execute_command_sync(string userid, string password, string cmd)
             return execute_internal_command(player, cmd);
         }
 
-        // 重要：在创建新玩家之前，先检查是否已有同名玩家
+        // 检查是否已有同名玩家在线
         object existing_player = find_player(userid);
         if(existing_player) {
-            // 通知旧连接被踢掉
-            catch {
-                existing_player->tell_object("\n你的账号在别处登录，你被踢下线了。\n");
-            };
+            // 已存在玩家，设置 http_api_mode 并调用 login_check 进行重连验证
+            existing_player->set_http_api_mode(1);
 
-            // 踢掉旧连接
-            object connd = find_object(SROOT + "/connd.pike");
-            if(!connd) connd = load_object(SROOT + "/connd.pike");
-            object existing_conn = connd->query_conn(existing_player);
-            if(existing_conn && existing_conn != UNDEFINED) {
-                catch {
-                    existing_conn->close();
-                };
+            // 生成 session ID（使用当前时间戳）
+            string session_id = sprintf("%d", time());
+
+            // 调用 login_check 进行验证（4参数格式）
+            string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+            object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+            if(login_cmd) {
+                login_cmd->main(login_arg);
             }
-            remove_virtual_connection(userid);
-            // 直接使用已存在的玩家 - 不需要再 setup!
-            player = existing_player;
+
+            // 从虚拟连接池获取登录后的玩家
+            player = get_player_from_connection(userid);
+            if(!player) {
+                player = existing_player;  // fallback
+            }
         } else {
-            // 没有找到已存在的玩家，直接创建（不使用 login.pike，因为 exec() 无效）
-            // 密码已经在 TXD Token 解码中验证过了（或者由前端负责）
+            // 没有已存在的玩家，创建新玩家对象并设置 http_api_mode
+            // 然后调用 login_check 进行完整的登录流程
             string user_prog_file = ROOT + "/gamelib/clone/user.pike";
             program user_prog = compile_file(user_prog_file);
             player = user_prog(user_prog_file);
@@ -427,37 +428,27 @@ string execute_command_sync(string userid, string password, string cmd)
             if(player) {
                 player->set_name(userid);
                 player->set_project("gamelib");
-                player->setup(password);
+                // 关键：设置 http_api_mode 标记，让 login_check 跳过 exec()
+                player->set_http_api_mode(1);
+
+                // 生成 session ID
+                string session_id = sprintf("%d", time());
+
+                // 调用 login_check 进行完整登录（包含密码验证和 setup）
+                string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+                object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+                if(login_cmd) {
+                    login_cmd->main(login_arg);
+                }
+
+                // 从虚拟连接池获取登录后的玩家
+                player = get_player_from_connection(userid);
             }
         }
 
         if(!player) {
             return "{\"error\":\"登录失败\"}";
         }
-
-        // 再次检查（防止创建过程中又有新连接）
-        object check_player = find_player(userid);
-        if(check_player && check_player != player) {
-            // Detected duplicate player during setup, cleaning up
-            // 保持当前的 player，销毁旧的
-            // 通知旧连接被踢掉
-            catch {
-                check_player->tell_object("\n你的账号在别处登录，你被踢下线了。\n");
-            };
-
-            object connd = find_object(SROOT + "/connd.pike");
-            if(!connd) connd = load_object(SROOT + "/connd.pike");
-            object check_conn = connd->query_conn(check_player);
-            if(check_conn && check_conn != UNDEFINED) {
-                catch {
-                    check_conn->close();
-                };
-            }
-            remove_virtual_connection(userid);
-        }
-
-        // 保存到连接池
-        set_virtual_connection(userid, ({0, time(), player}));
 
         return execute_internal_command(player, cmd);
     };
@@ -478,37 +469,51 @@ string execute_internal_command_sync(string userid, string password, string cmd)
 
     object player = get_player_from_connection(userid);
     if(!player && password && password != "") {
-        // 玩家不存在，尝试直接创建玩家对象（xiand没有login.pike）
-        string user_file = ROOT + "/gamelib/clone/user.pike";
-        program user_prog = compile_file(user_file);
-        player = user_prog(user_file);
-        if(player) {
-            player->set_name(userid);
-            player->set_project("gamelib");
-            // 注意：setup() 会设置密码，所以传正确的密码
-            player->setup(password);
+        // 检查是否已有同名玩家在线
+        object existing_player = find_player(userid);
+        if(existing_player) {
+            // 已存在玩家，设置 http_api_mode 并调用 login_check 进行重连验证
+            existing_player->set_http_api_mode(1);
 
-            object init_room = load_object(ROOT + "/gamelib/d/init");
-            if(init_room) {
-                player->move(init_room);
+            // 生成 session ID
+            string session_id = sprintf("%d", time());
+
+            // 调用 login_check 进行验证
+            string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+            object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+            if(login_cmd) {
+                login_cmd->main(login_arg);
             }
 
-            // 踢掉同名的 socket 连接（如果有）
-            object existing_player = find_player(userid);
-            if(existing_player && existing_player != player) {
-                object connd = find_object(SROOT + "/connd.pike");
-                if(!connd) connd = load_object(SROOT + "/connd.pike");
-                object existing_conn = connd->query_conn(existing_player);
-                if(existing_conn && existing_conn != UNDEFINED) {
-                    catch {
-                        existing_conn->close();
-                    };
-                    http_werror("[HTTP_API] Kicked socket connection for user: %s (internal_sync)\n", userid);
+            // 从虚拟连接池获取登录后的玩家
+            player = get_player_from_connection(userid);
+            if(!player) {
+                player = existing_player;  // fallback
+            }
+        } else {
+            // 没有已存在的玩家，创建新玩家对象并设置 http_api_mode
+            string user_file = ROOT + "/gamelib/clone/user.pike";
+            program user_prog = compile_file(user_file);
+            player = user_prog(user_file);
+            if(player) {
+                player->set_name(userid);
+                player->set_project("gamelib");
+                // 关键：设置 http_api_mode 标记，让 login_check 跳过 exec()
+                player->set_http_api_mode(1);
+
+                // 生成 session ID
+                string session_id = sprintf("%d", time());
+
+                // 调用 login_check 进行完整登录（包含密码验证和 setup）
+                string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+                object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+                if(login_cmd) {
+                    login_cmd->main(login_arg);
                 }
-            }
 
-            // 保存到连接池
-            set_virtual_connection(userid, ({0, time(), player}));
+                // 从虚拟连接池获取登录后的玩家
+                player = get_player_from_connection(userid);
+            }
         }
     }
 

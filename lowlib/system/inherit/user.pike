@@ -136,6 +136,13 @@ int setup(string arg){
     set_password(arg);
 	//add for password by calvin 2006-12-08
 	set_this_player(this_object());
+
+	// 踢掉 HTTP API 虚拟连接（如果有）
+	object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
+	if(http_api_daemon && functionp(http_api_daemon->remove_virtual_connection)) {
+		http_api_daemon->remove_virtual_connection(name);
+	}
+
     return 1;
 }
 #ifndef __NO_ENVIRONMENT__
@@ -145,6 +152,11 @@ void tell_room(object ob, string msg){
 }
 #endif
 void net_dead(){
+	// 清理 HTTP API 虚拟连接（如果有）
+	object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
+	if(http_api_daemon && functionp(http_api_daemon->remove_virtual_connection)) {
+		http_api_daemon->remove_virtual_connection(name);
+	}
 	call_out(remove,3);
 }
 int reconnect(string arg){
@@ -153,6 +165,13 @@ int reconnect(string arg){
 		reconnect_time=time();
 		reconnect_count++;
 		remove_call_out(remove);
+
+		// 踢掉 HTTP API 虚拟连接（如果有）
+		object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
+		if(http_api_daemon && functionp(http_api_daemon->remove_virtual_connection)) {
+			http_api_daemon->remove_virtual_connection(name);
+		}
+
 		return 1;
 	}
 	else

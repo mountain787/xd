@@ -303,7 +303,7 @@
                     <div class="ui-card-desc">现代化 Vue 界面</div>
                 </div>
 
-                <div class="ui-card old-ui" onclick="selectUI('old')" style="display:none;">
+                <div class="ui-card old-ui" onclick="selectUI('old')">
                     <div class="ui-card-icon">📜</div>
                     <div class="ui-card-title">经典界面</div>
                     <div class="ui-card-desc">传统 JSP 界面</div>

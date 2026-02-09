@@ -21,6 +21,7 @@ int is_bedroom()
 string query_links(){
 	object player=this_player();
 	string tmp="";
+	if(!player) return tmp;  // 添加 NULL 检查
 	if(player->have_name_cn() && player->set_pic_ok==0)
 		tmp+="[改头换面:set_pic]\n";
 	else if(!player->have_name_cn()){
@@ -30,7 +31,7 @@ string query_links(){
 	//if(player->set_pic_ok==0 && player->have_name_cn())
 	//	tmp+="[更换图片:set_pic]\n";
 
-	//由liaocheng于07/08/15添加，用于人推人系统 
+	//由liaocheng于07/08/15添加，用于人推人系统
 	if(player->set_presenter == "can_set")
 		tmp += "[填写推荐人:present_set]\n";
 
@@ -46,12 +47,15 @@ string query_links(){
 	}
 	return tmp;
 }
+// 暂时注释掉 init() 测试
+/*
 void init()
 {
 	add_action(set_name_cn,"set_name_cn");
 	add_action(set_gender,"set_gender");
 	add_action(set_pic,"set_pic");
 }
+*/
 int set_name_cn(string arg)                                                                                       
 {
 	string s;                                                                                                        

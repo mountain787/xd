@@ -424,6 +424,7 @@ string query_npc_taskList(object player,object npc)
 string query_words(object player,object npc)
 {
 	string taskStr = "";
+	if(!player || !npc) return "";  // 添加 NULL 检查，兼容 Pike 9
 	taskStr += query_npc_taskList(player,npc);
 	return taskStr;
 }

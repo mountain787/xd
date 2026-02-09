@@ -485,7 +485,8 @@ string execute_internal_command_sync(string userid, string password, string cmd)
         if(player) {
             player->set_name(userid);
             player->set_project("gamelib");
-            player->setup(userid);
+            // 注意：setup() 会设置密码，所以传正确的密码
+            player->setup(password);
 
             object init_room = load_object(ROOT + "/gamelib/d/init");
             if(init_room) {

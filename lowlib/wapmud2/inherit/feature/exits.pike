@@ -63,7 +63,13 @@ string view_exits()
 							out+=("["+exits_chinese[ks[i]]);
 						else
 							out+=("["+cwaym[ks[i]]);
-						out+=("："+load_object(dest)->query_short());
+						mixed err = catch {
+							out+=("："+load_object(dest)->query_short());
+						};
+						if(err){
+							werror("load_object ERROR for %s: %s\n", dest, describe_error(err));
+							out+=("：未知区域");
+						}
 						string accesskey="";
 						if(ks[i]=="west") accesskey="{10}";
 						if(ks[i]=="east") accesskey="{11}";

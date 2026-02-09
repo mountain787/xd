@@ -280,12 +280,36 @@ prepare_data_directories() {
 
     mkdir -p "$log_dir"
 
-    # 复制源 log 目录的所有子目录结构
+    # 创建所有必需的日志子目录（根据代码中 append_file 调用分析）
+    local log_subdirs=(
+        "pk"                      # userd.pike: human/monst 用户日志
+        "stat/online"             # countd.pike: 在线统计
+        "stat/consume"            # 各种消费统计
+        "stat/daily"              # user_countd.pike: 每日统计
+        "stat/money_consume"      # 金币消费统计
+        "fee_log"                 # 费用日志
+        "home"                    # 家园日志
+        "home/drop"               # 家园掉落日志
+        "auto_learn"              # auto_learn 日志
+        "push"                    # push 推送日志
+        "daily"                   # 每日日志
+        "month"                   # 月度日志
+    )
+
+    for subdir in "${log_subdirs[@]}"; do
+        mkdir -p "$log_dir/$subdir"
+    done
+
+    # 如果源目录存在，复制源 log 目录的其他子目录结构
     if [ -d "$source_log_dir" ]; then
         for subdir in "$source_log_dir"/*; do
             if [ -d "$subdir" ]; then
                 local dirname=$(basename "$subdir")
                 mkdir -p "$log_dir/$dirname"
+                # 如果源子目录有内容且目标子目录为空，则复制内容
+                if [ -z "$(ls -A "$log_dir/$dirname" 2>/dev/null)" ] && [ -n "$(ls -A "$subdir" 2>/dev/null)" ]; then
+                    cp -r "$subdir"/* "$log_dir/$dirname/" 2>/dev/null || true
+                fi
             fi
         done
     fi

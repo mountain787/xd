@@ -410,14 +410,24 @@ createApp({
             try {
                 const fullUserid = this.loginForm.partition + this.loginForm.userid;
 
-                // 使用明文密码（不再使用challenge哈希）
-                const plainPassword = this.loginForm.password;
+                // 获取challenge用于密码哈希
+                const challengeResp = await fetch(this.apiBase + '/api/challenge');
+                if (!challengeResp.ok) {
+                    this.loginError = '获取安全挑战失败';
+                    return;
+                }
+                const challengeData = await challengeResp.json();
+                const challenge = challengeData.challenge;
+
+                // 使用challenge对密码进行哈希
+                const passwordHash = await sha256(challenge + this.loginForm.password);
 
                 if (this.useJsonMode) {
                     // JSON模式: 使用 /api/json 接口登录
                     const params = new URLSearchParams({
                         userid: fullUserid,
-                        password: plainPassword,
+                        password: passwordHash,
+                        challenge: challenge,
                         cmd: 'init'
                     });
 
@@ -465,7 +475,8 @@ createApp({
                     // iframe模式: 使用 /api/html 接口
                     const params = new URLSearchParams({
                         userid: fullUserid,
-                        password: plainPassword,
+                        password: passwordHash,
+                        challenge: challenge,
                         cmd: 'look'
                     });
 
@@ -1181,13 +1192,22 @@ createApp({
 
                 const fullUserid = savedPartition + savedUser;
 
-                // 使用明文密码（不再使用challenge哈希）
-                const plainPassword = password;
+                // 获取 challenge
+                const challengeResp = await fetch(this.apiBase + '/api/challenge');
+                if (!challengeResp.ok) {
+                    throw new Error('获取安全挑战失败');
+                }
+                const challengeData = await challengeResp.json();
+                const challenge = challengeData.challenge;
+
+                // 使用 challenge 对密码进行哈希
+                const passwordHash = await sha256(challenge + password);
 
                 // 发送登录请求
                 const params = new URLSearchParams({
                     userid: fullUserid,
-                    password: plainPassword,
+                    password: passwordHash,
+                    challenge: challenge,
                     cmd: 'init'
                 });
 

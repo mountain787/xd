@@ -934,6 +934,13 @@ void handle_api_html(Protocols.HTTP.Server.Request req)
                                                     me->move(LOW_VOID_OB);
                                                 }
 
+                                                // 保存用户档案到文件
+                                                http_werror("  Saving user file...\n");
+                                                if(functionp(me->save)) {
+                                                    me->save();
+                                                    http_werror("  User file saved successfully\n");
+                                                }
+
                                                 http_werror(" Registration SUCCESS: %s\n", full_username);
                                                 result = actual_user + "," + pswd;  // 返回不含前缀的用户名
                                             } else {

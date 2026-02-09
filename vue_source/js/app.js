@@ -339,12 +339,13 @@ createApp({
                 const challengeData = await challengeResp.json();
                 const challenge = challengeData.challenge;
 
-                // 使用challenge对密码进行哈希
-                const passwordHash = await sha256(challenge + this.registerForm.password);
+                // 注册时发送明文密码（与老用户保持一致，以便老界面登录）
+                // 登录时才使用 challenge 哈希验证
+                const plainPassword = this.registerForm.password;
 
-                // 发送注册命令: login_regnew gamelib fullUserid passwordHash sessionId challenge
+                // 发送注册命令: login_regnew gamelib fullUserid plainPassword sessionId challenge
                 // 注意：注册不需要txd，直接发送cmd参数
-                const cmd = `login_regnew gamelib ${fullUserid} ${passwordHash} ${sessionId} ${challenge}`;
+                const cmd = `login_regnew gamelib ${fullUserid} ${plainPassword} ${sessionId} ${challenge}`;
                 let url = this.apiBase + '/api/html?cmd=' + encodeURIComponent(cmd);
 
                 // 如果有推荐码，添加到URL参数

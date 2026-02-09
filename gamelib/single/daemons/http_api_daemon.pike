@@ -72,6 +72,24 @@ Protocols.HTTP.Server.Port http_port;
 /** API只读模式 */
 int api_only_mode = 1;
 
+/** HTTP API 登录待定标记 - 用于 login_check.pike 检测是否为 HTTP API 模式 */
+mapping(string:int) http_api_login_pending = ([]);
+
+// 设置 HTTP API 登录标记
+void set_http_api_login_pending(string userid, int value) {
+    http_api_login_pending[userid] = value;
+}
+
+// 查询 HTTP API 登录标记
+int query_http_api_login_pending(string userid) {
+    return http_api_login_pending[userid] || 0;
+}
+
+// 清除 HTTP API 登录标记
+void clear_http_api_login_pending(string userid) {
+    m_delete(http_api_login_pending, userid);
+}
+
 // ========================================================================
 // 初始化
 // ========================================================================
@@ -397,54 +415,30 @@ string execute_command_sync(string userid, string password, string cmd)
             return execute_internal_command(player, cmd);
         }
 
-        // 检查是否已有同名玩家在线
-        object existing_player = find_player(userid);
-        if(existing_player) {
-            // 已存在玩家，设置 http_api_mode 并调用 login_check 进行重连验证
-            existing_player->set_http_api_mode(1);
+        // 设置 HTTP API 登录标记（让 login_check 知道这是 HTTP API 模式）
+        set_http_api_login_pending(userid, 1);
 
-            // 生成 session ID（使用当前时间戳）
-            string session_id = sprintf("%d", time());
+        // 生成 session ID
+        string session_id = sprintf("%d", time());
 
-            // 调用 login_check 进行验证（4参数格式）
-            string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
-            object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
-            if(login_cmd) {
-                login_cmd->main(login_arg);
-            }
-
-            // 从虚拟连接池获取登录后的玩家
-            player = get_player_from_connection(userid);
-            if(!player) {
-                player = existing_player;  // fallback
-            }
-        } else {
-            // 没有已存在的玩家，创建新玩家对象并设置 http_api_mode
-            // 然后调用 login_check 进行完整的登录流程
-            string user_prog_file = ROOT + "/gamelib/clone/user.pike";
-            program user_prog = compile_file(user_prog_file);
-            player = user_prog(user_prog_file);
-
-            if(player) {
-                player->set_name(userid);
-                player->set_project("gamelib");
-                // 关键：设置 http_api_mode 标记，让 login_check 跳过 exec()
-                player->set_http_api_mode(1);
-
-                // 生成 session ID
-                string session_id = sprintf("%d", time());
-
-                // 调用 login_check 进行完整登录（包含密码验证和 setup）
-                string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
-                object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
-                if(login_cmd) {
-                    login_cmd->main(login_arg);
-                }
-
-                // 从虚拟连接池获取登录后的玩家
-                player = get_player_from_connection(userid);
-            }
+        // 调用 login_check 进行完整登录（包含密码验证和 setup）
+        // login_check 会：
+        // 1. 验证密码
+        // 2. 创建/找到玩家对象
+        // 3. 调用 setup()
+        // 4. 检查 http_api_login_pending 标记，跳过 exec()
+        // 5. 将玩家存入虚拟连接池
+        string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+        object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+        if(login_cmd) {
+            login_cmd->main(login_arg);
         }
+
+        // 清除登录标记
+        clear_http_api_login_pending(userid);
+
+        // 从虚拟连接池获取登录后的玩家
+        player = get_player_from_connection(userid);
 
         if(!player) {
             return "{\"error\":\"登录失败\"}";
@@ -452,6 +446,9 @@ string execute_command_sync(string userid, string password, string cmd)
 
         return execute_internal_command(player, cmd);
     };
+
+    // 清除登录标记（即使出错也要清除）
+    clear_http_api_login_pending(userid);
 
     if(err) {
         http_werror(" execute_command_sync error: %s\n", describe_error(err));
@@ -469,52 +466,24 @@ string execute_internal_command_sync(string userid, string password, string cmd)
 
     object player = get_player_from_connection(userid);
     if(!player && password && password != "") {
-        // 检查是否已有同名玩家在线
-        object existing_player = find_player(userid);
-        if(existing_player) {
-            // 已存在玩家，设置 http_api_mode 并调用 login_check 进行重连验证
-            existing_player->set_http_api_mode(1);
+        // 设置 HTTP API 登录标记（让 login_check 知道这是 HTTP API 模式）
+        set_http_api_login_pending(userid, 1);
 
-            // 生成 session ID
-            string session_id = sprintf("%d", time());
+        // 生成 session ID
+        string session_id = sprintf("%d", time());
 
-            // 调用 login_check 进行验证
-            string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
-            object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
-            if(login_cmd) {
-                login_cmd->main(login_arg);
-            }
-
-            // 从虚拟连接池获取登录后的玩家
-            player = get_player_from_connection(userid);
-            if(!player) {
-                player = existing_player;  // fallback
-            }
-        } else {
-            // 没有已存在的玩家，创建新玩家对象并设置 http_api_mode
-            string user_file = ROOT + "/gamelib/clone/user.pike";
-            program user_prog = compile_file(user_file);
-            player = user_prog(user_file);
-            if(player) {
-                player->set_name(userid);
-                player->set_project("gamelib");
-                // 关键：设置 http_api_mode 标记，让 login_check 跳过 exec()
-                player->set_http_api_mode(1);
-
-                // 生成 session ID
-                string session_id = sprintf("%d", time());
-
-                // 调用 login_check 进行完整登录（包含密码验证和 setup）
-                string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
-                object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
-                if(login_cmd) {
-                    login_cmd->main(login_arg);
-                }
-
-                // 从虚拟连接池获取登录后的玩家
-                player = get_player_from_connection(userid);
-            }
+        // 调用 login_check 进行完整登录
+        string login_arg = sprintf("gamelib %s %s %s", userid, password, session_id);
+        object login_cmd = load_object(ROOT + "/lowlib/system/cmds/login_check.pike");
+        if(login_cmd) {
+            login_cmd->main(login_arg);
         }
+
+        // 清除登录标记
+        clear_http_api_login_pending(userid);
+
+        // 从虚拟连接池获取登录后的玩家
+        player = get_player_from_connection(userid);
     }
 
     if(!player) {

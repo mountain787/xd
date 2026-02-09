@@ -1,4 +1,14 @@
 #include <globals.h>
+// 检查 HTTP API 登录标记（来自 http_api_daemon）
+int is_http_api_login(string user_name) {
+    object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
+    if(http_api_daemon && functionp(http_api_daemon->query_http_api_login_pending)) {
+        int pending = http_api_daemon->query_http_api_login_pending(user_name);
+        return pending;
+    }
+    return 0;
+}
+
 int main(string arg)
 {
 	string path,user_name,lgpswd,userip;
@@ -40,8 +50,8 @@ int main(string arg)
 			if(me){
 				//两个验证，sessionid和password
 				if(userip&&userip==me->userip&&me->project==path&&me["reconnect"]&&me->reconnect(lgpswd)){
-					// HTTP API 模式检测：检查玩家对象上的 http_api_mode 标记
-					int is_http_api = me->query_http_api_mode();
+					// HTTP API 模式检测：检查全局标记
+					int is_http_api = is_http_api_login(user_name);
 					if(is_http_api) {
 						// HTTP API 模式：不调用 exec()，更新虚拟连接池
 						object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
@@ -76,8 +86,8 @@ int main(string arg)
 			//有这个用户，用户在线，进行验证
 			if(me){
 				if(me->project==path&&me["reconnect"]&&me->reconnect(lgpswd)){
-					// HTTP API 模式检测：检查玩家对象上的 http_api_mode 标记
-					int is_http_api = me->query_http_api_mode();
+					// HTTP API 模式检测：检查全局标记
+					int is_http_api = is_http_api_login(user_name);
 					if(is_http_api) {
 						// HTTP API 模式：不调用 exec()，更新虚拟连接池
 						object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
@@ -157,9 +167,9 @@ int main(string arg)
 					mixed setup_result = catch { me->setup(lgpswd); };
 					Stdio.append_file("/tmp/xiand_login_debug.log", "setup result=" + sprintf("%O", setup_result) + "\n");
 					if(setup_result==0){
-						Stdio.append_file("/tmp/xiand_login_debug.log", "setup success! checking http_api_mode...\n");
-						// HTTP API 模式检测：检查玩家对象上的 http_api_mode 标记
-						int is_http_api = me->query_http_api_mode();
+						Stdio.append_file("/tmp/xiand_login_debug.log", "setup success! checking http_api mode...\n");
+						// HTTP API 模式检测：检查全局标记
+						int is_http_api = is_http_api_login(user_name);
 						if(is_http_api) {
 							Stdio.append_file("/tmp/xiand_login_debug.log", "HTTP API mode: skipping exec, using virtual connection\n");
 							// HTTP API 模式：不调用 exec()，将玩家添加到虚拟连接池

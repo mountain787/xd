@@ -2104,6 +2104,7 @@ body {
     flex-direction: column;
     gap: 5px;
     margin-top: 8px;
+    align-items: center;
 }
 
 /* 快捷按钮行 */
@@ -2111,11 +2112,14 @@ body {
     display: flex;
     gap: 5px;
     justify-content: center;
+    width: 100%;
+    max-width: 500px;
 }
 
 .quick-btn-row .quick-btn {
     flex: 1;
     min-width: 0;
+    max-width: 80px;
 }
 
 /* 折叠状态 */

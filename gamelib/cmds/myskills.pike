@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 #define limitpost 900
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	if(this_player()->home_path&&this_player()->home_path!="")

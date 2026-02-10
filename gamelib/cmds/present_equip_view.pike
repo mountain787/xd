@@ -4,7 +4,7 @@
 #define MATERIAL_PATH ROOT "/gamelib/clone/item/"
 //arg = type
 //   type="weapon" , "buyi"，"qingjia" or "zhongkai" "shoushi"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

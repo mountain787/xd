@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg 
 //此指令查看特殊熔炼的信息`
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

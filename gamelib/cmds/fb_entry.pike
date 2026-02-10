@@ -3,7 +3,7 @@
 //arg = room_name room_num flag
 //flag = 0 表示此时玩家在副本外
 //     = 1 表示此时玩家在副本内
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

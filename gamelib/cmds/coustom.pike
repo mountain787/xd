@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	if(this_player()->in_combat)
 		this_player()->write_view(WAP_VIEWD["/look"]);

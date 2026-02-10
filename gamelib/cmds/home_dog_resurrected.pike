@@ -3,7 +3,7 @@
 
 //狗复活调用的指令
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

@@ -7,7 +7,7 @@
 //to_name 目的地房间
 //yushi_type 需要消耗的玉石种类
 //need_num 需要消耗的玉石数
-int main(string arg)
+int main(string|zero arg)
 {
     object me = this_player();
     string transfer_name="";

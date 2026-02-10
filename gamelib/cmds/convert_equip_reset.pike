@@ -3,7 +3,7 @@
 //此指令完成利用宝石使转化次数为零的过程
 //arg 想要清零的物品名称·
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string item_name = arg;//玩家想要转化的物品文件名

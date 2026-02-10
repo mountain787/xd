@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = name flag
 //遗忘辅助技能的指令，所有辅助技能在被遗忘时都会调用
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

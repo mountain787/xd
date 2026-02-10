@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //查看指定的赌装装备
 //arg = item_name index range
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object item;

@@ -5,7 +5,7 @@
 //arg =   name       yushi_rareLevel    need_amount       buy_num
 //     宝石文件名    所需玉石的稀有度   玉石的个数  购买的个数
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string yushi_name = "";

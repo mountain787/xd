@@ -3,7 +3,7 @@
 //打碎具体玉石调用的指令
 //arg =      yushi_name               rarelevel
 //       打碎后得到的玉石文件名     得到的玉石的稀有度
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string yushi_name = "";

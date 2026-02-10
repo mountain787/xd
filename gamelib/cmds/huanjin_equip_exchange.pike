@@ -7,7 +7,7 @@
 //need_cailiao 需要的混沌碎片个数或需要的血火石个数
 //flag 换取标识 1、换取或者合成   0、查看物品详情
 
-int main(string arg){
+int main(string|zero arg){
 	int flag = 0;
 	int need_cailiao = 0;//需要混沌碎片或血火石的数量
 	string s = "";

@@ -5,7 +5,7 @@
 //arg =   name       yushi_rareLevel    amount       type       money      flag
 //     宝石文件名    所需玉石的稀有度   玉石的个数  药品类型   所需金钱 
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string yushi_name = "";

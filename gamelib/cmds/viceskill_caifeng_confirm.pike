@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = p_id 
 //此指令完成裁缝的最后阶段，即裁缝出成品
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

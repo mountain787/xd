@@ -7,7 +7,7 @@
 //   need_xx 需要的星星个数
 //   need_money 需要的金钱数
 //   flag  购买标识，1为徽记确认购买，2为G币确认购买，0为查看物品详情
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "这里的东西都带着冬天的气息\n";
 	string s_log = ""; 

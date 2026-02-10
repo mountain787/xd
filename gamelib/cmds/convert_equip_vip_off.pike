@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //会员折扣商品目录
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string item_name = "";

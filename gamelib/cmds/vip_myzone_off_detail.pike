@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //列出打折物品的具体信息
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string goods_name = "";//物品文件名

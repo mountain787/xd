@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = type
 //   type="weapon" , "buyi"，"qingjia" or "zhongkai" "spec"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

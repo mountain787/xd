@@ -5,7 +5,7 @@
 //      item_type
 //      cost    当flag==1或==2时需要的玉石花费
 //      flag    1--转化属性  2--增加属性  3--冰蓝玉石辅助增加 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string s_log = "";

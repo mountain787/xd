@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 #define FUNCTIONROOM_PATH ROOT "/gamelib/d/home/template/function/"
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string roomName = arg;

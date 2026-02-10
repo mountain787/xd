@@ -10,7 +10,7 @@
  *exchange_count 输入的换取物品的数量
  *********************************************************************************/
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	object item;
 	string item_name = "";

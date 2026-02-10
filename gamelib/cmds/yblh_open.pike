@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //中秋活动，打开礼盒获得月饼的方法。
 //arg = name 
-int main(string arg)
+int main(string|zero arg)
 {
     object me = this_player();
     string hb_name=arg;

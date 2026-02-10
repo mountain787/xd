@@ -3,7 +3,7 @@
 //此指令列出帮战中可用圣诞星星换取的装备列表
 //arg = type
 //   type="weapon" , "shipin"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "这里的东西都带着冬天的气息\n";
 	object me=this_player();

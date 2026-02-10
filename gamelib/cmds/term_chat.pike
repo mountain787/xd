@@ -143,7 +143,7 @@ int main(string|zero arg)
 	write(s);
 	return 1;
 }
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

@@ -5,7 +5,7 @@
 
 //此指令用于实现"投放粽子"功能，即玩家放入一个粽子可随机获得《离骚》、《天问》《九歌》或者什么都得不到
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	object item;
 	string s = "";

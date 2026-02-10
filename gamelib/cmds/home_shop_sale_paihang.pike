@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>  
 //此指令显示财富的排行
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

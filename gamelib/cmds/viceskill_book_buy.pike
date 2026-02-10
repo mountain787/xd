@@ -4,7 +4,7 @@
 #define ITEM_PATH ROOT+"/gamelib/clone/item/book/"
 
 //此指令用于技能书的购买
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

@@ -4,7 +4,7 @@
 //arg = item_name 
 //      cost    当flag==1或==2时需要的玉石花费
 //      flag    0 --第一次进入此页面  1--转化成功  2--增加成功 3--增加失败  4--清零成功                 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string item_name = "";//玩家想要转化的物品文件名

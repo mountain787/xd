@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	if(this_player()->sid=="5dwap"){
 		int tmp = time() - (int)this_player()["/push/push_time"];

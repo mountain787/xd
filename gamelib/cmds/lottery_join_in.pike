@@ -3,7 +3,7 @@
 //这里需要对抽奖作出条件判断：1.玩家身上有足够的玉石，2.仍有抽奖次数
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

@@ -3,7 +3,7 @@
 //完成领取兑换来的筹码的指令
 //arg = id from_game 
 //兑换id 来自游戏区的代号
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int id;

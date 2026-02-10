@@ -6,7 +6,7 @@
  * arg 为空或者是装备前缀，分别有"youliang" "jingzhi" "shenlian" "tianjiang" "huanhua"
  ***********************************************************************************/
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	object item ;
 	string item_pre = "";

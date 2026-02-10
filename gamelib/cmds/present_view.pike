@@ -2,7 +2,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 #define log_file ROOT "/log/presenter.log"
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "我当前的积分："+me->cur_mark+"\n";

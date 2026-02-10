@@ -3,7 +3,7 @@
 #define INFANCY_PATH ROOT "/gamelib/clone/item/home/infancy/"
 //实现玉石购买infancy
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string infancyName = "";

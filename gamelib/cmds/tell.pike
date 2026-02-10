@@ -6,7 +6,7 @@
 #define MSG_HISTORY_MAX 1024
 #define NAME 0
 #define NAME_CN 1
-int main(string arg)
+int main(string|zero arg)
 {
 	string extra,s,name=arg;
 	object me=this_player();

@@ -7,7 +7,7 @@
 //   flag = 1 锻造时的显示
 //   name 为锻造时加入的宝石名字
 //锻造和炼丹公用这个指令来查看配方的具体信息，又加入了新的裁缝和制甲
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

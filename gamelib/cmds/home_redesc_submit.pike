@@ -1,7 +1,7 @@
 //新用户填写新的家园描述
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

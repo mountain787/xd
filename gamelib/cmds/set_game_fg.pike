@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //此指令用于设置玩家的game_fg字段，要是第一次登录，则要进行合区的初始化
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	if(arg!="null"){

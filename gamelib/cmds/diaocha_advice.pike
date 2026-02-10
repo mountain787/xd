@@ -3,7 +3,7 @@
 #define ADVICE ROOT "/gamelib/etc/advice.csv" 
 //#define USER_ASK  ROOT "log/user_ask.log" 
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string type = "";
 	string content = "";

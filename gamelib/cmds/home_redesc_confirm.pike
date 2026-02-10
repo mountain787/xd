@@ -1,7 +1,7 @@
 //用户修改家园的描述
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";
@@ -50,7 +50,7 @@ int main(string arg)
 	}
 }
 
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

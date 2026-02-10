@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>  
 //此指令查看在榜人员的个人信息
 //arg = player_name raceId profeId level flag
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string name_cn = "";

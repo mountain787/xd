@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/"
 //神州行捐赠卡购买说明
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

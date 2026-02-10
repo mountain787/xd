@@ -27,12 +27,12 @@ void count_msg()
 {
 	msg_num++;
 }
-void count_day_msg(string arg)
+void count_day_msg(string|zero arg)
 {
 	if(!day_msg[arg])
 		day_msg+=(<arg>);
 }
-void count_login_time(string arg)
+void count_login_time(string|zero arg)
 {
 	if(!day_login[arg])
 		day_login+=(<arg>);

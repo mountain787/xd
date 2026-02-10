@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //该指令完成向其他游戏区兑换的功能，判断条件：自身拥有足够数量的货币，在出入量限制之内
 //arg = fg to_game 输入的内容
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int fg;
@@ -64,7 +64,7 @@ int main(string arg)
 	return 1;
 }
 
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

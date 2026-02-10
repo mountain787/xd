@@ -5,7 +5,7 @@
 auther: evan
 2008.07.16
 */
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string c_log = "";

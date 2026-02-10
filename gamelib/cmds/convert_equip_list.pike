@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //此指令列出玩家身上可供属性转换的装备列表
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "选择你需要炼化的装备\n";
 	object me=this_player();

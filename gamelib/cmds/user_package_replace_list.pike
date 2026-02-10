@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //列出玩家身上可替换的背包
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s="";

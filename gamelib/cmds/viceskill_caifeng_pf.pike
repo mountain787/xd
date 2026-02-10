@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //查看已学的裁缝配方
 //arg = type 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define ITEM_PATH_KUANG ITEM_PATH+"material/"
 //arg = name count
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

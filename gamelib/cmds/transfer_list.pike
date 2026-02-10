@@ -4,7 +4,7 @@
 #define ROOM_PATH ROOT "/gamelib/d/"
 //列出传送道具能传送的房间列表。
 //arg = transfer_name count
-int main(string arg)
+int main(string|zero arg)
 {
     object me = this_player();
     string transfer_name="";

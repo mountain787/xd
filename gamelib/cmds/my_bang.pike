@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();
@@ -43,7 +43,7 @@ int main(string arg)
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

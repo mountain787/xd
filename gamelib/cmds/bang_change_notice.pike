@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //arg = level,调用者的权限 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";
@@ -28,7 +28,7 @@ int main(string arg)
 	//me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

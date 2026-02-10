@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //确定赌装
 //arg = item_name index range level type
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object item;

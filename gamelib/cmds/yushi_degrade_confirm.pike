@@ -4,7 +4,7 @@
 //最终合成玉石所调用的指令
 //arg =         yushi_name            rarelevel                      num
 //        打碎后得到的玉石文件名   得到的玉石的稀有度      玩家指定的被打碎玉石的个数
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string s_log = "";

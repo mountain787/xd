@@ -5,7 +5,7 @@
 auther: evan
 2008.07.18
 */
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "***会员升级***\n\n";

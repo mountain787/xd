@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object room = HOMED->query_room_by_masterId(arg,"main");

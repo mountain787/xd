@@ -1,6 +1,6 @@
 #include <command.h>
 
-int main(string arg)
+int main(string|zero arg)
 {
 	array(object) list;
 	int j;

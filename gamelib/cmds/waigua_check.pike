@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //外挂警告，用户输入验证码的页面。
 //arg = cd=code
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

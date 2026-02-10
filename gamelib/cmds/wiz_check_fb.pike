@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //鏌ョ湅鍓湰鍐呭
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = FBD->check_fb();
 	write(s);

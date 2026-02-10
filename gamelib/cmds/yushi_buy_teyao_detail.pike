@@ -5,7 +5,7 @@
 //arg =   name       yushi_rareLevel    amount       type
 //     药品文件名    所需玉石的稀有度   玉石的个数  药品类型
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string teyao_name = "";

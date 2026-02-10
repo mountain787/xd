@@ -1,7 +1,7 @@
 #include <command.h>  
 #include <gamelib/include/gamelib.h>
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "仙道8月7日更新通知\n";
 	s += "一.幻世区正式启用\"会员制度\"\n";

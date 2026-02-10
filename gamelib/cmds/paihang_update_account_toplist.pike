@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //此指令更新财富的排名，测试用
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

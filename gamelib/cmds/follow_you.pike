@@ -1,7 +1,7 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
 //此指令用于跟随同队的人
-int main(string arg)
+int main(string|zero arg)
 {
 	string name=arg;
 	int count;

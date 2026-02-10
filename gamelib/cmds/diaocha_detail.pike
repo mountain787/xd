@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define USER_REPLY  ROOT "/log/reply1.csv" 
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	int questionNum;

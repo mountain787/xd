@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>  
 //此指令查看帮战生死状的总信息
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //列出玉石可购买药品的目录
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string type = arg;

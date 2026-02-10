@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //确定设置安全码指令
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

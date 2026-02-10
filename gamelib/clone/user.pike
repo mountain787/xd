@@ -339,7 +339,7 @@ string query_honer_desc(){
 string query_mobile(){
 	return mobile;
 }
-void set_mobile(string arg){
+void set_mobile(string|zero arg){
 	mobile = arg;
 }
 //新添加的yushiflag属性的query和set方法

@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //传音符使用ui
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int sub_time = 0;

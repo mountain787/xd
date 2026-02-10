@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 
 //仙玉特卖场
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

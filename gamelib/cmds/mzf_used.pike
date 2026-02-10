@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = name count flag
 //使用免战符时调用的指令
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

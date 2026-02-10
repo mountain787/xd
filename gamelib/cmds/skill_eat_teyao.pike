@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //用于提高技能熟练度
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>  
 //此指令获得配方和材料，用于测试
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 #define SPEC  900
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	int flag;

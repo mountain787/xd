@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>  
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/" 
 //姝ゆ寚浠よ幏寰楃帀鐭筹紝鐢ㄤ簬娴嬭瘯
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

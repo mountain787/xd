@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //arg = bangid flag
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int bangid = 0;

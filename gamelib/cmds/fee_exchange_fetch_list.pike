@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //查看兑换来的领取列表的指令
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "可供你领取的列表，点击即可完成领取操作：\n";

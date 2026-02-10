@@ -3,7 +3,7 @@
 //此指令列出帮战中可用霸王徽记换取的装备列表
 //arg = type
 //   type="weapon" , "buyi"，"qingjia" or "zhongkai" "spec"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "国庆限量版饰品，先到先得～\n";
 	object me=this_player();

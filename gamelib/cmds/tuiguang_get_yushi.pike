@@ -3,7 +3,7 @@
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/"
 //-升级换玉石-推广活动，获得玉石的方法。
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object yushi;

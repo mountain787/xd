@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //查看玩家家园的基本信息
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

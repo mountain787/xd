@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //后台手动更新城池占有情况的指令
 //arg = city race
-int main(string arg)
+int main(string|zero arg)
 {
 	string city_name="";
 	string race="";

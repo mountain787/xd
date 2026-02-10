@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //arg = "duanzao" or "lianjin"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "你只有学会了相关的技能，才能细数那些钻卡上的东西\n";
 	object me=this_player();

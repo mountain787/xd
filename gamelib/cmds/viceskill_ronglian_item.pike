@@ -4,7 +4,7 @@
 //      type = "weapon" "armor" "jewelry"
 //      item_num    标识第几个物品栏
 //此指令在玩家熔解物品时最先调用，列出玩家熔炼ui
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

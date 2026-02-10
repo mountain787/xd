@@ -1,7 +1,7 @@
 //用户进入装备抽奖功能页面调用，可以查看到当前正在抽奖的情况
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "来吧~考验自己rp的时候到了！\n";

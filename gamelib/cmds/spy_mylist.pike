@@ -1,6 +1,6 @@
 #include <command.h>
 #include<wapmud2/include/wapmud2.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object ob = find_player(arg);

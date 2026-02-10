@@ -6,7 +6,7 @@
 #define ZHIJIA ROOT "/gamelib/clone/item/peifang/zhijia/"
 //arg = type name flag
 // type为"duanzao" or "liandan" ;name为配方文件; flag为0表示察看，为1表示购买
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "你只有学会了相关的技能，才能读懂这些卷轴上的东西\n";
 	object me=this_player();

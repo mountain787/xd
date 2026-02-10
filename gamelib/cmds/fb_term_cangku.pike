@@ -3,7 +3,7 @@
 //arg = termid flag
 //flag = 1 表示此时队长，可分配仓库里的东西
 //     = 0 表示队员，只可能查看
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

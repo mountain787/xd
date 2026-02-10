@@ -4,7 +4,7 @@
 
 //此指令用于实现"签缘竹筒"功能，即玩家放入2支火月签，会随机的到霸王徽记、血火石或者混沌碎片，或者什么也没有
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	object item;
 	string s = "";

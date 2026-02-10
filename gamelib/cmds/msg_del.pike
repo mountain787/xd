@@ -3,7 +3,7 @@
 
 //删除公告
 
-int main(string arg)
+int main(string|zero arg)
 {
 	int id = (int)arg;
 	string s = "";

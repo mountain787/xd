@@ -5,7 +5,7 @@
 //arg = hongbao_name count open_type need_num
 //open_type 和玉石的稀有等级一致= 0 - 免费打开，1 - 1碎玉打开，2 - 1仙缘玉打开，3 - 1玲珑玉打开
 //need_num 需要玉石的个数
-int main(string arg)
+int main(string|zero arg)
 {
     object me = this_player();
     string hb_name="";

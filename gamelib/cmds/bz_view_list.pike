@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>  
 //此指令查看所有参与帮战的帮
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

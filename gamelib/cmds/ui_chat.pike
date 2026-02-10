@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 		werror("ui_chat begin\n");
@@ -55,7 +55,7 @@ int main(string arg)
 	me->command("look");
 	return 1;
 }
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

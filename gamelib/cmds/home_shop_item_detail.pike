@@ -4,7 +4,7 @@
 
 //列出infancy的具体信息
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string infancyName = "";

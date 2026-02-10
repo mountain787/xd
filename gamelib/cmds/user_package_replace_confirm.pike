@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //背包替换，只能用小的替换大的
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s="";

@@ -3,7 +3,7 @@
 //此指令列出55级幻境中可用混沌碎片合成的【混沌】饰品和血火石换取的【狐】武器名称
 //arg = type
 //type = "hundun" "hu"
-int main(string arg){
+int main(string|zero arg){
 	string s = "";
 	object me = this_player();
 	string type = arg;

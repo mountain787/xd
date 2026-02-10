@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //进入游戏货币兑换功能的指令
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "[url 欢乐棋牌:http://wap.doggame.net/pokegame/index.jsp]\n游戏间兑换\n";

@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //鎏金石捐赠接口
 //传入参数：时间 所需玉石 flag
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

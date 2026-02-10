@@ -158,7 +158,7 @@ int del_need_item(object player,string item_name,int num){
 	}
 	return i;
 }
-int set_name_cn(string arg)                                                                                       
+int set_name_cn(string|zero arg)                                                                                       
 {
 	string s;                                                                                                        
 	object me = this_player();                                                                                       

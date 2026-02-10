@@ -3,7 +3,7 @@
 //arg = name flag 
 //      name 为目标玩家id
 //      flag=0 只是察看；=1时要显示提升的信息；=2时要显示降级的信息；=3时要显示开除的信息
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

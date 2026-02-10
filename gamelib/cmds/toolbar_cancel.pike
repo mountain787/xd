@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //arg = num
-int main(string arg)
+int main(string|zero arg)
 {
 	int num=(int)arg;
 	string s = "";

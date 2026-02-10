@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //修改安全码调用指令
 
-int main(string arg)
+int main(string|zero arg)
 {
         //string bandpswd;//安全码变量
         object me = this_player();

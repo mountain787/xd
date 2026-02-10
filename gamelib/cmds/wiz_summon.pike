@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
-int main(string arg)
+int main(string|zero arg)
 {
 	//if( this_player()->query_name()!="zhubin"||this_player()->query_name()!="wangyan" )	
 	//	return 1;

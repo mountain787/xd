@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define HUAWU ROOT "/gamelib/clone/item/water/"
 #define SPEC  900
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	int flag;

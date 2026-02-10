@@ -5,7 +5,7 @@
 //index   此物品在队伍仓库数组的下标号，作为删除已分配物品时用
 //item_file 物品文件名，后面有个指针号，所以要进行#分割
 //fg 物品的指针地址，用来判断是否是已分配的物品
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

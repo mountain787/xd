@@ -9,7 +9,7 @@
 *arg 为空时 为添加新的公告
 *******************************************/
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	s += "\n";

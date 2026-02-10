@@ -3,7 +3,7 @@
 //此指令查看参加帮战的帮派信息
 //arg = bangid flag
 //flag == 1标示有[申请入帮]的链接
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

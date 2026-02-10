@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define MAX_AMOUNT 9999999
 //指令格式trade [sb] [sth] with silver [...]
-int main(string arg)
+int main(string|zero arg)
 {	
 	string user_name=arg;
 	string tmp;

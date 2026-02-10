@@ -3,7 +3,7 @@
 #define ITEM_PATH_KUANG ITEM_PATH "material/"                                     
 //arg = name count
 //采药调用指令
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

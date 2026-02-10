@@ -4,7 +4,7 @@
 
 array(string) caoyao = ({"muhudie","luohanguo","gancao","gouqizi","madouling","maozhuacao","jiulixiang","luxiancao","mingdangsen","juemingzi","huomaren","heshouwu","longdancao","lingzhi","dingxiangcao","liangmianzhen","qiyelian","niuhuang","xieteng","ziyancao","chuanbeimu","tiandongcao","mumianhua","taiyanghua","ganluzi","zitianlian","xuelianhua","yuanyingsen","fenghuangdan"});
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

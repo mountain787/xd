@@ -7,7 +7,7 @@
 //   need_huiji 需要的徽记个数
 //   need_money 需要的金钱数
 //   flag  购买标识，1为徽记确认购买，2为G币确认购买，0为查看物品详情
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "国庆限量版饰品，先到先得～\n\n";
 	string s_log = ""; 

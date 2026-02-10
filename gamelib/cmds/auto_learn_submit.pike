@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 // 挂机确认页面
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

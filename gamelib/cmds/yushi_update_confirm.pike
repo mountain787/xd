@@ -3,7 +3,7 @@
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/" 
 //最终合成玉石所调用的指令
 //arg = yushi_name rarelevel num
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string s_log = "";

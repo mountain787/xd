@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //玩家传送回家
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

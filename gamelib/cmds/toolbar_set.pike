@@ -3,7 +3,7 @@
 #define FOOD_PATH ROOT "/gamelib/clone/item/food/"
 #define WATER_PATH ROOT "/gamelib/clone/item/water/"
 //arg = num name
-int main(string arg)
+int main(string|zero arg)
 {
 	int num;
 	string name = "";

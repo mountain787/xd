@@ -7,7 +7,7 @@
 #define NAMECN 1
 #define VALUE 2
 #define PAGELEN 10
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string act,value,re="";

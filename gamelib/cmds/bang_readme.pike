@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "帮派说明:\n(新手请细读)\n";
 	s += "帮派系统，人类在从仙镇，玉虚宫；妖魔在羽化村，碧游宫 可以建立或者申请帮派。建立帮派的条件是：10级以上，建帮的费用是1000金。建立帮派的人将自动成为帮主，帮里成员分为6个等级，不同的等级在帮派里有不同的权限，具体为：\n";

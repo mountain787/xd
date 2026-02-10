@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = num flag name count 
 //此指令在加入熔炼物品
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define	PAGE_LENGTH 10
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int pageNum = 0;

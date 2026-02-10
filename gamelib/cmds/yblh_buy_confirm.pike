@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 
 //购买月饼礼盒
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string re = "";

@@ -4,7 +4,7 @@
 //      申请者id    1：通过  在入帮申请列表中的位置,为数组下标+1
 //                  0：拒绝
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	int bangid = me->bangid;

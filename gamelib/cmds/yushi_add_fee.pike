@@ -3,7 +3,7 @@
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/"
 //短信捐赠调用的接口
 //arg = fee yushi_level
-int main(string arg)
+int main(string|zero arg)
 {
 	//con->write("login_fee "+PROJECT+" "+mobile+"\n");
 	//con->write("yushi_add_fee "+fee+" "+yushi_level+" "+spec_fg+"\n");

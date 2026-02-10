@@ -3,7 +3,7 @@
 #define YUEBING ROOT "/gamelib/clone/item/zhongqiuyuebing/"
 //用于实现购买月饼
 //arg = name flag
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "上好的月饼寄托更多的思恋\n\n";
 	object me=this_player();

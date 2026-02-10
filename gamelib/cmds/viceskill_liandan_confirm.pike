@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = p_id 和炼丹的数量 
 //此指令完成炼丹的最后阶段，即炼制出成品
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

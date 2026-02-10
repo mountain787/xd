@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //进入到 挂机 页面
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string type = arg;

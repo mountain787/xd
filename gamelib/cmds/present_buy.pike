@@ -5,7 +5,7 @@
 #define log_file ROOT "/log/presenter.log" 
 //arg = type name mark_need money num flag
 //name为文件; flag为0表示察看，为1表示购买
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "分享快乐\n";
 	object me=this_player();

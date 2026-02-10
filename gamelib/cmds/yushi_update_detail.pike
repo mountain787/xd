@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //合成具体玉石调用的指令
 //arg = yushi_name rarelevel
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string yushi_name = "";

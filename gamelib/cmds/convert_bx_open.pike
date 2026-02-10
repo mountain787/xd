@@ -4,7 +4,7 @@
 #define BAOXIANG_PATH ROOT "/gamelib/clone/item/baoxiang/"
 //神州行捐赠送宝石袋，这是打开宝石袋获得物品的指令。物品包括了两中玉石:紫金玉石和冰蓝玉石
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string bx_name="";

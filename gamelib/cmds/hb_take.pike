@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //新年活动，领取红包的指令。
-int main(string arg)
+int main(string|zero arg)
 {
     object me = this_player();
     string s="";

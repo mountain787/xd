@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>  
 //此指令玩家领取游戏活动直接赠送的物品，
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string s_log = "";

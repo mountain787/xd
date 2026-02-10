@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //arg = num "skills"  or num "other"
-int main(string arg)
+int main(string|zero arg)
 {
 	int num;
 	string flag = "";

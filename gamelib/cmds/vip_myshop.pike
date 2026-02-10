@@ -3,7 +3,7 @@
 
 //仙道会员店入口
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	string s = "仙道会员店\n\n";
 	s += "[会员服务:vip_service_list]\n";

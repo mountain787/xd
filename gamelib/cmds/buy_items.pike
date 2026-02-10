@@ -4,7 +4,7 @@
 #define ITEM_PATH ROOT "/gamelib/clone/item/"
 //该指令用于购买物品调用
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object item_ob;

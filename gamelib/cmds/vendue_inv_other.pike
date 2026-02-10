@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //盖指令查看领取处的物品信息，
 //arg = good_filename convert_count
-int main(string arg)
+int main(string|zero arg)
 {
 	if(!arg){
 		write("你要看的物品不存在！\n");

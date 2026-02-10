@@ -1,7 +1,7 @@
 #include <command.h>
 #include<wapmud2/include/wapmud2.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

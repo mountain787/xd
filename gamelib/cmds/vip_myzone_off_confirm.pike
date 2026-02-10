@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //确认购买打折物品
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string goods_path= "";

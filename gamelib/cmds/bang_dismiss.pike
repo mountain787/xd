@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "解散帮派:\n(在这里，要解散帮派你必须是帮主)\n";

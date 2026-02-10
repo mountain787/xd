@@ -3,7 +3,7 @@
 //建立帮派进入界面
 
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

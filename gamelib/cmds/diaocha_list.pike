@@ -3,7 +3,7 @@
 #define ASK "txonline/data/ask1.csv" 
 #define USER_REPLY  ROOT "log/reply1.csv" 
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

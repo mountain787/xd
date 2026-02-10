@@ -1,6 +1,6 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	string name=arg;
 	int count=0;

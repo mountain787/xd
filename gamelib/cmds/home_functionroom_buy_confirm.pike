@@ -3,7 +3,7 @@
 #define TEMPLATE_PATH ROOT "/gamelib/d/home/template/function/"
 //实现玉石购买功能房间
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	object env = environment(me);

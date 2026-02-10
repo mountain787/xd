@@ -11,7 +11,7 @@
 *            玩家     管理员       历史公告  最新公告
 *****************************************************************/
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_object();
 	string s = "";

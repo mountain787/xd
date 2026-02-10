@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = type 
 //此指令在玩家锻造物品时最先调用，列出玩家目前能锻造的物品列表
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

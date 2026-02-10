@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
-int main(string arg)
+int main(string|zero arg)
 {
 	//string s="你要寄卖什么物品？\n";
 	if(!arg)

@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //进入兑换到某游戏区功能页的指令，这里提供出量限制，提供玩家输入帐号和兑换金额
 //arg = 游戏区代码
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string game_id = arg;

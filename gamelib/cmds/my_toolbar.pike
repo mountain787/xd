@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define FOOD_PATH ROOT "/gamelib/clone/item/food/"
 #define WATER_PATH ROOT "/gamelib/clone/item/water/"
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "点击快捷键,可进入配置页面，可配置的范围包括技能和可食用药品\n";
 	string name_cn = "";

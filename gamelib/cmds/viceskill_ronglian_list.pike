@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = flag 
 //此指令在玩家熔解物品时最先调用，列出玩家熔炼ui
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

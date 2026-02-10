@@ -3,7 +3,7 @@
 
 //购买狗调用指令
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

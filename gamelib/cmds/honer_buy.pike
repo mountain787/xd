@@ -3,7 +3,7 @@
 #define HONER ROOT "/gamelib/clone/item/honer/"
 //arg = type name flag
 // type为"duanzao" or "liandan" ;name为配方文件; flag为0表示察看，为1表示购买
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "荣誉属于真正的勇者\n";
 	object me=this_player();

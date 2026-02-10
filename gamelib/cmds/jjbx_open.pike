@@ -5,7 +5,7 @@
 //此指令用于实现打开精金宝箱的功能，获得三种公共物品：冰蓝玉石或者紫晶玉石，
 //和玩家等级相仿的装备，仙缘玉石; 此外30级以下的玩/家还会获得特药
 
-int main(string arg){
+int main(string|zero arg){
 	object me = this_player();
 	object bx;
 	string bx_name = "";

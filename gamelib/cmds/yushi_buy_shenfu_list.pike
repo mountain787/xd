@@ -3,7 +3,7 @@
 
 //购买神符入口调用指令
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "您想购买什么神符\n";

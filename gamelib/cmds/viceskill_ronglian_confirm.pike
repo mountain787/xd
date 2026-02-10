@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg 
 //此指令确认熔炼，并且生成新的物品
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	int yushi_flag = 0;

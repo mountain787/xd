@@ -4,7 +4,7 @@
 //flag = 0 列出物品属性，然后等待用户再次确认
 //flag = 1 熔解物品
 //此指令确定熔解
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

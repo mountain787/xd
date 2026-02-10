@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //该指令列出获奖者的奖励名单
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "领奖处：\n";
 	object me=this_player();

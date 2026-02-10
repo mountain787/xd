@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 #define YUSHI_PATH ROOT "/gamelib/clone/item/yushi/"
 //玩家设置家园相关信息的主页面
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "";

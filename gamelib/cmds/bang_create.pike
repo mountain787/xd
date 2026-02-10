@@ -1,6 +1,6 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "开帮立派:\n(请注意，一切与政治，粗口，非法字符相关的帮派名，一律删无赦)\n";
@@ -55,7 +55,7 @@ int main(string arg)
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }
-string filter_msg(string arg)
+string filter_msg(string|zero arg)
 {
 	if(!arg)
 		return "";

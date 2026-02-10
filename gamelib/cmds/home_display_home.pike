@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //展示flat中所有的home
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string slotName = "";

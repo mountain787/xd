@@ -5,7 +5,7 @@
 //team_id 队伍号
 //item_file 物品文件名
 //index   此物品在队伍仓库数组的下标号，作为删除已分配物品时用
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

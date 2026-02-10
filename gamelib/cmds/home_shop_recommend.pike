@@ -3,7 +3,7 @@
 
 //鐐瑰嚮搴楅摵鎺ㄨ崘閾炬帴璋冪敤鐨勬寚浠わ紝璇ユ寚浠や富瑕佸疄鐜板垪鍑哄凡缁忔帹鑽愪笖娌¤繃鏈熺殑搴楅摵
 
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

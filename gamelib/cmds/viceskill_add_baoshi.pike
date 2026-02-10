@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 //arg = p_id 
 //此指令列出玩家可以加入的宝石
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "请选择你要加入的宝石，每种宝石只能加入一颗。\n";
 	object me=this_player();

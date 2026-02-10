@@ -1,7 +1,7 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 //用于列出月饼的列表
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "上好的月饼寄托更多的思恋\n\n";
 	object me=this_player();

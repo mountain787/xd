@@ -3,7 +3,7 @@
  */
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
-int main(string arg)
+int main(string|zero arg)
 {
 	//if( this_player()->query_name()!="zhubin"||this_player()->query_name()!="wangyan" )
 	//	return 1;

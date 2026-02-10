@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>  
 //此指令申请退出帮战
 //arg : flag=0 查看  =1 申请加入
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	object me=this_player();

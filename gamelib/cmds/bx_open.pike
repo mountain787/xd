@@ -6,7 +6,7 @@
 #define BAOSHI_PATH ROOT "/gamelib/clone/item/baoshi/"
 //圣诞活动，打开宝箱获得物品的方法。
 
-int main(string arg)
+int main(string|zero arg)
 {
 	object me = this_player();
 	string bx_name="";

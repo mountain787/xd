@@ -3,7 +3,7 @@
 //该指令让玩家获得奖励物品
 //arg = gift_name num
 //      物品文件名（钱为money） 个数
-int main(string arg)
+int main(string|zero arg)
 {
 	string s = "";
 	string gift_name = "";

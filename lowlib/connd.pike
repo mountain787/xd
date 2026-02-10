@@ -3,7 +3,7 @@
 mapping(object:object) conn_map;
 mapping(object:int) users;
 object this_player;
-void create()
+protected void create()
 {
 	conn_map=([]);
 	users=([]);

@@ -22,7 +22,7 @@ questionnaire = ([1:({    1   ，   A    ，您的性别：， 男性  ，   女
 private mapping(int:question) questionnaire = ([]);
 #define QUE_FILE ROOT "/gamelib/data/questionnaire.csv"
 
-void create()
+protected void create()
 {
 	load_file();
 }

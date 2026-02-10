@@ -31,7 +31,7 @@ private mapping(int:array(string)) vip_free_list=([]);  //会员【等级/免费
 
 private mapping(string:int) goods_price_map =([]);          //【货物/价格】列表
 
-void create(){
+protected void create(){
 	werror("==========  [VIPD start!]   ==========\n");
 	array(string) vip_map_tmp = ({});
 	string strtips = "";

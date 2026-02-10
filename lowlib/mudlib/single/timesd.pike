@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <wapmud2/include/wapmud2.h>
 inherit LOW_DAEMON;
-void create()
+protected void create()
 {
 }
 string get_mysql_timedesc(){

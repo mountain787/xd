@@ -38,7 +38,7 @@ class caifeng
 
 private mapping(int:caifeng) caifeng_m = ([]); //物品信息总表
 
-void create()
+protected void create()
 {
 	load_csv();
 }

@@ -213,11 +213,8 @@ int view_file(string name,int pos,int ppos)
 }
 int main(string arg)
 {
-	string name,name_cn;
+	string name;
 	int pos,ppos;
-	int i;
-	array(string) files;
-	array(string) names;
 	array(string) hide=({});
 	if(sscanf(arg,"%s %d %d",name,pos,ppos)!=3)
 		if(sscanf(arg,"%s %d",name,pos)!=2)

@@ -43,7 +43,7 @@ private mapping(int:liandan) liandan_m = ([]); //物品信息总表
 //在丹药效果持续时间上，我打算用call_out,remove_call_out来控制，下面的mapping记录了各类药食用后调用call_out返回的id
 private mapping(string:int) call_out_id = ([]);
 
-void create()
+protected void create()
 {
 	load_csv();
 }

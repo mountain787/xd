@@ -4,7 +4,7 @@
 
 inherit LOW_DAEMON;
 
-void create()
+protected void create()
 {
 	werror("\n========== 编译测试 ==========\n");
 

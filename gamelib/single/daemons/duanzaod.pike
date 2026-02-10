@@ -38,7 +38,7 @@ class duanzao
 
 private mapping(int:duanzao) duanzao_m = ([]); //物品信息总表
 
-void create()
+protected void create()
 {
 	load_csv();
 }

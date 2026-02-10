@@ -31,7 +31,7 @@ private mapping(int:array(string)) monst_transfer_room = ([
 	50:({"plxianjing/yaozhenplxianjing"})
 ]);
 
-void create()
+protected void create()
 {
 	load_file();
 }

@@ -4,7 +4,7 @@
 
 inherit LOW_DAEMON;
 
-void create()
+protected void create()
 {
 	werror("\n========== 检查房间文件 ==========\n");
 

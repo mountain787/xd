@@ -1,7 +1,7 @@
 // 在游戏环境中测试房间编译
 inherit ROOM;
 
-void create()
+protected void create()
 {
 	werror("\n========== 测试房间编译 ==========\n");
 

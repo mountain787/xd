@@ -3,7 +3,7 @@
 #define TIME_UNIT 900
 inherit LOW_DAEMON;
 int count=0;
-void create()
+protected void create()
 {
 	COUNTD->read_tmp_log();
 	//werror("count=%d\n",count);	

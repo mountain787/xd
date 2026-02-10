@@ -23,7 +23,7 @@ string dbSql = "mysql://root:"+mysql_password+"@127.0.0.1/"+GAME_AREA;
 //mapping optionsMap = (["mysql_charset_name":"gb2312"]);
 mapping optionsMap = ([]);
 
-void create()
+protected void create()
 {
 	//	LOG->setFilePre(log_file);
 	LOG = LOG_P(log_file);

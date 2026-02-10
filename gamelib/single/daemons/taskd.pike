@@ -66,7 +66,7 @@ private mapping(string:mapping(string:int)) taskItemMap = ([]); //怪:任务物�
 private mapping(string:string) pathMap = ([]); //怪的中文名:怪的文件路径,
                                                //如："沙虫的眼睛":"task/shachongdeyanjing"  
 
-void create() 
+protected void create() 
 {
 	werror("==========  [TASKD start!]  =========\n");
 	load();

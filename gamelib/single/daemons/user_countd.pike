@@ -13,7 +13,7 @@ string dbSql2 = "mysql://root:password@gamelog_database:22334/gamelog";
 mapping optionsMap = ([]);
 object obt;
 
-void create()
+protected void create()
 {
 	//db=Sql.Sql(dbSql,optionsMap);
 	obt= System.Time();

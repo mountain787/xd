@@ -54,7 +54,7 @@ private mapping(string:string) game_id_cn = (["xd1":"仙道幻世区",
 					       "tx11":"天地纵横",
 					       "tx14":"龙腾四海"
 					      ]);
-void create()
+protected void create()
 {
 	//db=Sql.Sql(dbSql,optionsMap);
 	obt= System.Time();

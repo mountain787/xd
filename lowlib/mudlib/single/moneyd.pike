@@ -2,7 +2,7 @@
 #include <mudlib/include/mudlib.h>
 inherit LOW_DAEMON;
 //游戏中金钱系统守护进程
-void create()
+protected void create()
 {
 }
 //得到掉落通用金钱描述

@@ -34,7 +34,7 @@ private static mapping(string:buy_item) high_level_book = ([]);
 private static mapping(string:array) book_on = ([]);
 private static mapping(string:array(array(int))) package = ([]);
 
-void create(){
+protected void create(){
 	load_list();
 	start_book();
 	load_pac_file();

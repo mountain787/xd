@@ -30,7 +30,7 @@ mapping allTypeDesc = ([
 
 array(string) all_type = ({"mark","account","all_fee","home_bi","home_yu","honerpt","lunhuipt"});
 mapping(string:array(mapping(string:mixed))) all_info=([]);
-void create()
+protected void create()
 {
 	mixed err = catch {
 		db=Sql.Sql(dbSql,optionsMap);

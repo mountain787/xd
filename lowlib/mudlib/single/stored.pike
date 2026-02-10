@@ -8,7 +8,7 @@ inherit LOW_DAEMON;
 private mapping(int:mapping(string:object)) goods_list=([]);//[物品等级:([该等级物品id:物品对象])]
 
 //游戏中商店买卖守护进程
-void create()
+protected void create()
 {
 	//从/usr/local/games/usrdata0/items/orgItems.list读取原始白物品列表
 	//然后根据物品等级，做一个影射，按照商店等级不同，卖的物品等级也不同

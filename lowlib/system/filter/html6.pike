@@ -9,7 +9,7 @@ inherit Crypto.DES;
 array(string) input;
 string out;
 int in_form;
-void create()
+protected void create()
 {
 	::create();
 	input=({});

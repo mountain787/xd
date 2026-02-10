@@ -10,7 +10,7 @@ inherit LOW_DAEMON;
 
 private protected mapping(int:array) items_current_level = ([]);
 
-void create()
+protected void create()
 {
 	flush_dubo_items();
 }
@@ -46,7 +46,7 @@ object get_random_npc_item_ob_2_hour(string type,int item_level,void|int loop_co
 }
 */
 
-void create()
+protected void create()
 {
 
 }

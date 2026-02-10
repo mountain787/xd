@@ -25,7 +25,7 @@ class droplist
 
 private mapping(string:droplist) bossdrop_m = ([]); //boss掉落总表
 
-void create()
+protected void create()
 {
 	load_csv();
 }

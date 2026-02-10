@@ -40,7 +40,7 @@ inherit LOW_DAEMON;
 private mapping(int:array(string)) all_msg = ([]);          //存储公告信息
 
 
-void create()
+protected void create()
 {
 	load_msg();
 	write_file();

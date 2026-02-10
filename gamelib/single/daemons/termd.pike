@@ -126,7 +126,7 @@ string query_termers_for_assign_bz(string tid,string s_file,int fg,int index)
 
 
 //该守护进程在系统启动时被gamelib/master.pike负责调用并在create方法中初始化
-void create(){
+protected void create(){
 	//内存写入锁定
 	if(termMain==0)
 		termMain=([]);

@@ -46,7 +46,7 @@ private mapping(int:array(string)) vicenpc_flush_time = ([]);//以刷新时间�
 //  ])
 private int flush_count = 0;
 
-void create()
+protected void create()
 {
 	load_csv();
 	flush_vicenpc();

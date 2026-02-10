@@ -11,7 +11,7 @@ program connect()
 	}
 	return login_ob;
 }
-void create()
+protected void create()
 {
 	//这里也写有视图，是因为有些调用需要gamelib层的相关程序，包括
 	//gamelib/cmds/下的一些指令也是如此，如果没有相关gamelib层的

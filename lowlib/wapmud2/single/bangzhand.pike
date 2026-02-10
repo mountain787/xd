@@ -23,7 +23,7 @@ private array(int) top_list = ({});//帮排行数组
 private int open_fg = 1; //标识是否开放帮战幻境，1-开放，0-不开放
 
 
-void create()
+protected void create()
 {
 	load_bangzhan_info();
 	update_bang_toplist(1);

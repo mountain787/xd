@@ -19,7 +19,7 @@ class item
 
 private static mapping(string:item) exchange_item_list = ([]);
 
-void create(){
+protected void create(){
 	load_list();
 }
 

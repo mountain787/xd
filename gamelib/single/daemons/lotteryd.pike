@@ -58,7 +58,7 @@ private mapping(int:array)lottery_range = ([]); //抽奖的数字范围([1:({取
 private mapping(int:array)luck_boys = ([]); //([抽奖等级:({中奖玩家昵称}),...])
 int dead_time; //记录此次抽奖结束，即新抽奖开始的时间点
 
-void create()
+protected void create()
 {
 	load_lottery_info();
 	start_lottery(1);

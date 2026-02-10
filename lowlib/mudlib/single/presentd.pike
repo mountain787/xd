@@ -14,7 +14,7 @@ string dbSql = "mysql://root:password@game_database:22334/"+DATABASE_NAME;
 mapping optionsMap = ([]);
 object obt;
 
-void create()
+protected void create()
 {
 	//库表没有，这里先不开放
 	//db=Sql.Sql(dbSql,optionsMap);

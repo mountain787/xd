@@ -12,7 +12,7 @@ private mapping(int:array(string)) liandan_pf = ([]);
 private mapping(int:array(string)) caifeng_pf = ([]);
 private mapping(int:array(string)) zhijia_pf = ([]);
 
-void create()
+protected void create()
 {
 	get_pf();
 }

@@ -16,7 +16,7 @@ inherit LOW_DAEMON;
 private array names_regged = ({});
 private array names_reserved = ({});
 
-void create()
+protected void create()
 {
 	names_regged = ({});
 	names_reserved = ({});

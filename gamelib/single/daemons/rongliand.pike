@@ -37,7 +37,7 @@ private int weapon = 1;
 private int armor = 2;
 private int jewelry = 4;
 
-void create()
+protected void create()
 {
 	load_csv();
 }

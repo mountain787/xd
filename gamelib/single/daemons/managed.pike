@@ -93,7 +93,7 @@ void rewritefile()
 	}
 	call_out(rewritefile,SAVE_MANAGER);
 }
-void create()
+protected void create()
 {
 	//初始化将被封号玩家的信息装入内存文件
 	string unlogin_str = Stdio.read_file(LOGIN_PATH);

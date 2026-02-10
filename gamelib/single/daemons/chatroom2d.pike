@@ -82,7 +82,7 @@ private static mapping(string:array(string)) chatCont=([]);
 
 #define FILE_PATH "/gamelib/data/chat/chatindex"
 
-void create(){
+protected void create(){
 	//聊天频道主索引内存
 	if(chatIndex==0)
 		chatIndex=([]);

@@ -55,7 +55,7 @@ private array(mixed) bc=({});			  //存放传音符信息 add by caijie 2008/07/
 #define ITEM_PATH ROOT "/gamelib/clone/item/other/"//传音符文件的存放路径
 //add by caijie and
 
-void create(){
+protected void create(){
 	werror("========== [BROADCASTD start!] ==========\n");
 	//=====将屏蔽词列表放到相应的mapping中======//
 	array(string) word_map_tmp = ({});

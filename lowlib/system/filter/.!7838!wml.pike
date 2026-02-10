@@ -12,7 +12,7 @@ protected private string footer=
 
 array(string) input;
 string out;
-void create()
+protected void create()
 {
 	::create();
 	input=({});

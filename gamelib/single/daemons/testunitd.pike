@@ -38,7 +38,7 @@ void run_tests()
 	werror("\n========== 测试完成 ==========\n");
 }
 
-void create()
+protected void create()
 {
 	werror("[TESTUNITD] 单元测试守护进程启动\n");
 	call_out(run_tests, 3);

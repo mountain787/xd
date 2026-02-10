@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit LOW_DAEMON;
-void create()
+protected void create()
 {
 }
 void do_remove(object me)

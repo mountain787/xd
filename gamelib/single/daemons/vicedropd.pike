@@ -24,7 +24,7 @@ class droplist
 
 private mapping(string:droplist) vicedrop_m = ([]); //npc掉落总表
 
-void create()
+protected void create()
 {
 	load_csv();
 }

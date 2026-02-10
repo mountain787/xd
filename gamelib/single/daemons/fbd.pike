@@ -20,7 +20,7 @@ private mapping(string:string) fb_leave = ([]);
 //副本id:([玩家1id:1，玩家2id:1...])，此mapping记录了当前在副本中的玩家id
 private mapping(string:mapping(string:int)) fb_members = ([]);
 
-void create()
+protected void create()
 {
 	fb_leave = ([]);
 	fb_members = ([]);

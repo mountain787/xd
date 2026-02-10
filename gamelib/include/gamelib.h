@@ -1,3 +1,6 @@
+#ifndef _GAMELIB_H_
+#define _GAMELIB_H_
+
 #include <wapmud2/include/wapmud2.h>
 
 #define GAMELIB_USER (ROOT+"/gamelib/clone/user")
@@ -49,7 +52,7 @@
 #define ZHIJIAD ((object)(ROOT "/gamelib/single/daemons/zhijiad"))
 //配方守护模块
 #define PEIFANGD ((object)(ROOT "/gamelib/single/daemons/peifangd"))
-//副本守护模块                                                                                      
+//副本守护模块
 #define FBD ((object)(ROOT "/gamelib/single/daemons/fbd"))
 //boss掉落守护模块
 #define BOSSDROPD ((object)(ROOT "/gamelib/single/daemons/bossdropd"))
@@ -57,7 +60,7 @@
 #define TERMD	((object)(ROOT "/gamelib/single/daemons/termd"))
 //阵营级城池守护模块
 #define CITYD ((object)(ROOT "/gamelib/single/daemons/cityd"))
-//排行榜守护模块                                                                                    
+//排行榜守护模块
 #define PAIHANGD ((object)(ROOT "/gamelib/single/daemons/paihangd"))
 //时间模块，以后会做细化和调整
 #define TIMESD ((object)(ROOT "/gamelib/single/daemons/timesd"))
@@ -115,3 +118,5 @@
 #define ITEMS_EXCHANGED ((object)(ROOT "/gamelib/single/daemons/items_exchanged"))
 //地图显示
 #define MAPD ((object)(ROOT "/gamelib/single/daemons/mapd"))
+
+#endif // _GAMELIB_H_

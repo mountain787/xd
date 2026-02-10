@@ -38,7 +38,7 @@ private static mapping(string:int) bang_exist = ([]);
 int monster_size; //记录最后一个妖魔帮派id,妖魔阵营的bangid=1，3，5，7.....
 int human_size; //记录最后一个人类帮派的id,人类阵营的bangid=2，4，6，8.....
 
-void create()
+protected void create()
 {
 	if(!readFile_bangList()){
 		werror("---------------readFile_bangList error!!--------------\n");

@@ -24,7 +24,7 @@ private string server_msg = "";
 array(string) reserved_words=({});
 //by calvin 2007-08-31
 
-void create(){
+protected void create(){
 	tips=({});
 	string strtips = "";
 	strtips = Stdio.read_file(ROOT+FILE_PATH); 

@@ -21,7 +21,7 @@ class gift_list
 
 private mapping(string:gift_list) gift_m = ([]); //奖励总表
 
-void create()
+protected void create()
 {
 	load_csv();
 	call_out(save_gift_info,SAVE_TIME);

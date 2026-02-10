@@ -2,7 +2,7 @@
 #include <wapmud2/include/wapmud2.h>
 inherit LOW_DAEMON;
 inherit LOW_F_DBASE;
-void create()
+protected void create()
 {
 	//这个视图实现一个巧妙而令人恶心的方法，将视图影射到mudlib/clone/view.pike中，
 	//并将代码写入该程序，并且最后笨拙的将linux的回车作为\n符号映射到程序中造成很多

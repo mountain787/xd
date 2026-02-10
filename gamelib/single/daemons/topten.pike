@@ -64,7 +64,7 @@ array get_top(string key,int range)
 	return m_tops[key][..range];
 }
 
-void create()
+protected void create()
 {
 	load();
 	remove_call_out(auto_save);

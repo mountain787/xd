@@ -162,7 +162,7 @@ private mapping(string:array(mixed)) infancyMap = ([]);                      //n
 
 private mapping(int:int) timeDelay = ([1:0,3:3,7:5,]);		//物品出售期限及对应的所得税
 
-void create(){
+protected void create(){
 	werror("============== HOMED start  ===============\n");
 	init_level();
 	init_area();

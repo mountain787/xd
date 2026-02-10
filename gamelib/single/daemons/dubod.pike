@@ -28,7 +28,7 @@ private static array(array(mixed)) items51_60 = ({});
 int half_price = 0;//标识半价的物品范围
 
 
-void create()
+protected void create()
 {
 	flush_dubo_items();
 }

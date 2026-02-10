@@ -57,7 +57,7 @@ private mapping(int:array(string)) caoyao_flush_time = ([]);//以刷新时间为
 //  ])
 private int flush_count = 0;
 
-void create()
+protected void create()
 {
 	load_csv();
 	flush_caoyao();

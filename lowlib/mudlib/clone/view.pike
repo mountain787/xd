@@ -12,12 +12,12 @@ look:
 private object viewer;
 int cacheable;
 
-void create(string s,void|int _cacheable)
+protected void create(string s,void|int _cacheable)
 {
 	template=s;
 	cacheable=_cacheable;
 }
-string `()(void|object ob,void|object player,void|mixed arg)
+protected string `()(void|object ob,void|object player,void|mixed arg)
 {
 	if(player==0){
 		player=this_player();

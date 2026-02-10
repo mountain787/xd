@@ -32,7 +32,7 @@ private array(int) levelLimit = ({});
 //3,4为精致，5为神炼，6为天降，7为幻化
 private mapping(int:int) prob = ([3:10,4:10,5:30,6:70,7:100,]);
 
-void create()
+protected void create()
 {
 	load_csv();
 }

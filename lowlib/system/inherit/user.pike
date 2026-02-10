@@ -121,7 +121,7 @@ void init(){
 		add_action("command_hook", "", 1);
 	}
 }
-void create()
+protected void create()
 {
 }
 void receive_message(string newclass, string msg){

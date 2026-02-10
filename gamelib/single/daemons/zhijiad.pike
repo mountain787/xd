@@ -38,7 +38,7 @@ class zhijia
 
 private mapping(int:zhijia) zhijia_m = ([]); //物品信息总表
 
-void create()
+protected void create()
 {
 	load_csv();
 }

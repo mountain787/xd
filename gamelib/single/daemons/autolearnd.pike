@@ -36,7 +36,7 @@ private static mapping (string:mapping(string:mixed)) autoLearnPlayer =([]);    
 private static mapping (string:int) autoLearnInfo =(["dazuo":12,"xiuchan":72]);      //不同挂机方式价格等级列表（小时/碎玉）
 
 
-void create()
+protected void create()
 {
 	werror("===== [Auto_learn start!!]======\n");
 	call_out(refresh,AUTO_LEARN_TIME);//自动消潜

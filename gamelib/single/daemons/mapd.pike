@@ -88,7 +88,7 @@ mapping(string:string) pinyin_to_cn = ([
 
 
 ]);
-void create()
+protected void create()
 {
 	load_all_map();
 }

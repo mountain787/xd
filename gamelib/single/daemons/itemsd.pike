@@ -1273,7 +1273,7 @@ private object get_attributes_item(string orgitem,int num,int|void orginal_level
 	}
 }
 
-void create()
+protected void create()
 {
 	//werror("==========  [ITEMSD start!]  =========\n");
 	//读入普通物品的索引文件

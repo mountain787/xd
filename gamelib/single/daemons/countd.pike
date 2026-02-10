@@ -10,7 +10,7 @@ multiset day_msg=(<>);
 mapping (string:int) mon_login=([]);
 array online_user=allocate(24);
 
-void create()
+protected void create()
 {
 	read_tmp_log();
 }

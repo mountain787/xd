@@ -53,7 +53,7 @@ void init()
 	add_action(set_gender,"set_gender");
 	add_action(set_pic,"set_pic");
 }
-int set_name_cn(string arg)                                                                                       
+int set_name_cn(string|zero arg)                                                                                       
 {
 	string s;                                                                                                        
 	object me = this_player();                                                                                       
@@ -120,7 +120,7 @@ int set_name_cn(string arg)
 	me->command("set_gender"); 
 	return 1; 
 }
-int set_gender(string arg)                                                                                        
+int set_gender(string|zero arg)                                                                                        
 {                                                                                                                 
 	string s;                                                                                                        
 	object me = this_player();                                                                                       
@@ -151,7 +151,7 @@ int set_gender(string arg)
 	return 1; 
 }
 
-int set_pic(string arg)
+int set_pic(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

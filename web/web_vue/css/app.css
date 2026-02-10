@@ -1967,7 +1967,8 @@ body {
 /* 快捷命令栏 - 两排布局，每排5个 */
 .quick-actions {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: center;
     gap: 0;
     padding: 10px 10px 8px 10px;
     background: var(--bg-card);

@@ -2679,8 +2679,8 @@ body {
 /* MUD文本 */
 .mud-text {
     font-family: "Noto Sans SC Medium", sans-serif;
-    font-size: 18px;
-    color: #3d2914;
+    font-size: var(--font-base);
+    color: #4A3728;
 }
 
 .dark-mode .mud-text {
@@ -2741,12 +2741,12 @@ body {
     text-decoration: none;
     margin: 2px auto;
     display: inline-block;
-    padding: 10px 20px;
-    border-radius: 7px;
-    border: 1px solid #8B7765;
-    background: #E8D9C6;
-    color: #3d2914;
-    font-size: 16px;
+    padding: 6px 10px;
+    border-radius: var(--radius-md);
+    border: 1px solid #D4C4B5;
+    background: #F5EBE0;
+    color: #4A3728;
+    font-size: var(--font-base);
     cursor: pointer;
     transition: all 0.2s;
 }

@@ -1030,7 +1030,7 @@ void add_action(string|function fun,string|array(string) cmd, void|int match_lea
 	}
 	if(stringp(fun)){
 		if(owner[fun]==0){
-			werror("no such function '%s'.\n",fun);
+			werror("no such function '%s' in object %s.\n", fun, file_name(owner));
 		}
 		fun=owner[fun];
 	}

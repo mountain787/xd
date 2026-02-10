@@ -9,13 +9,17 @@ PROJECT="gamelib"
 echo "==== Restarting MUD server ===="
 
 # Build Vue frontend
-echo "Building Vue frontend..."
-cd vue_source && npm run build > /dev/null 2>&1 && cd ..
+echo ""
+echo "========================================"
+echo "  Building Vue Frontend..."
+echo "========================================"
+cd vue_source && npm run build && cd ..
 if [ $? -eq 0 ]; then
     echo "✓ Frontend built successfully"
 else
     echo "✗ Frontend build failed"
 fi
+echo ""
 
 # Graceful shutdown via telnet
 echo "Sending shutdown command..."

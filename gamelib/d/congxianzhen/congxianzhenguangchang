@@ -155,14 +155,19 @@ int set_pic(string|zero arg)
 {
 	string s = "";
 	object me = this_player();
+	if(!me) {
+		return 0;
+	}
 	if(me->user_pic && me->user_pic != ""){
 		me->command("look");
 		return 1;
 	}
 	if(!arg){
 		s += "请选择你的头像：\n";
-		if(me->query_raceId()=="human"){
-			if(me->query_sex()=="male"){
+		string raceId = me->query_raceId();
+		string sex = me->sex || "male";  // 直接访问 sex 属性，默认为 male
+		if(raceId=="human"){
+			if(sex=="male"){
 				for(int i=1;i<12;i++){
 					s += "[imgurl loading:/"+GAME_NAME+"/images/h_male"+i+".gif]";
 					s += "[选择:set_pic h_male"+i+"]\n";
@@ -175,8 +180,8 @@ int set_pic(string|zero arg)
 				}
 			}
 		}
-		else if(me->query_raceId()=="monst"){
-			if(me->query_sex()=="male"){
+		else if(raceId=="monst"){
+			if(sex=="male"){
 				for(int i=1;i<13;i++){
 					s += "[imgurl loading:/"+GAME_NAME+"/images/m_male"+i+".gif]";
 					s += "[选择:set_pic m_male"+i+"]\n";
@@ -189,19 +194,19 @@ int set_pic(string|zero arg)
 				}
 			}
 		}
-		me->write_view(WAP_VIEWD["/emote"],0,0,s); 
+		me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	}
 	else{
 		if(me->set_pic_ok == 1){
 			s += "你已经选择了头像，无法再次更换\n";
-			me->write_view(WAP_VIEWD["/emote"],0,0,s); 	
+			me->write_view(WAP_VIEWD["/emote"],0,0,s);
 		}
 		else{
-			me->user_pic=arg; 
+			me->user_pic=arg;
 			me->set_pic_ok = 1;
 			me->command("save");
 			me->command("look");
 		}
 	}
-	return 1; 
+	return 1;
 }

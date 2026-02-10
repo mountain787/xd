@@ -2823,19 +2823,22 @@ body {
 
 /* MUD输入框 */
 .mud-input {
-    padding: 8px 12px;
+    padding: 5px 10px;
     border: 1px solid #8B7765;
-    border-radius: 8px;
+    border-radius: var(--radius-md);
     background: #FFFEF8;
     color: #3d2914;
-    font-size: 18px;
+    font-size: var(--font-base);
     outline: none;
     margin: 2px;
+    min-width: 80px;
+    height: 28px;
+    line-height: 1.4;
 }
 
 .mud-input:focus {
     border-color: #667eea;
-    box-shadow: 0 0 0 2px rgba(102,126,234,0.2);
+    box-shadow: 0 0 0 2px rgba(102,126,234,0.15);
 }
 
 .dark-mode .mud-input {
@@ -2847,6 +2850,17 @@ body {
 /* 命令输入框容器 */
 .mud-cmd-input {
     display: inline-block;
+}
+
+/* 确认按钮 - 匹配 mud-btn 样式 */
+.mud-confirm-btn {
+    padding: 5px 10px;
+    font-size: var(--font-base);
+    border-radius: var(--radius-md);
+    height: 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
 }
 
 /* 加载状态 */
@@ -2873,17 +2887,6 @@ body {
 
 /* MUD输入框组 */
 .mud-input-group {
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-}
-
-.mud-confirm-btn {
-    padding: 8px 12px;
-    font-size: 16px;
-}
-
-.mud-cmd-input {
     display: inline-flex;
     align-items: center;
     gap: 4px;

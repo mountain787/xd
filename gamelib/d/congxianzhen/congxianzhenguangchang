@@ -18,7 +18,6 @@ int is_bedroom()
 {
 	return 1;
 }
-/*
 string query_links(){
 	object player=this_player();
 	if(!player) return "";  // 添加 NULL 检查
@@ -54,7 +53,6 @@ void init()
 	add_action(set_gender,"set_gender");
 	add_action(set_pic,"set_pic");
 }
-*/
 int set_name_cn(string arg)                                                                                       
 {
 	string s;                                                                                                        

@@ -214,14 +214,14 @@ body {
 }
 
 .room-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--primary);
     margin-bottom: 6px;
 }
 
 .room-desc {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
     line-height: 1.5;
 }
@@ -244,10 +244,10 @@ body {
 }
 
 .room-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: bold;
     color: var(--primary);
-    padding: 8px 12px;
+    padding: 6px 10px;
     background: rgba(102,126,234,0.1);
     border-radius: 6px;
     border-left: 3px solid var(--primary);
@@ -345,9 +345,9 @@ body {
 }
 
 .npcs-section .text-btn {
-    padding: 12px 8px;
-    font-size: 14px;
-    min-height: 50px;
+    padding: 10px 6px;
+    font-size: 12px;
+    min-height: 44px;
 }
 
 .section-label {
@@ -365,10 +365,10 @@ body {
 
 /* 文本按钮样式 - 类似浏览器链接 */
 .text-btn {
-    padding: 4px 10px;
+    padding: 3px 8px;
     border: none;
     border-radius: 4px;
-    font-size: 13px;
+    font-size: 12px;
     cursor: pointer;
     transition: all 0.15s;
     background: rgba(102,126,234,0.15);
@@ -1405,14 +1405,14 @@ body {
 }
 
 .room-name {
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 600;
     color: var(--primary);
     margin-bottom: 8px;
 }
 
 .room-desc {
-    font-size: 13px;
+    font-size: 12px;
     color: var(--text-secondary);
     line-height: 1.6;
     margin-bottom: 8px;

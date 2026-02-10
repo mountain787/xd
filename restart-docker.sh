@@ -48,8 +48,8 @@ GAME_AREA_INPUT="${1:-${GAME_AREA:-xd01}}"
 TOMCAT_HTTP_PORT="${2:-${TOMCAT_HTTP_PORT:-9001}}"
 HTTP_API_PORT="${3:-${HTTP_API_PORT:-8888}}"
 
-# Docker Hub 配置
-DOCKER_USER="${DOCKER_USER:-lijingmt}"
+# Docker Hub 配置（将通过 get_docker_username 函数获取）
+DOCKER_USER="${DOCKER_USER:-}"
 DOCKER_TOKEN="${DOCKER_TOKEN:-}"
 
 # 分区列表配置（用于 Vue 前端下拉框）
@@ -111,6 +111,48 @@ check_commands() {
             exit 1
         fi
     done
+}
+
+# 函数：从 Docker 配置获取用户名
+get_docker_username() {
+    # 如果已通过环境变量指定，直接使用
+    if [ -n "$DOCKER_USER" ]; then
+        echo "$DOCKER_USER"
+        return 0
+    fi
+
+    # 尝试从 docker info 获取
+    local username=$(docker info 2>/dev/null | grep -E "^Username:" | sed 's/Username: *//' | tr -d '\r')
+    if [ -n "$username" ]; then
+        echo "$username"
+        return 0
+    fi
+
+    # 尝试从 ~/.docker/config.json 读取
+    local config_file="$HOME/.docker/config.json"
+    if [ -f "$config_file" ]; then
+        # 尝试解析 auths（Base64 解码）
+        # 注意：如果使用 credsStore，这里无法直接获取
+        local auths=$(python3 -c "
+import json, sys, base64
+try:
+    with open('$config_file', 'r') as f:
+        config = json.load(f)
+    for key, val in config.get('auths', {}).items():
+        if 'auth' in val:
+            decoded = base64.b64decode(val['auth']).decode('utf-8')
+            print(decoded.split(':')[0])
+            break
+except Exception as e:
+    pass
+" 2>/dev/null)
+        if [ -n "$auths" ]; then
+            echo "$auths"
+            return 0
+        fi
+    fi
+
+    return 1
 }
 
 # 函数：初始化游戏数据库
@@ -364,9 +406,10 @@ main() {
     echo ""
     echo "环境变量："
     echo "  GAME_AREAS='xd01,xd02,xd03,xd04,xd05'  # Vue 前端分区列表"
+    echo "  DOCKER_USER=用户名                    # Docker Hub 用户名"
     echo ""
     echo "镜像说明："
-    echo "  使用 lijingmt/xiand-all:latest 统一镜像"
+    echo "  使用统一镜像 (自动从 Docker 配置获取用户名)"
     echo ""
 
     # ============================================
@@ -386,6 +429,16 @@ main() {
     # 检查必要命令
     check_commands
 
+    # 获取 Docker 用户名
+    if [ -z "$DOCKER_USER" ]; then
+        DOCKER_USER=$(get_docker_username)
+        if [ -z "$DOCKER_USER" ]; then
+            print_warning "无法自动获取 Docker 用户名，请设置 DOCKER_USER 环境变量"
+            print_info "示例: DOCKER_USER=your_username $0 $@"
+            DOCKER_USER="lijingmt"  # 默认值
+        fi
+    fi
+
     # 验证 docker-compose 文件存在
     if [ ! -f "$DOCKER_COMPOSE_FILE" ]; then
         print_error "docker-compose 文件不存在：$DOCKER_COMPOSE_FILE"
@@ -398,7 +451,7 @@ main() {
     echo "  分区列表：$GAME_AREAS"
     echo "  Tomcat HTTP 端口：$TOMCAT_HTTP_PORT"
     echo "  HTTP API 端口：$HTTP_API_PORT"
-    echo "  Docker 镜像：lijingmt/xiand-all:latest"
+    echo "  Docker 镜像：${DOCKER_USER}/xiand-all:latest"
     echo ""
 
     # 执行步骤 - 自动化初始化和启动流程
@@ -440,7 +493,7 @@ main() {
     print_info "[5/6] 启动统一容器 (Pike MUD + Tomcat)..."
 
     # 使用统一镜像
-    local docker_image="lijingmt/xiand-all:latest"
+    local docker_image="${DOCKER_USER}/xiand-all:latest"
 
     docker run -d \
         --name "xiand-${GAME_AREA}" \

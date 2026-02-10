@@ -94,6 +94,48 @@ check_commands() {
     done
 }
 
+# 函数：从 Docker 配置获取用户名
+get_docker_username() {
+    # 如果已通过环境变量指定，直接使用
+    if [ -n "$DOCKER_USER" ]; then
+        echo "$DOCKER_USER"
+        return 0
+    fi
+
+    # 尝试从 docker info 获取
+    local username=$(docker info 2>/dev/null | grep -E "^Username:" | sed 's/Username: *//' | tr -d '\r')
+    if [ -n "$username" ]; then
+        echo "$username"
+        return 0
+    fi
+
+    # 尝试从 ~/.docker/config.json 读取
+    local config_file="$HOME/.docker/config.json"
+    if [ -f "$config_file" ]; then
+        # 尝试解析 auths（Base64 解码）
+        # 注意：如果使用 credsStore，这里无法直接获取
+        local auths=$(python3 -c "
+import json, sys, base64
+try:
+    with open('$config_file', 'r') as f:
+        config = json.load(f)
+    for key, val in config.get('auths', {}).items():
+        if 'auth' in val:
+            decoded = base64.b64decode(val['auth']).decode('utf-8')
+            print(decoded.split(':')[0])
+            break
+except Exception as e:
+    pass
+" 2>/dev/null)
+        if [ -n "$auths" ]; then
+            echo "$auths"
+            return 0
+        fi
+    fi
+
+    return 1
+}
+
 # 函数：重建 Docker 镜像
 build_image() {
     print_info "重建 Docker 镜像..."
@@ -111,8 +153,13 @@ build_image() {
 
 # 函数：推送镜像到 Docker Hub
 push_to_docker_hub() {
-    # Docker Hub 配置
-    local docker_user="${DOCKER_USER:-lijingmt}"
+    # 从 Docker 配置获取用户名
+    local docker_user=$(get_docker_username)
+    if [ -z "$docker_user" ]; then
+        print_error "无法获取 Docker 用户名，请设置 DOCKER_USER 环境变量或先运行 docker login"
+        return 1
+    fi
+
     local docker_registry="${DOCKER_REGISTRY:-docker.io}"
 
     # 私有仓库配置（默认为私有）

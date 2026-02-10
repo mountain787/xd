@@ -441,9 +441,9 @@ body {
 }
 
 .npcs-section .text-btn {
-    padding: 10px 6px;
+    padding: 7px 5px;
     font-size: var(--font-base);
-    min-height: 42px;
+    min-height: 34px;
 }
 
 .section-label {
@@ -461,10 +461,10 @@ body {
 
 /* 文本按钮样式 */
 .text-btn {
-    padding: 4px 10px;
+    padding: 3px 7px;
     border: none;
-    border-radius: var(--radius-md);
-    font-size: var(--font-base);
+    border-radius: var(--radius-sm);
+    font-size: var(--font-sm);
     cursor: pointer;
     transition: all 0.2s ease;
     background: rgba(102,126,234,0.12);

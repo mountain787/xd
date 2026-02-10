@@ -589,11 +589,11 @@ body {
 }
 
 .panel-btn {
-    padding: 6px 10px;
+    padding: 3px 6px;
     border: none;
-    border-radius: 4px;
+    border-radius: 3px;
     color: white;
-    font-size: 12px;
+    font-size: 9px;
     cursor: pointer;
     transition: all 0.15s;
 }
@@ -731,11 +731,11 @@ body {
 }
 
 .action-btn {
-    padding: 8px 16px;
+    padding: 4px 8px;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     cursor: pointer;
     transition: all 0.15s;
 }
@@ -833,16 +833,16 @@ body {
 }
 
 .btn {
-    padding: 8px 14px;
+    padding: 4px 8px;
     border: none;
-    border-radius: 6px;
+    border-radius: 4px;
     color: white;
-    font-size: 13px;
+    font-size: 10px;
     cursor: pointer;
     transition: all 0.15s;
     display: inline-flex;
     align-items: center;
-    gap: 4px;
+    gap: 2px;
 }
 
 .btn:hover {
@@ -1627,6 +1627,75 @@ body {
     background: linear-gradient(90deg, #aa44ff, #6600cc);
 }
 
+.mana-bar {
+    background: linear-gradient(90deg, #4dabf5, #339af0);
+}
+
+.energy-bar {
+    background: linear-gradient(90deg, #51cf66, #37b24d);
+}
+
+.exp-bar {
+    background: linear-gradient(90deg, #ffd43b, #fab005);
+}
+
+/* 经验进度条 - 横跨整个宽度 */
+.exp-progress-bar {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+    width: 100%;
+}
+
+.exp-level-left {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fab005;
+    min-width: 35px;
+}
+
+.exp-level-right {
+    font-size: 12px;
+    font-weight: bold;
+    color: #fab005;
+    min-width: 35px;
+    text-align: right;
+}
+
+.exp-bar-track {
+    flex: 1;
+    height: 10px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 5px;
+    overflow: hidden;
+    position: relative;
+}
+
+.exp-bar-fill {
+    height: 100%;
+    background: linear-gradient(90deg, #ffd43b, #fab005);
+    border-radius: 5px;
+    transition: width 0.5s ease-out;
+    position: relative;
+}
+
+.exp-bar-fill::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+    animation: shimmer 2s infinite;
+}
+
+@keyframes shimmer {
+    0% { transform: translateX(-100%); }
+    100% { transform: translateX(100%); }
+}
+
 .header-actions {
     display: flex;
     flex-wrap: nowrap;
@@ -1899,8 +1968,8 @@ body {
 .quick-actions {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px;
-    padding: 10px 12px;
+    gap: 0;
+    padding: 8px 8px 6px 8px;
     background: var(--bg-card);
     border-top: 1px solid var(--border);
 }
@@ -1924,20 +1993,24 @@ body {
 }
 
 .quick-btn {
-    flex: 0 0 calc(20% - 5px);
+    flex: 1;
     min-width: 0;
-    padding: 10px 4px;
+    padding: 14px 10px;
     border: none;
-    border-radius: 6px;
+    border-radius: 10px;
     background: linear-gradient(135deg, var(--primary), var(--secondary));
     color: white;
-    font-size: 11px;
+    font-size: 17px;
     font-weight: 500;
     cursor: pointer;
     transition: all 0.2s;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
 }
 
 /* 经典模式按钮 */
@@ -1995,9 +2068,21 @@ body {
 /* 快捷菜单内部容器 */
 .quick-actions-inner {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: 6px;
     margin-top: 6px;
+}
+
+/* 快捷按钮行 */
+.quick-btn-row {
+    display: flex;
+    gap: 6px;
+    justify-content: center;
+}
+
+.quick-btn-row .quick-btn {
+    flex: 1;
+    min-width: 0;
 }
 
 /* 折叠状态 */
@@ -2396,6 +2481,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    align-items: center;
 }
 
 /* 经典模式 - 浅色主题 */
@@ -2411,14 +2497,18 @@ body {
 .mud-parent {
     text-align: center;
     padding-bottom: 20px;
+    width: 100%;
+    max-width: none;
 }
 
 /* 子容器 - 固定宽度，模仿iframe的child样式 */
 .mud-child {
-    display: inline-block;
-    width: 300px;
+    display: block;
+    width: 100%;
+    max-width: none;
     text-align: left;
-    vertical-align: top;
+    margin: 0 auto;
+    padding-left: 18%;
 }
 
 .mud-parent:before,
@@ -2465,8 +2555,8 @@ body {
 
 /* 地图图片 */
 .mud-inline-image[src*="/map/"] {
-    max-width: 300px;
-    max-height: 200px;
+    max-width: 100%;
+    max-height: 300px;
     display: block;
     margin: 8px auto;
 }
@@ -2497,14 +2587,14 @@ body {
 /* MUD按钮 - 经典模式 */
 .mud-btn {
     text-decoration: none;
-    margin: 1px auto;
+    margin: 2px auto;
     display: inline-block;
-    padding: 6px 12px;
-    border-radius: 6px;
+    padding: 10px 20px;
+    border-radius: 7px;
     border: 1px solid #8B7765;
     background: #E8D9C6;
     color: #3d2914;
-    font-size: 14px;
+    font-size: 16px;
     cursor: pointer;
     transition: all 0.2s;
 }
@@ -2581,12 +2671,12 @@ body {
 
 /* MUD输入框 */
 .mud-input {
-    padding: 4px 8px;
+    padding: 8px 12px;
     border: 1px solid #8B7765;
-    border-radius: 4px;
+    border-radius: 8px;
     background: #FFFEF8;
     color: #3d2914;
-    font-size: 14px;
+    font-size: 18px;
     outline: none;
     margin: 2px;
 }
@@ -2637,8 +2727,8 @@ body {
 }
 
 .mud-confirm-btn {
-    padding: 4px 8px;
-    font-size: 12px;
+    padding: 8px 12px;
+    font-size: 16px;
 }
 
 .mud-cmd-input {
@@ -2809,6 +2899,29 @@ body {
 .hp-text {
     font-size: 9px;
     color: #aaa;
+}
+
+.mana-bar-container {
+    width: 75px;
+    height: 4px;
+    background: rgba(0, 0, 0, 0.5);
+    border-radius: 2px;
+    overflow: hidden;
+}
+
+.mana-bar-fill {
+    height: 100%;
+    transition: width 0.3s ease-out;
+    border-radius: 2px;
+}
+
+.player-mana {
+    background: linear-gradient(90deg, #4dabf5, #339af0);
+}
+
+.mana-text {
+    font-size: 8px;
+    color: #a5d8ff;
 }
 
 .neili-bar-container {

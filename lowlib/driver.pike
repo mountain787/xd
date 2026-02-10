@@ -182,8 +182,8 @@ class pikenv_master{
 	}
 	void compile_warning(string file, int line, string msg)
 	{
-		// 屏蔽所有编译警告
-		return;
+		werror("%s:%d: %s\n", file, line, msg);
+		debug_log->write("%s:%d: %s\n", file, line, msg);
 	}
 };
 int main(int argc, array(string) argv)

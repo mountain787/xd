@@ -120,23 +120,73 @@ object get_player_from_connection(string userid)
 }
 
 /**
- * 清理空闲的虚拟连接
+ * 清理空闲的虚拟连接并踢出超时用户
  */
 void cleanup_idle_connections()
 {
     int timeout = CONN_TIMEOUT;
     int now = time();
     array users = indices(vconnections);
+    int kicked_count = 0;
+
     foreach(users, string userid) {
         mixed vconn = vconnections[userid];
-        if(arrayp(vconn) && sizeof(vconn) >= 2) {
+        if(arrayp(vconn) && sizeof(vconn) >= 3) {
             int last_used = vconn[1];
+            object player = vconn[2];
+
+            // 检查是否超时
             if(now - last_used > timeout) {
+                // 记录日志
+                string name = player && functionp(player->query_name) ? player->query_name() : userid;
+                string name_cn = player && functionp(player->query_name_cn) ? player->query_name_cn() : name;
+                int level = player && functionp(player->query_level) ? player->query_level() : 0;
+                int idle_seconds = now - last_used;
+
+                log_idle_kick(name, name_cn, level, idle_seconds, "HTTP_API");
+
+                // 踢出用户
+                if(player && functionp(player->remove)) {
+                    player->remove();
+                }
+
+                // 移除虚拟连接
                 vconnections[userid] = 0;
+                kicked_count++;
             }
         }
     }
+
+    if(kicked_count > 0) {
+        http_werror("[IDLE_KICK] Kicked %d idle HTTP_API users\n", kicked_count);
+    }
+
     call_out(cleanup_idle_connections, 60);
+}
+
+/**
+ * 记录踢人日志
+ */
+void log_idle_kick(string name, string name_cn, int level, int idle_seconds, string conn_type)
+{
+    string now = ctime(time());
+    string log_time = now[0..sizeof(now)-2];
+
+    mapping now_time = localtime(time());
+    int day = now_time["mday"];
+    int mon = now_time["mon"]+1;
+    int year = now_time["year"]+1900;
+
+    string mon_str = (mon < 10) ? "0"+mon : (string)mon;
+    string day_str = (day < 10) ? "0"+day : (string)day;
+    string date_str = year+"-"+mon_str+"-"+day_str;
+
+    string idle_min = (string)(idle_seconds / 60);
+
+    string log_msg = sprintf("[%s] %s(%s) %d级 [%s] 空闲%s分钟 被踢下线\n",
+        log_time, name_cn, name, level, conn_type, idle_min);
+
+    Stdio.append_file(ROOT+"/log/idle_kick.log."+date_str, log_msg);
 }
 
 /**

@@ -313,11 +313,9 @@ int main(string|zero arg)
 									string tbnow = list[j]->tongbao;
 									string tbhis = list[j]->history_tongbao;
 									string jinbi = list[j]->query_account()/100;
-									if((string)list[j]->name!=me->name){
-											s+=""+j+"|"+list[j]->query_level()+"级|"+(string)list[j]->query_name_cn()+"|"+(string)list[j]->name+"|"+postions;
-											//s+="|通宝("+tbnow+")|通宝历史("+tbhis+")|金币("+jinbi+")";
-											s+="|[密语:tell start "+(string)list[j]->query_name()+" 0]|[管理:game_deal manager_user_online char_user "+(string)list[j]->name+" not]|"+idle+"\n";
-										}
+									s+=""+j+"|"+list[j]->query_level()+"级|"+(string)list[j]->query_name_cn()+"|"+(string)list[j]->name+"|"+postions;
+									//s+="|通宝("+tbnow+")|通宝历史("+tbhis+")|金币("+jinbi+")";
+									s+="|[密语:tell start "+(string)list[j]->query_name()+" 0]|[管理:game_deal manager_user_online char_user "+(string)list[j]->name+" not]|"+idle+"\n";
 									};
 							}
 							s += "[查看禁言列表:game_deal unchat_user_list not not not]\n";

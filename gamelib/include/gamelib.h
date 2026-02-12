@@ -118,5 +118,7 @@
 #define ITEMS_EXCHANGED ((object)(ROOT "/gamelib/single/daemons/items_exchanged"))
 //地图显示
 #define MAPD ((object)(ROOT "/gamelib/single/daemons/mapd"))
+//空闲踢人守护模块
+#define IDLE_KICKD ((object)(ROOT "/gamelib/single/daemons/idle_kickd"))
 
 #endif // _GAMELIB_H_

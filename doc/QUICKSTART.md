@@ -25,15 +25,26 @@ mkdir -p /usr/local/games/allxd/log/xd01
 ```bash
 cd /usr/local/games/xiand/docker
 
-# Optional: Create .env file for custom configuration
+# Create .env file with your configuration
 cat > .env << EOF
+# Game instance
 GAME_AREA=xd01
+
+# Ports
 MUD_PORT=13800
 HTTP_API_PORT=8888
 TOMCAT_HTTP_PORT=9001
 TOMCAT_HTTPS_PORT=8443
+
+# MySQL Configuration (REQUIRED)
+MYSQL_HOST=172.17.0.1
+MYSQL_PORT=3306
+MYSQL_USER=xiandao
+MYSQL_PASSWORD=your_mysql_password_here
 EOF
 ```
+
+**Important:** Replace `your_mysql_password_here` with your actual MySQL password.
 
 ### 3. Launch the Server
 
@@ -57,20 +68,7 @@ docker-compose logs -f xiand
 
 ### MySQL Setup
 
-#### Option 1: Use Existing MySQL
-
-Edit `docker-compose.yml` to connect to your MySQL:
-
-```yaml
-environment:
-  - MYSQL_HOST=your-mysql-host
-  - MYSQL_PORT=3306
-  - MYSQL_USER=xiandao
-  - MYSQL_PASSWORD=Happy888888
-  - MYSQL_DATABASE=xd01
-```
-
-#### Option 2: Initialize New Database
+#### Step 1: Initialize Database
 
 Run the MySQL initialization script:
 
@@ -86,9 +84,20 @@ mysql> source /path/to/doc/mysql-init.sql;
 This creates:
 - Database `xd01` with UTF-8 support
 - All required tables
-- Docker user `xiandao` with appropriate grants
+- Docker user `xiandao` with password `Happy888888`
 
-**Security Note:** Change the default password `Happy888888` in production!
+#### Step 2: Configure Environment Variables
+
+Create `.env` file in `docker/` directory:
+
+```bash
+MYSQL_HOST=172.17.0.1
+MYSQL_PORT=3306
+MYSQL_USER=xiandao
+MYSQL_PASSWORD=Happy888888
+```
+
+**Security Note:** Change `Happy888888` to a secure password in production!
 
 ### Multiple Game Instances
 

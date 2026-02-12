@@ -546,14 +546,18 @@ createApp({
 
         // 更新URL以包含txd参数（便于书签/分享）
         updateUrlWithTxd() {
+            console.log('[updateUrlWithTxd] txd=', this.txd ? this.txd.substring(0, 20) + '...' : 'null');
             if (!this.txd) return;
 
             const url = new URL(window.location.href);
             url.searchParams.set('txd', this.txd);
 
+            const newUrl = url.toString();
+            console.log('[updateUrlWithTxd] 新URL:', newUrl.substring(0, 100) + '...');
+
             // 使用replaceState更新URL而不刷新页面
-            window.history.replaceState({}, '', url.toString());
-            console.log('URL已更新，包含txd参数');
+            window.history.replaceState({}, '', newUrl);
+            console.log('[updateUrlWithTxd] URL已更新');
         },
 
         // 复制书签URL到剪贴板
@@ -2568,6 +2572,10 @@ createApp({
 
             // 自动登录时也保存域名
             this.saveGameBaseUrl();
+
+            // 更新URL以包含txd参数（便于书签/分享）
+            console.log('[mounted] 自动登录成功，准备更新URL');
+            this.updateUrlWithTxd();
 
             if (this.useJsonMode) {
                 // JSON模式: 加载初始MUD输出

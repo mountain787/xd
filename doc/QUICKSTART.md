@@ -55,7 +55,9 @@ docker-compose logs -f xiand
 
 ## Configuration
 
-### MySQL Connection
+### MySQL Setup
+
+#### Option 1: Use Existing MySQL
 
 Edit `docker-compose.yml` to connect to your MySQL:
 
@@ -63,10 +65,30 @@ Edit `docker-compose.yml` to connect to your MySQL:
 environment:
   - MYSQL_HOST=your-mysql-host
   - MYSQL_PORT=3306
-  - MYSQL_USER=your-user
-  - MYSQL_PASSWORD=your-password
+  - MYSQL_USER=xiandao
+  - MYSQL_PASSWORD=Happy888888
   - MYSQL_DATABASE=xd01
 ```
+
+#### Option 2: Initialize New Database
+
+Run the MySQL initialization script:
+
+```bash
+# Import the schema
+mysql -u root -p < doc/mysql-init.sql
+
+# Or from MySQL prompt
+mysql -u root -p
+mysql> source /path/to/doc/mysql-init.sql;
+```
+
+This creates:
+- Database `xd01` with UTF-8 support
+- All required tables
+- Docker user `xiandao` with appropriate grants
+
+**Security Note:** Change the default password `Happy888888` in production!
 
 ### Multiple Game Instances
 

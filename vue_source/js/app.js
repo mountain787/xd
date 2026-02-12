@@ -1034,6 +1034,19 @@ createApp({
                     this.txd = data.txd;
                     sessionStorage.setItem('mud_txd', this.txd);
                 }
+                // 保存userid到sessionStorage（用于URL登录后保存用户信息）
+                if (data.userid && !sessionStorage.getItem('mud_userid')) {
+                    const partitionMatch = data.userid.match(/^([a-z]+\d+)/);
+                    if (partitionMatch) {
+                        const partition = partitionMatch[1];
+                        const userid = data.userid.substring(partition.length);
+                        sessionStorage.setItem('mud_partition', partition);
+                        sessionStorage.setItem('mud_userid', userid);
+                        this.loginForm.partition = partition;
+                        this.loginForm.userid = userid;
+                        console.log('[sendJsonCommand] 已保存用户信息到sessionStorage:', partition, userid);
+                    }
+                }
                 // 更新MUD输出
                 this.mudLines = data.lines || [];
                 console.log('[sendJsonCommand] mudLines数量:', this.mudLines.length);
@@ -2499,8 +2512,10 @@ createApp({
 
         // 保存URL中的txd（优先于sessionStorage）
         let savedTxd = null;
+        let txdFromUrl = false;  // 标记txd是否来自URL
         if (txdParam) {
             savedTxd = txdParam;
+            txdFromUrl = true;
             console.log('检测到URL中的txd参数，将用于自动登录');
         } else {
             // 尝试从 sessionStorage 恢复登录状态
@@ -2561,14 +2576,24 @@ createApp({
         const savedPartition = sessionStorage.getItem('mud_partition');
         const savedUser = sessionStorage.getItem('mud_userid');
 
-        if (savedTxd && savedUser) {
-            // 有保存的登录信息，自动恢复
+        // 自动登录条件：有txd且（来自URL 或 有保存的用户信息）
+        if (savedTxd && (txdFromUrl || savedUser)) {
+            // 有保存的登录信息或URL中有txd，自动恢复
             this.txd = savedTxd;
             this.loginForm.partition = savedPartition || 'tx01';
-            this.loginForm.userid = savedUser;
+            this.loginForm.userid = savedUser || '';  // URL模式可能没有用户名
 
             console.log('恢复登录: txd=', savedTxd.substring(0, 20) + '...');
             console.log('apiBase=', this.apiBase);
+
+            // 如果txd来自URL，保存到sessionStorage以便后续使用
+            if (txdFromUrl) {
+                sessionStorage.setItem('mud_txd', savedTxd);
+                if (savedPartition) {
+                    sessionStorage.setItem('mud_partition', savedPartition);
+                }
+                console.log('[mounted] URL中的txd已保存到sessionStorage');
+            }
 
             // 自动登录时也保存域名
             this.saveGameBaseUrl();

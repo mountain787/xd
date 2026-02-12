@@ -453,6 +453,9 @@ createApp({
                     // 保存当前域名到后端
                     this.saveGameBaseUrl();
 
+                    // 更新URL以包含txd参数（便于书签/分享）
+                    this.updateUrlWithTxd();
+
                     // 更新MUD输出
                     this.mudLines = data.lines || [];
 
@@ -496,6 +499,9 @@ createApp({
                     sessionStorage.setItem('mud_partition', this.loginForm.partition);
                     sessionStorage.setItem('mud_userid', this.loginForm.userid);
 
+                    // 更新URL以包含txd参数（便于书签/分享）
+                    this.updateUrlWithTxd();
+
                     // 设置iframe URL
                     this.gameFrameUrl = this.getGameFrameUrl();
                     this.showLogin = false;
@@ -536,6 +542,79 @@ createApp({
                 }
             }
             return uid + '~' + pid;
+        },
+
+        // 更新URL以包含txd参数（便于书签/分享）
+        updateUrlWithTxd() {
+            if (!this.txd) return;
+
+            const url = new URL(window.location.href);
+            url.searchParams.set('txd', this.txd);
+
+            // 使用replaceState更新URL而不刷新页面
+            window.history.replaceState({}, '', url.toString());
+            console.log('URL已更新，包含txd参数');
+        },
+
+        // 复制书签URL到剪贴板
+        async copyBookmarkUrl() {
+            try {
+                // 确保URL包含当前的txd
+                this.updateUrlWithTxd();
+
+                const url = window.location.href;
+                await navigator.clipboard.writeText(url);
+
+                // 显示提示消息
+                this.showNotification('登录链接已复制，可跨设备使用');
+            } catch (err) {
+                // 降级方案：使用传统方法
+                const url = window.location.href;
+                const textArea = document.createElement('textarea');
+                textArea.value = url;
+                textArea.style.position = 'fixed';
+                textArea.style.opacity = '0';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    this.showNotification('登录链接已复制，可跨设备使用');
+                } catch (e) {
+                    this.showNotification('复制失败，请手动复制URL');
+                }
+                document.body.removeChild(textArea);
+            }
+        },
+
+        // 显示通知消息
+        showNotification(message, duration = 2000) {
+            // 移除已存在的通知
+            const existing = document.querySelector('.copy-notification');
+            if (existing) {
+                existing.remove();
+            }
+
+            const notification = document.createElement('div');
+            notification.className = 'copy-notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                background: rgba(0, 0, 0, 0.8);
+                color: white;
+                padding: 16px 24px;
+                border-radius: 8px;
+                z-index: 10000;
+                animation: fadeIn 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+
+            setTimeout(() => {
+                notification.style.animation = 'fadeOut 0.3s ease';
+                setTimeout(() => notification.remove(), 300);
+            }, duration);
         },
 
         // iframe加载完成
@@ -2392,14 +2471,16 @@ createApp({
         const modeText = this.useJsonMode ? 'JSON模式 (无iframe)' : 'iframe模式';
         console.log(`Vue游戏客户端已启动 (${modeText})`);
 
-        // 从URL参数读取推荐码
+        // 从URL参数读取推荐码和txd
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
+        const txdParam = urlParams.get('txd');
         console.log('URL参数解析:', {
             fullUrl: window.location.href,
             pathname: window.location.pathname,
             search: window.location.search,
             refParam: refParam,
+            txdParam: txdParam ? txdParam.substring(0, 20) + '...' : null,
             urlParams: Array.from(urlParams.entries())
         });
         if (refParam) {
@@ -2410,6 +2491,16 @@ createApp({
             console.log('推荐码已保存到localStorage');
         } else {
             console.log('未检测到推荐码参数');
+        }
+
+        // 保存URL中的txd（优先于sessionStorage）
+        let savedTxd = null;
+        if (txdParam) {
+            savedTxd = txdParam;
+            console.log('检测到URL中的txd参数，将用于自动登录');
+        } else {
+            // 尝试从 sessionStorage 恢复登录状态
+            savedTxd = sessionStorage.getItem('mud_txd');
         }
 
         // 从localStorage恢复主题设置
@@ -2462,8 +2553,7 @@ createApp({
             }
         });
 
-        // 尝试从 localStorage 恢复登录状态
-        const savedTxd = sessionStorage.getItem('mud_txd');
+        // 尝试从 sessionStorage 恢复分区和用户名（txd已经在前面处理）
         const savedPartition = sessionStorage.getItem('mud_partition');
         const savedUser = sessionStorage.getItem('mud_userid');
 

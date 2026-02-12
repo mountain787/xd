@@ -191,6 +191,10 @@
                                 <span>返回选择</span>
                             </div>
                             <div class="menu-divider"></div>
+                            <div class="menu-item" @click="copyBookmarkUrl(); headerMenuOpen = false;">
+                                <span class="menu-icon">🔗</span>
+                                <span>复制登录链接</span>
+                            </div>
                             <div class="menu-item menu-danger" @click="doLogout(); headerMenuOpen = false;">
                                 <span class="menu-icon">🚪</span>
                                 <span>退出</span>

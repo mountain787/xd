@@ -1,6 +1,6 @@
 <%@include file="includes/header.inc"%>
 <%!
-String jspname = gamename + "/main.jsp";
+String jspname = "main.jsp";
 String filter_type = "html6";
 String title = gamename_cn;
 

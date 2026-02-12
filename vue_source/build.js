@@ -48,8 +48,7 @@ function copyFile(src, dest, transform = null) {
 
 // 处理HTML - 注入版本号
 function processHTML(content) {
-  return content.replace(/(\.css\?v=)[^"]+/, `$1${version}`)
-             .replace(/(\.js\?v=)[^"]+/, `$1${version}`);
+  return content.replace(/\?v=BUILD_VERSION/g, `?v=${version}`);
 }
 
 // 构建步骤

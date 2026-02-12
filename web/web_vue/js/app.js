@@ -546,14 +546,18 @@ createApp({
 
         // 更新URL以包含txd参数（便于书签/分享）
         updateUrlWithTxd() {
+            console.log('[updateUrlWithTxd] txd=', this.txd ? this.txd.substring(0, 20) + '...' : 'null');
             if (!this.txd) return;
 
             const url = new URL(window.location.href);
             url.searchParams.set('txd', this.txd);
 
+            const newUrl = url.toString();
+            console.log('[updateUrlWithTxd] 新URL:', newUrl.substring(0, 100) + '...');
+
             // 使用replaceState更新URL而不刷新页面
-            window.history.replaceState({}, '', url.toString());
-            console.log('URL已更新，包含txd参数');
+            window.history.replaceState({}, '', newUrl);
+            console.log('[updateUrlWithTxd] URL已更新');
         },
 
         // 复制书签URL到剪贴板
@@ -1029,6 +1033,19 @@ createApp({
                 if (data.txd) {
                     this.txd = data.txd;
                     sessionStorage.setItem('mud_txd', this.txd);
+                }
+                // 保存userid到sessionStorage（用于URL登录后保存用户信息）
+                if (data.userid && !sessionStorage.getItem('mud_userid')) {
+                    const partitionMatch = data.userid.match(/^([a-z]+\d+)/);
+                    if (partitionMatch) {
+                        const partition = partitionMatch[1];
+                        const userid = data.userid.substring(partition.length);
+                        sessionStorage.setItem('mud_partition', partition);
+                        sessionStorage.setItem('mud_userid', userid);
+                        this.loginForm.partition = partition;
+                        this.loginForm.userid = userid;
+                        console.log('[sendJsonCommand] 已保存用户信息到sessionStorage:', partition, userid);
+                    }
                 }
                 // 更新MUD输出
                 this.mudLines = data.lines || [];
@@ -2495,8 +2512,10 @@ createApp({
 
         // 保存URL中的txd（优先于sessionStorage）
         let savedTxd = null;
+        let txdFromUrl = false;  // 标记txd是否来自URL
         if (txdParam) {
             savedTxd = txdParam;
+            txdFromUrl = true;
             console.log('检测到URL中的txd参数，将用于自动登录');
         } else {
             // 尝试从 sessionStorage 恢复登录状态
@@ -2557,17 +2576,31 @@ createApp({
         const savedPartition = sessionStorage.getItem('mud_partition');
         const savedUser = sessionStorage.getItem('mud_userid');
 
-        if (savedTxd && savedUser) {
-            // 有保存的登录信息，自动恢复
+        // 自动登录条件：有txd且（来自URL 或 有保存的用户信息）
+        if (savedTxd && (txdFromUrl || savedUser)) {
+            // 有保存的登录信息或URL中有txd，自动恢复
             this.txd = savedTxd;
             this.loginForm.partition = savedPartition || 'tx01';
-            this.loginForm.userid = savedUser;
+            this.loginForm.userid = savedUser || '';  // URL模式可能没有用户名
 
             console.log('恢复登录: txd=', savedTxd.substring(0, 20) + '...');
             console.log('apiBase=', this.apiBase);
 
+            // 如果txd来自URL，保存到sessionStorage以便后续使用
+            if (txdFromUrl) {
+                sessionStorage.setItem('mud_txd', savedTxd);
+                if (savedPartition) {
+                    sessionStorage.setItem('mud_partition', savedPartition);
+                }
+                console.log('[mounted] URL中的txd已保存到sessionStorage');
+            }
+
             // 自动登录时也保存域名
             this.saveGameBaseUrl();
+
+            // 更新URL以包含txd参数（便于书签/分享）
+            console.log('[mounted] 自动登录成功，准备更新URL');
+            this.updateUrlWithTxd();
 
             if (this.useJsonMode) {
                 // JSON模式: 加载初始MUD输出

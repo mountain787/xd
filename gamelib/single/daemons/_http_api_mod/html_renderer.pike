@@ -86,12 +86,30 @@ string response_to_html(string response, string userid, string cmd)
         html += ".btn-outline-success{color:#48bb78;border-color:#48bb78;background:transparent}\n";
         html += ".btn-outline-warning{color:#ed8936;border-color:#ed8936;background:transparent}\n";
         html += ".btn-outline-purple{color:#9f7aea;border-color:#9f7aea;background:transparent}\n";
+        html += ".btn-outline-primary{color:#4299e1;border-color:#4299e1;background:transparent}\n";
+        html += ".btn-outline-secondary{color:#a0aec0;border-color:#a0aec0;background:transparent}\n";
+        html += ".btn-outline-orange{color:#ed8936;border-color:#ed8936;background:transparent}\n";
+        html += ".btn-outline-darkorange{color:#dd6b20;border-color:#dd6b20;background:transparent}\n";
+        html += ".btn-outline-green{color:#48bb78;border-color:#48bb78;background:transparent}\n";
+        html += ".btn-outline-tian{color:#f6e05e;border-color:#f6e05e;background:transparent}\n";
+        html += ".btn-outline-di{color:#ecc94b;border-color:#ecc94b;background:transparent}\n";
+        html += ".btn-outline-xuan{color:#9f7aea;border-color:#9f7aea;background:transparent}\n";
+        html += ".btn-outline-huang{color:#faf089;border-color:#faf089;background:transparent}\n";
     } else {
         html += sprintf(".btn{padding:6px 12px;border-radius:6px;border:1px solid %s;background:#E8D9C6;color:%s;font-size:14px;cursor:pointer;margin:2px}\n", border_color, btn_text);
         html += ".btn-outline-info{color:#8B4513;border-color:#8B4513;background:#FFFEF8}\n";
         html += ".btn-outline-success{color:#228B22;border-color:#228B22;background:#FFFEF8}\n";
         html += ".btn-outline-warning{color:#CC5500;border-color:#CC5500;background:#FFFEF8}\n";
         html += ".btn-outline-purple{color:#800080;border-color:#800080;background:#FFFEF8}\n";
+        html += ".btn-outline-primary{color:#0066CC;border-color:#0066CC;background:#FFFEF8}\n";
+        html += ".btn-outline-secondary{color:#6c757d;border-color:#6c757d;background:#FFFEF8}\n";
+        html += ".btn-outline-orange{color:#FF8C00;border-color:#FF8C00;background:#FFFEF8}\n";
+        html += ".btn-outline-darkorange{color:#CC5500;border-color:#CC5500;background:#FFFEF8}\n";
+        html += ".btn-outline-green{color:#00AA00;border-color:#00AA00;background:#FFFEF8}\n";
+        html += ".btn-outline-tian{color:#FFD700;border-color:#FFD700;background:#FFFEF8}\n";
+        html += ".btn-outline-di{color:#DAA520;border-color:#DAA520;background:#FFFEF8}\n";
+        html += ".btn-outline-xuan{color:#9370DB;border-color:#9370DB;background:#FFFEF8}\n";
+        html += ".btn-outline-huang{color:#F0E68C;border-color:#F0E68C;background:#FFFEF8}\n";
     }
 
     html += ".ink-wash-gradient{background:linear-gradient(90deg,#8B4513,#D2691E,#CD853F,#DEB887,#2F4F4F,#696969);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;font-weight:bold}\n";
@@ -346,6 +364,143 @@ string parse_mud_content_to_html(string response, string txd, string userid)
 // ========================================================================
 
 /**
+ * 根据链接名称获取对应的 CSS 类
+ * 对应 html6.pike 的 get_right_href_css() 函数
+ */
+string get_button_css_class(string link_name)
+{
+    string btn_info = "btn btn-outline-info btn-sm";
+    string btn_warning = "btn btn-outline-warning btn-sm";
+    string btn_primary = "btn btn-outline-primary btn-sm";
+    string btn_success = "btn btn-outline-success btn-sm";
+    string btn_secondary = "btn btn-outline-secondary btn-sm";
+    string btn_orange = "btn btn-outline-orange btn-sm";
+    string btn_darkorange = "btn btn-outline-darkorange btn-sm";
+    string btn_purple = "btn btn-outline-purple btn-sm";
+    string btn_green2 = "btn btn-outline-green btn-sm";
+    string btn_tian = "btn btn-outline-tian btn-sm";
+    string btn_di = "btn btn-outline-di btn-sm";
+    string btn_xuan = "btn btn-outline-xuan btn-sm";
+    string btn_huang = "btn btn-outline-huang btn-sm";
+
+    mixed err = catch {
+        mapping(string:string) primary_key_map = ([]);
+
+        // 数字优先级 (9* 到 1*)
+        primary_key_map["9*"] = btn_huang;
+        primary_key_map["8*"] = btn_xuan;
+        primary_key_map["7*"] = btn_tian;
+        primary_key_map["6*"] = btn_di;
+        primary_key_map["5*"] = btn_green2;
+        primary_key_map["4*"] = btn_orange;
+        primary_key_map["3*"] = btn_purple;
+        primary_key_map["2*"] = btn_primary;
+        primary_key_map["1*"] = btn_secondary;
+
+        // 方向
+        primary_key_map["东→"] = btn_success;
+        primary_key_map["西←"] = btn_success;
+        primary_key_map["南↓"] = btn_success;
+        primary_key_map["北↑"] = btn_success;
+
+        // 重要功能
+        primary_key_map["快速攻击"] = btn_warning;
+        primary_key_map["驿站"] = btn_warning;
+        primary_key_map["商城"] = btn_warning;
+        primary_key_map["锻造"] = btn_warning;
+        primary_key_map["黑市"] = btn_orange;
+        primary_key_map["【强化】"] = btn_orange;
+        primary_key_map["合成"] = btn_orange;
+        primary_key_map["宝商"] = btn_orange;
+        primary_key_map["精炼"] = btn_orange;
+        primary_key_map["隐秘幻境"] = btn_warning;
+        primary_key_map["任务"] = btn_success;
+        primary_key_map["尸体"] = btn_secondary;
+        primary_key_map["武功"] = btn_success;
+        primary_key_map["状态"] = btn_success;
+        primary_key_map["吃药"] = btn_purple;
+        primary_key_map["白银"] = btn_warning;
+
+        // 盲盒
+        primary_key_map["闪亮的石块(盲盒)"] = btn_success;
+        primary_key_map["魔皮荷包(盲盒)"] = btn_green2;
+        primary_key_map["魔精袋子(盲盒"] = btn_darkorange;
+        primary_key_map["魔铁宝箱(盲盒)"] = btn_orange;
+        primary_key_map["魔金宝箱(盲盒)"] = btn_purple;
+        primary_key_map["幸运宝石"] = btn_purple;
+
+        // 数字标签 (「壹」到「拾叁」)
+        primary_key_map["「壹」"] = btn_success;
+        primary_key_map["「捌」"] = btn_darkorange;
+        primary_key_map["「陆」"] = btn_green2;
+        primary_key_map["「伍」"] = btn_green2;
+        primary_key_map["「贰」"] = btn_success;
+        primary_key_map["「肆」"] = btn_green2;
+        primary_key_map["「柒」"] = btn_darkorange;
+        primary_key_map["「玖」"] = btn_darkorange;
+        primary_key_map["「拾」"] = btn_darkorange;
+        primary_key_map["「十贰」"] = btn_orange;
+        primary_key_map["「拾壹」"] = btn_orange;
+        primary_key_map["「十叁」"] = btn_purple;
+
+        // 品质标签 (「天-」「地-」等)
+        primary_key_map["「地-"] = btn_di;
+        primary_key_map["「天-"] = btn_tian;
+        primary_key_map["「黄-"] = btn_huang;
+        primary_key_map["「玄-"] = btn_xuan;
+
+        // 强化等级
+        primary_key_map["【优良】"] = btn_primary;
+        primary_key_map["【精制】"] = btn_darkorange;
+        primary_key_map["【神炼】"] = btn_purple;
+        primary_key_map["【天降】"] = btn_green2;
+        primary_key_map["【幻化】"] = btn_orange;
+        primary_key_map["【空觉】"] = btn_di;
+        primary_key_map["【破空】"] = btn_tian;
+        primary_key_map["【寂灭】"] = btn_huang;
+
+        // 玉石类型
+        primary_key_map["【玉】碎玉"] = btn_primary;
+        primary_key_map["【玉】仙缘玉"] = btn_darkorange;
+        primary_key_map["【玉】玲珑玉"] = btn_purple;
+        primary_key_map["【玉】碧玺玉"] = btn_green2;
+        primary_key_map["【玉】玄天宝玉"] = btn_xuan;
+        primary_key_map["神秘商店"] = btn_darkorange;
+
+        // VIP 等级颜色 (从 TOPTEN 获取)
+        object topten = find_object(ROOT + "/gamelib/single/daemons/topten");
+        if(topten && functionp(topten->get_grade_mapping)) {
+            mapping(string:int) grade_mapping = topten->get_grade_mapping();
+            foreach(grade_mapping; string index; int n) {
+                if(n == 1) {
+                    primary_key_map[index] = btn_green2;
+                } else if(n == 2) {
+                    primary_key_map[index] = btn_darkorange;
+                } else if(n == 3) {
+                    primary_key_map[index] = btn_orange;
+                } else if(n == 4) {
+                    primary_key_map[index] = btn_purple;
+                }
+            }
+        }
+
+        // 检查匹配
+        array(string) index_array = indices(primary_key_map);
+        foreach(index_array, string index) {
+            if(search(link_name, index) != -1) {
+                return primary_key_map[index];
+            }
+        }
+    };
+
+    if(err) {
+        http_werror("[get_button_css_class] error: %s\n", describe_error(err));
+    }
+
+    return btn_info;
+}
+
+/**
  * 格式化文本（处理颜色代码）
  */
 string format_text(string text)
@@ -432,19 +587,8 @@ string format_text(string text)
  */
 string format_html_button(string label, string cmd, string txd, string userid)
 {
-    string css_class = "btn btn-outline-info btn-sm";
-
-    if(search(label, "东→") != -1 || search(label, "西←") != -1 ||
-       search(label, "南↓") != -1 || search(label, "北↑") != -1) {
-        css_class = "btn btn-outline-success btn-sm";
-    }
-    else if(search(label, "杀戮") != -1 || search(label, "商城") != -1 ||
-            search(label, "锻造") != -1) {
-        css_class = "btn btn-outline-warning btn-sm";
-    }
-    else if(search(label, "吃药") != -1) {
-        css_class = "btn btn-outline-purple btn-sm";
-    }
+    // 使用 get_button_css_class 获取按钮颜色
+    string css_class = get_button_css_class(label);
 
     string hidden_cmd = hide_command(userid, cmd);
     string label_formatted = format_text(label);

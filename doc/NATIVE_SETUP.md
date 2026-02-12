@@ -2,6 +2,13 @@
 
 This guide shows you how to run the Xiandao game server directly with Pike 9 on a Linux server, without using Docker.
 
+## Official Pike Resources
+
+- **Official Website**: https://pike.lysator.liu.se/
+- **Download Page**: https://pike.lysator.liu.se/download/
+- **GitHub**: https://github.com/pikelang/Pike
+- **Documentation**: https://pike.lysator.liu.se/docs/
+
 ## Prerequisites
 
 ### System Requirements
@@ -15,36 +22,111 @@ This guide shows you how to run the Xiandao game server directly with Pike 9 on 
 
 #### 1. Install Pike 9
 
+**Pike Download Links:**
+
+| Version | Type | URL |
+|--------|------|-----|
+| Pike 9.0.11 (Recommended) | Stable Beta | https://pike.lysator.liu.se/pub/pike/beta/9.0.11/Pike-v9.0.11.tar.gz |
+| Pike 9.0.0 | Beta | https://pike.lysator.liu.se/pub/pike/9.0.0/pike-9.0.0.tar.gz |
+| Pike 8.0.1738 | Latest Stable | https://pike.lysator.liu.se/pub/pike/latest-stable/pike-8.0.1738.tar.gz |
+
 **For CentOS/Rocky Linux:**
 ```bash
 # Install dependencies
-yum install -y gcc make zlib-devel pcre-devel openssl-devel
+yum install -y gcc make gcc-c++ autoconf bison flex \
+    gmp-devel nettle-devel \
+    mariadb-devel mariadb-connector-c-devel \
+    libpng-devel libjpeg-devel \
+    sqlite-devel zlib-devel git
 
-# Download and build Pike 9
-wget https://pike.lysator.liu.se/pub/pike/latest-stable/pike-8.0.tar.gz
-tar xzf pike-8.0.tar.gz
-cd pike-8.0
+# Download Pike 9.0.11 (same version used in Docker)
+cd /tmp
+wget https://pike.lysator.liu.se/pub/pike/beta/9.0.11/Pike-v9.0.11.tar.gz
+tar xzf Pike-v9.0.11.tar.gz
+mv Pike-v9.0.11 pike9
 
-# Configure with MySQL support
-./configure --with-mysql
+# Compile nettle (required for SM3 support)
+cd /tmp
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz
+tar xzf nettle-3.10.1.tar.gz
+cd nettle-3.10.1
+./configure --prefix=/usr --libdir=/usr/lib64 --enable-shared
+make -j4
+make install
+ldconfig
 
-make && make install
-pike -v  # Verify installation
+# Build Pike 9 with MySQL support
+cd /tmp/pike9
+mkdir -p build
+cd build
+../src/configure --prefix=/usr/local/pike9 \
+    --with-mysql \
+    --with-gmp \
+    --with-nettle \
+    --with-sqlite \
+    --without-java \
+    --without-gtk2 \
+    --without-gl \
+    --without-glut
+
+make -j4
+make install
+
+# Add to PATH
+echo 'export PATH="/usr/local/pike9/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify installation
+pike -v
 ```
 
 **For Ubuntu/Debian:**
 ```bash
 # Install dependencies
 apt-get update
-apt-get install -y gcc make zlib1g-dev libpcre3-dev libssl-dev libmysqlclient-dev
+apt-get install -y gcc make g++ autoconf bison flex \
+    libgmp-dev libnettle-dev \
+    libmariadb-dev libmariadbclient-dev \
+    libpng-dev libjpeg-dev \
+    libsqlite3-dev zlib1g-dev git
 
-# Download and build Pike 9
-wget https://pike.lysator.liu.se/pub/pike/latest-stable/pike-8.0.tar.gz
-tar xzf pike-8.0.tar.gz
-cd pike-8.0
+# Download Pike 9.0.11
+cd /tmp
+wget https://pike.lysator.liu.se/pub/pike/beta/9.0.11/Pike-v9.0.11.tar.gz
+tar xzf Pike-v9.0.11.tar.gz
+mv Pike-v9.0.11 pike9
 
-./configure --with-mysql
-make && make install
+# Compile nettle
+cd /tmp
+wget https://ftp.gnu.org/gnu/nettle/nettle-3.10.1.tar.gz
+tar xzf nettle-3.10.1.tar.gz
+cd nettle-3.10.1
+./configure --prefix=/usr --enable-shared
+make -j4
+make install
+ldconfig
+
+# Build Pike 9
+cd /tmp/pike9
+mkdir -p build
+cd build
+../src/configure --prefix=/usr/local/pike9 \
+    --with-mysql \
+    --with-gmp \
+    --with-nettle \
+    --with-sqlite \
+    --without-java \
+    --without-gtk2 \
+    --without-gl
+
+make -j4
+make install
+
+# Add to PATH
+echo 'export PATH="/usr/local/pike9/bin:$PATH"' >> ~/.bashrc
+source ~/.bashrc
+
+# Verify installation
 pike -v
 ```
 

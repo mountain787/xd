@@ -48,3 +48,9 @@ With the release of Pike 9.0, we plan to adapt and enhance this codebase to fit 
 > 我曾为它倾尽热爱，如今，它属于所有人。
 
 如果要了解如何架设这个游戏后端服务器，请翻阅README.txt
+
+---
+
+## Quick Start / 快速开始
+
+**Get the server running in 5 minutes with Docker:** [Quick Start Guide](./doc/QUICKSTART.md) | [5分钟Docker快速启动](./doc/QUICKSTART.md)

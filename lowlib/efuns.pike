@@ -1090,11 +1090,8 @@ object find_player(string name)
 	object ob = living_names[name];
 	if(ob) return ob;
 
-	// 尝试从 HTTP API 虚拟连接池中查找（使用缓存）
-	static object|zero http_api_daemon = 0;
-	if(!http_api_daemon) {
-		http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
-	}
+	// 尝试从 HTTP API 虚拟连接池中查找
+	object|zero http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
 	if(http_api_daemon && functionp(http_api_daemon->get_player_from_connection)) {
 		ob = http_api_daemon->get_player_from_connection(name);
 	}

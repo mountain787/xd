@@ -21,9 +21,6 @@
 #define IDLE_TIMEOUT 3600        // 普通用户60分钟踢人
 #define IDLE_TIMEOUT_VIP 7200    // VIP用户120分钟踢人
 
-// HTTP API daemon 对象引用
-object http_api_daemon;
-
 protected void create()
 {
 	// 延迟获取 HTTP API daemon，确保它已加载
@@ -32,7 +29,6 @@ protected void create()
 
 void start_idle_check()
 {
-	http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
 	call_out(check_idle_users, CHECK_INTERVAL);
 }
 
@@ -47,9 +43,9 @@ void check_idle_users()
 
 		catch {
 			// 跳过 HTTP API 虚拟连接用户（由 http_api_daemon 处理）
-			if(http_api_daemon && functionp(http_api_daemon->has_virtual_connection)) {
+			if(HTTP_APID && functionp(HTTP_APID->has_virtual_connection)) {
 				string userid = user->query_name();
-				if(http_api_daemon->has_virtual_connection(userid)) {
+				if(HTTP_APID->has_virtual_connection(userid)) {
 					continue;  // 跳过虚拟连接用户
 				}
 			}

@@ -6,6 +6,20 @@
 #define MSG_HISTORY_MAX 1024
 #define NAME 0
 #define NAME_CN 1
+
+// 辅助函数：查找用户（包括 HTTP API 虚拟连接）
+object find_user(string name)
+{
+	object ob = find_player(name);
+	if(ob) return ob;
+
+	// 尝试从 HTTP API 虚拟连接池中查找
+	if(HTTP_APID && functionp(HTTP_APID->get_player_from_connection)) {
+		ob = HTTP_APID->get_player_from_connection(name);
+	}
+	return ob;
+}
+
 int main(string|zero arg)
 {
 	string extra,s,name=arg;
@@ -14,7 +28,7 @@ int main(string|zero arg)
 	sscanf(arg,"%s %d",name,count);
 	object ob=present(name,environment(me),count);
 	if(!ob)
-		ob=find_player(name);
+		ob=find_user(name);
 	mapping now_time = localtime(time());
 	int month = now_time["mon"]+1;
 	int day = now_time["mday"];

@@ -120,5 +120,7 @@
 #define MAPD ((object)(ROOT "/gamelib/single/daemons/mapd"))
 //空闲踢人守护模块
 #define IDLE_KICKD ((object)(ROOT "/gamelib/single/daemons/idle_kickd"))
+//HTTP API 守护模块
+#define HTTP_APID ((object)(ROOT "/gamelib/single/daemons/http_api_daemon"))
 
 #endif // _GAMELIB_H_

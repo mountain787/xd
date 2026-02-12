@@ -1641,24 +1641,7 @@ string process_color_codes(string text)
     return result;
 }
 
-/**
- * 根据按钮标签获取CSS类名
- */
-string get_button_css_class(string label)
-{
-    if(search(label, "东→") != -1 || search(label, "西←") != -1 ||
-       search(label, "南↓") != -1 || search(label, "北↑") != -1) {
-        return "btn btn-outline-success btn-sm";
-    }
-    else if(search(label, "杀戮") != -1 || search(label, "商城") != -1 ||
-            search(label, "锻造") != -1) {
-        return "btn btn-outline-warning btn-sm";
-    }
-    else if(search(label, "吃药") != -1) {
-        return "btn btn-outline-purple btn-sm";
-    }
-    return "btn btn-outline-info btn-sm";
-}
+// get_button_css_class 已移至 html_renderer.pike 模块
 
 void handle_api_partitions(Protocols.HTTP.Server.Request req)
 {

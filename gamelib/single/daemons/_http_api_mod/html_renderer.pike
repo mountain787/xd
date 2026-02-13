@@ -234,7 +234,7 @@ string parse_mud_content_to_html(string response, string txd, string userid)
         // 检查内容是否以指定字符串开头
         int has_prefix(string str, string prefix) {
             if(!str || !prefix) return 0;
-            return sscanf(str, "%" + prefix + "%s", "");
+            return search(str, prefix) == 0;
         }
 
         while(current < sizeof(line)) {

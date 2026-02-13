@@ -536,6 +536,10 @@ main() {
         docker cp "${PROJECT_ROOT}/web/web_vue/index.html" "${CONTAINER_NAME}:/usr/local/tomcat/webapps/ROOT/web_vue/index.html" 2>/dev/null || true
         print_success "前端文件已复制到容器"
 
+        # 创建 /tmp 目录和必要的日志文件
+        docker exec "${CONTAINER_NAME}" mkdir -p /tmp 2>/dev/null || true
+        docker exec "${CONTAINER_NAME}" touch /tmp/xiand_login_debug.log 2>/dev/null || true
+
         # 使用sed替换分区列表
         # 替换 getDefaultPartitions 函数返回的分区列表
         docker exec "${CONTAINER_NAME}" \

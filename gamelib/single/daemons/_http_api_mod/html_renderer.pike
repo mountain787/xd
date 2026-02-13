@@ -231,6 +231,12 @@ string parse_mud_content_to_html(string response, string txd, string userid)
         array parts = ({});
         int current = 0;
 
+        // 检查内容是否以指定字符串开头
+        int has_prefix(string str, string prefix) {
+            if(!str || !prefix) return 0;
+            return sscanf(str, "%" + prefix + "%s", "");
+        }
+
         while(current < sizeof(line)) {
             int start = search(line, "[", current);
             if(start == -1) {
@@ -269,6 +275,12 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                     else if(sscanf(content, "%s %s:...", type, var_name) == 2) {
                         int is_passwd = (type == "passwd" || type == "password");
                         html += format_html_input(var_name, "", "", txd, userid, is_passwd);
+                    }
+                    // 特殊处理：[submit 确定:...] - 检测是否是确认按钮
+                    if(has_prefix(content, "submit 确定")) {
+                        string label;
+                        sscanf(content, "submit 确定 %s", label);
+                        html += format_html_button(label, "bc_confirm " + label, txd, userid);
                     }
                     else if(search(content, ":") > 0 && content[-4..] == ":...") {
                         int colon_pos = search(content, ":");

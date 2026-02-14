@@ -319,15 +319,14 @@ int eat_danyao(object player,object yao)
 	}
 	//特殊药品食用，由liaocheng于07/11/21添加
 	else if(kind == "te_exp" || kind == "te_honer" || kind == "te_luck" || kind == "te_attack" || kind == "te_vice" || kind == "te_defend" || kind == "te_base"){
-		string path = file_name(yao);  
-		array(string) dir = path/"/";
-		//werror("========dir[8]="+dir[8]+"====\n");
+		// 当前无zhongqiuyuebing目录，所有特药都计入每日限制
+		int is_zhongqiuyuebing = 0;
 		if(timedelay==0){
 			//player->type += effect_value;
 			player->set_base_add(type,effect_value);
 			return 1;
 		}
-		if(dir[8]!="zhongqiuyuebing"){
+		if(!is_zhongqiuyuebing){
 			if(!player["/plus/daily/teyao_map"])
 				player["/plus/daily/teyao_map"] = ([]);                                 
 			if(!player["/plus/daily/teyao_map"][kind])                                      

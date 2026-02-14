@@ -1291,11 +1291,11 @@ array(mapping) parse_line_segments(string line, string txd, string userid)
 
         string bracket_content = line[start+1..end-1];
         mapping parsed = parse_bracket_content(bracket_content, txd, userid);
-        if(parsed) {
+        if(parsed && parsed["type"] != "skip") {
             segments += ({parsed});
-        } else {
-            segments += ({parse_text_segment(line[start..end])});
         }
+        // else: parsed是0或type是"skip"时，完全跳过不渲染
+        // 不要将submit按钮转换为文本显示
         current = end + 1;
     }
 
@@ -1394,7 +1394,26 @@ mapping parse_bracket_content(string content, string txd, string userid)
             "txd": txd
         ]);
     }
+    // submit按钮 [submit 确定:command ...] - HTTP API中跳过不渲染
+    // WAP系统用submit按钮提交前面的输入框，但HTTP API不需要
+    else if(search(content, "submit ") == 0) {
+        http_werror("[DEBUG] submit button skipped in JSON parser: content='%s'\n", content);
+        // 返回skip类型表示跳过此元素
+        return (["type": "skip"]);
+    }
     else if(sscanf(content, "%s %s:...", type, var_name) == 2) {
+        // 特殊处理word输入框：如果是"word"，返回cmd-input类型
+        // 因为bc_confirm.pike需要word参数，格式是"word=xxx"
+        if(var_name == "word") {
+            http_werror("[DEBUG] word input detected, using cmd-input type\n");
+            return ([
+                "type": "cmd-input",
+                "name": var_name,
+                "cmd": "bc_confirm",
+                "txd": txd,
+                "placeholder": "请输入您想说的话"
+            ]);
+        }
         return ([
             "type": "input",
             "name": var_name,

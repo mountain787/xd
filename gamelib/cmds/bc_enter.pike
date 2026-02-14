@@ -16,7 +16,7 @@ int main(string|zero arg)
 		me->write_view(WAP_VIEWD["/emote"],0,0,"传音符不可频繁使用，请您稍候再用。\n");
 		return 1;
 	}
-	string s = "请输入您想说的话：\n";
+	string s = "请输入您想说的话：";
 	s += "[string word:...]\n";
 	s += "[submit 确定:bc_confirm ...]\n";
 	s += "\n[返回:popview]\n";

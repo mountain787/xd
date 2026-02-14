@@ -17,9 +17,18 @@ int main(string|zero arg)
 		me->write_view(WAP_VIEWD["/emote"],0,0,"传音符不可频繁使用，请您稍候再用。\n");
 		return 1;
 	}
-	sscanf(arg,"word=%s",s);
-	//werror("------------what's wrong with s "+s+"-----------\n");
-	if(!s||s==""){
+	// 支持两种格式： "word=xxx" 或 直接文字（HTTP API cmd-input格式）
+	werror("bc_confirm: arg='" + (arg||"NULL") + "' len=" + sizeof(arg||"") + "\n");
+	if(!arg || arg==""){
+		s = "";
+	} else if(sscanf(arg,"word=%s",s) == 1) {
+		// WAP格式: word=xxx
+	} else {
+		// HTTP API cmd-input格式: 直接是文字
+		s = arg;
+	}
+	werror("bc_confirm: s='" + (s||"NULL") + "' len=" + sizeof(s||"") + "\n");
+	if(!s||sizeof(s)<1){
 		me->write_view(WAP_VIEWD["/emote"],0,0,"您什么话也没说，灵符不接受您的这种用法。\n");
 		return 1;
 	}

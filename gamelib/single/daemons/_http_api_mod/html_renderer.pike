@@ -231,6 +231,12 @@ string parse_mud_content_to_html(string response, string txd, string userid)
         array parts = ({});
         int current = 0;
 
+        // 检查内容是否以指定字符串开头
+        int has_prefix(string str, string prefix) {
+            if(!str || !prefix) return 0;
+            return search(str, prefix) == 0;
+        }
+
         while(current < sizeof(line)) {
             int start = search(line, "[", current);
             if(start == -1) {
@@ -265,6 +271,12 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                     if(sscanf(content, "%s %s:..*%s...*%s", type, var_name, default_val, width) == 4 ||
                        sscanf(content, "%s:..*%s...*%s", var_name, default_val, width) == 3) {
                         html += format_html_input(var_name, default_val, width, txd, userid, (type == "passwd"));
+                    }
+                    // submit按钮 [submit 确定:command ...] - HTTP API中跳过不渲染
+                    // WAP系统用submit按钮提交前面的输入框，但HTTP API中输入框自带Enter提交
+                    else if(has_prefix(content, "submit ")) {
+                        http_werror("[DEBUG] submit button skipped in HTML renderer: content='%s'\n", content);
+                        // 跳过不渲染任何内容
                     }
                     else if(sscanf(content, "%s %s:...", type, var_name) == 2) {
                         int is_passwd = (type == "passwd" || type == "password");

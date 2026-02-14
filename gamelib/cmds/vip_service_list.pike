@@ -9,7 +9,7 @@ int main(string|zero arg)
 {
 	object me = this_player();
 	string s = "***会员服务***\n\n";
-	s +="[浼氬憳浼樻儬鏀跨瓥:vip_service_show]\n\n";
+	s +="[会员优惠政策:vip_service_show]\n\n";
 	s += VIPD->get_vip_state_des(me);
 	s += "\n[返回:yushi_myzone.pike]\n";
 	s += "[返回游戏:look]\n";

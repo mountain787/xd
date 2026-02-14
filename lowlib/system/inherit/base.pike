@@ -56,7 +56,7 @@ string query_name_cn(void|int true_name){
 	if(name_cn)
 	{
 		if(toVip)//add by evan 2008.07.21
-			return name_cn +"(浼氬憳涓撶敤)";
+			return name_cn +"(会员专用)";
 		else
 			return name_cn;
 	}

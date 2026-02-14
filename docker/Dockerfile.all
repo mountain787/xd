@@ -183,9 +183,11 @@ MYSQL_USER="${MYSQL_USER:-root}"
 MYSQL_PASSWORD="${MYSQL_PASSWORD:-Happy888888}"
 
 # 创建必要目录
-mkdir -p /app/xiand/log /var/lib/mysql
+mkdir -p /app/xiand/log /var/lib/mysql /tmp
 chmod 777 /app/xiand/log /var/lib/mysql
 chmod -R 777 /app/xiand/data_xiand 2>/dev/null || true
+# 创建日志文件
+touch /tmp/xiand_login_debug.log /tmp/socat.log /tmp/socat_3306.log
 
 # 启动 socat 来将 Unix socket 转发到 TCP MySQL
 rm -f /tmp/.mysql_sock /var/lib/mysql/mysql.sock /run/mysqld/mysqld.sock 2>/dev/null || true

@@ -272,15 +272,15 @@ string parse_mud_content_to_html(string response, string txd, string userid)
                        sscanf(content, "%s:..*%s...*%s", var_name, default_val, width) == 3) {
                         html += format_html_input(var_name, default_val, width, txd, userid, (type == "passwd"));
                     }
+                    // submit按钮 [submit 确定:command ...] - HTTP API中跳过不渲染
+                    // WAP系统用submit按钮提交前面的输入框，但HTTP API中输入框自带Enter提交
+                    else if(has_prefix(content, "submit ")) {
+                        http_werror("[DEBUG] submit button skipped in HTML renderer: content='%s'\n", content);
+                        // 跳过不渲染任何内容
+                    }
                     else if(sscanf(content, "%s %s:...", type, var_name) == 2) {
                         int is_passwd = (type == "passwd" || type == "password");
                         html += format_html_input(var_name, "", "", txd, userid, is_passwd);
-                    }
-                    // 特殊处理：[submit 确定:...] - 检测是否是确认按钮
-                    if(has_prefix(content, "submit 确定")) {
-                        string label;
-                        sscanf(content, "submit 确定 %s", label);
-                        html += format_html_button(label, "bc_confirm " + label, txd, userid);
                     }
                     else if(search(content, ":") > 0 && content[-4..] == ":...") {
                         int colon_pos = search(content, ":");

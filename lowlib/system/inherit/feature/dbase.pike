@@ -6,9 +6,9 @@ string tmp;
 mixed `[](string key, void|mixed n)
 {
 	// Pike 9: Second parameter controls access mode
-	// n == "RAW" means bypass operator overload, access raw variable value directly
+	// n == 2 or n == "RAW" means bypass operator overload, access raw variable value directly
 	// This is used by pikenv_save_object() to prevent saving computed property values
-	if(stringp(n) && n == "RAW"){
+	if((intp(n) && n == 2) || (stringp(n) && n == "RAW")){
 		// Return raw variable value directly, without calling -> operator
 		return ::`[](key, 2);
 	}
@@ -40,11 +40,12 @@ mixed `[](string key, void|mixed n)
 
 mixed `[]=(string key, mixed val, void|mixed n)
 {
-	// Pike 9: 忽略第三个参数（对象本身）
-	// 修复：不再调用父类方法，因为父类不知道子类定义的变量
-	// if(intp(n) && n){
-	// 	return ::`[]=(key,val);
-	// }
+	// Pike 9: Third parameter controls access mode
+	// n == 2 or n == "RAW" means bypass operator overload, set raw variable directly
+	if((intp(n) && n == 2) || (stringp(n) && n == "RAW")){
+		// Set raw variable value directly, without calling ->= operator
+		return ::`[]=(key,val,2);
+	}
 	if(key&&sizeof(key)&&key[0]=='/'){
 		array a=key[1..]/"/";
 		if(!data)data=([]);

@@ -32,9 +32,10 @@ mixed `[](string key, void|mixed n)
 		}
 		return m[a[-1]];
 	}else{
-		// 直接返回变量值，不调用->操作符（避免触发query_xxx方法）
-		// 修复name_cn等变量被query方法修改后读取的问题
-		return ::`[](key,2);
+		// 非 RAW 模式：使用 -> 操作符（会调用 query_xxx 方法）
+		// 但需注意：name_cn 等变量会在 save/restore 时累积后缀
+		// 这是一个已知的设计限制，需要在使用 query_xxx() 时注意不要累积修改
+		return `->(this_object(),key);
 	}
 }
 
@@ -67,9 +68,8 @@ mixed `[]=(string key, mixed val, void|mixed n)
 
 	}
 	else{
-		// 直接设置变量，不调用->=操作符（避免触发setter方法）
-		// 修复name_cn等变量被setter方法修改后保存的问题
-		return ::`[]=(key,val,2);
+		// 非 RAW 模式：使用 ->= 操作符（保持向后兼容）
+		return `->=(this_object(),key,val);
 	}
 }
 

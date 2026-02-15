@@ -56,13 +56,7 @@ string query_name_cn(void|int true_name){
 	if(name_cn)
 	{
 		if(toVip)//add by evan 2008.07.21
-		{
-			// 避免重复追加(会员专用)后缀
-			if(search(name_cn, "(会员专用)") >= 0)
-				return name_cn;
-			else
-				return name_cn + "(会员专用)";
-		}
+			return name_cn +"(会员专用)";
 		else
 			return name_cn;
 	}

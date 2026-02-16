@@ -173,7 +173,7 @@ int read_mon_log()
 int write_mon_log()
 {
 	string str,s_mon,u_name,log_file;
-	int i,mon,year,t_size;
+	int mon,year,t_size;
 	array arr;
 	mapping now_time = localtime(time());
 	mon = now_time["mon"]+1;

@@ -49,8 +49,6 @@ string centerLine = "\n";
 all_lines = all_data/"\r\n";
 mapping configs = ([]);
 
-string tempString;
-array tempArray;
 int tempInt = 0;
 for(int i=1;i<sizeof(all_lines);i++){
 	string writeFile="";

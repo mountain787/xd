@@ -3,7 +3,7 @@
 int main(string arg)
 {
 	string s="";
-	object ob,me = this_player();
+	object me = this_player();
 		me->write_view(WAP_VIEWD["/inventory"],arg);
 		return 1;
 }

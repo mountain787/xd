@@ -212,7 +212,6 @@ int query_out_amount(string to_game)
 //向游戏区兑换调用的接口，完成将兑换信息写入数据库的操作
 int exchange_to(object from_player,string to_game,string to_user,int ante_fee)
 {
-	int i_rtn;
 	string from_user = from_player->query_name();
 	string from_usercn = from_player->query_name_cn();
 	string from_time = MUD_TIMESD->get_mysql_timedesc();

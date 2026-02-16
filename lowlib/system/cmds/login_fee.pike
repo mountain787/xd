@@ -2,7 +2,7 @@
 #include <command.h>
 int main(string arg)
 {
-	string path,user_name,args;
+	string path,user_name;
 	if(arg&&sscanf(arg,"%s %s",path,user_name)==2)
 	{
 		program u;

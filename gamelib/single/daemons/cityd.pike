@@ -247,7 +247,7 @@ void flush_city(string city_name)
 
 int city_update(string file)
 {
-	object obj,env,usr;
+	object env,usr;
 	array oblist;
 	object ob;
 	mixed err1 = catch{

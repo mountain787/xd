@@ -6,9 +6,9 @@ string tmp;
 mixed `[](string key, void|mixed n)
 {
 	// Pike 9: Second parameter controls access mode
-	// n == 2 or n == "RAW" means bypass operator overload, access raw variable value directly
+	// n == "RAW" means bypass operator overload, access raw variable value directly
 	// This is used by pikenv_save_object() to prevent saving computed property values
-	if((intp(n) && n == 2) || (stringp(n) && n == "RAW")){
+	if(stringp(n) && n == "RAW"){
 		// Return raw variable value directly, without calling -> operator
 		return ::`[](key, 2);
 	}
@@ -42,8 +42,8 @@ mixed `[](string key, void|mixed n)
 mixed `[]=(string key, mixed val, void|mixed n)
 {
 	// Pike 9: Third parameter controls access mode
-	// n == 2 or n == "RAW" means bypass operator overload, set raw variable directly
-	if((intp(n) && n == 2) || (stringp(n) && n == "RAW")){
+	// n == "RAW" means bypass operator overload, set raw variable directly
+	if(stringp(n) && n == "RAW"){
 		// Set raw variable value directly, without calling ->= operator
 		return ::`[]=(key,val,2);
 	}

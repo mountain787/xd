@@ -436,8 +436,10 @@ string pikenv_save_object(object ob,void|int save_zero)
 	for(int i=0;i<sizeof(a);i++){
 		if(object_variablep(this,a[i])){
 			if(this->`[]){
-				if(this->`[](a[i],2)!=0||save_zero)
-					out+=(a[i]+" "+pikenv_encode_value(this->`[](a[i],2))+"\n");
+				// Pike 9: Use "RAW" parameter to bypass query_ functions
+				// This prevents saving computed values instead of base values
+				if(this->`[](a[i],"RAW")!=0||save_zero)
+					out+=(a[i]+" "+pikenv_encode_value(this->`[](a[i],"RAW"))+"\n");
 			}
 			else{
 				if(this[a[i]]!=0||save_zero)
@@ -470,8 +472,9 @@ string pikenv_save_object_without_inbox(object ob,void|int save_zero)
 	for(int i=0;i<sizeof(a);i++){
 		if(object_variablep(this,a[i])){
 			if(this->`[]){
-				if(this->`[](a[i],2)!=0||save_zero)
-					out+=(a[i]+" "+pikenv_encode_value(this->`[](a[i],2))+"\n");
+				// Pike 9: Use "RAW" parameter to bypass query_ functions
+				if(this->`[](a[i],"RAW")!=0||save_zero)
+					out+=(a[i]+" "+pikenv_encode_value(this->`[](a[i],"RAW"))+"\n");
 			}
 			else{
 				if(this[a[i]]!=0||save_zero)

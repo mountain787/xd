@@ -22,10 +22,10 @@ inherit LOW_DAEMON;
  这样的动态信息，可以用(string)environment(player)->query_name_cn()动态得到
 ([队伍临时id:([队员id:({队员中文名字,队员权限,队员职业,队员等级,})]),])
  **********************************************************************/
-private static mapping(string:mapping(string:array)) termMain=([]);
+private mapping(string:mapping(string:array)) termMain=([]);
 
 //队伍人员聊天信息mapping对象
-private static mapping(string:array(string)) termChat=([]);
+private mapping(string:array(string)) termChat=([]);
 
 //队伍物品仓库，在boss掉落物品后放入其中，队友可以查看，但只有队长才能分配
 //([队伍id:（{物品一，物品二}）])

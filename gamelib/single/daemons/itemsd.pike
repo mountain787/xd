@@ -89,17 +89,17 @@ inherit LOW_DAEMON;
 #define FILE_PATH ROOT "/gamelib/data/" //世界掉落列表
 
 //由liaocheng于07/2/7添加，用于记录特殊物品的映射表
-private static mapping(int:array(string)) spec_item_list = ([]);
+private mapping(int:array(string)) spec_item_list = ([]);
 ///////////////07/2/7
 
 //记录所有白色装备的映射表
-private static mapping(int:array(string)) item_list = ([]);
+private mapping(int:array(string)) item_list = ([]);
 
 //记录白色装备允许出现属性的映射表
-private static mapping(string:array(string)) item_attributes = ([]);
+private mapping(string:array(string)) item_attributes = ([]);
 
 //用于生成物品文件后缀的映射表,现在暂时未用上
-private static mapping(string:int) postfix_map = ([
+private mapping(string:int) postfix_map = ([
 		"str_add"                    :0,
 		"dex_add"                    :1,
 		"think_add"                  :2,
@@ -138,7 +138,7 @@ private static mapping(string:int) postfix_map = ([
 ]);
 
 //字母-数值映射表, 采用ascii码
-private static mapping(int:int) char_value = ([
+private mapping(int:int) char_value = ([
 		1		:49,
 		2		:50,
 		3		:51,
@@ -210,7 +210,7 @@ private array(string) spec_arr = ({});
 
 
 //世界掉落物品列表 evan added 2008.06.18
-private static mapping(string:string) worlddrop_item_list = ([]);
+private mapping(string:string) worlddrop_item_list = ([]);
 
 //加载task_world_drop.csv，写入worlddrop_item_list映射表中
 private int ReadFile_worlddrop_item_list(string filename)

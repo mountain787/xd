@@ -89,7 +89,9 @@
 //用于刷野外boss的守护模块
 #define YWBOSS_FLUSHD ((object)(ROOT "/gamelib/single/daemons/yewaiboss_flushd"))
 //物品克隆路径
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/"
+#endif
 //购买物品模块
 #define BUYD ((object)(ROOT "/gamelib/single/daemons/buyd.pike"))
 //广播系统

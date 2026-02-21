@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【诅】裂甲剑风";
 	desc="破坏对方防御力，同时造成极大的仇恨，技能冷却时间10秒，持续时间30秒，";

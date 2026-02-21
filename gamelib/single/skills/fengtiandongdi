@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【诅】封天冻地";
 	desc="以冰雪覆盖大地，让敌人的动作变得更为迟缓，技能冷却时间30秒，持续时间30秒，";

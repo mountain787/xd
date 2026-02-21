@@ -17,7 +17,7 @@ class item
 }
 
 
-private static mapping(string:item) exchange_item_list = ([]);
+private protected mapping(string:item) exchange_item_list = ([]);
 
 protected void create(){
 	load_list();

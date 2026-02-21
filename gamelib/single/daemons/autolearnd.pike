@@ -32,8 +32,8 @@
 
 object LOG;
 
-private static mapping (string:mapping(string:mixed)) autoLearnPlayer =([]);         //所有消潜玩家的信息列表
-private static mapping (string:int) autoLearnInfo =(["dazuo":12,"xiuchan":72]);      //不同挂机方式价格等级列表（小时/碎玉）
+private protected mapping (string:mapping(string:mixed)) autoLearnPlayer =([]);         //所有消潜玩家的信息列表
+private protected mapping (string:int) autoLearnInfo =(["dazuo":12,"xiuchan":72]);      //不同挂机方式价格等级列表（小时/碎玉）
 
 
 protected void create()

@@ -8,7 +8,7 @@ mapping(int:int) performs_cast=([]);
 array(string) skill_type=({});
 mapping(int:array(int)) performs_mofa_attack=([]);
 mapping(int:string) performs_desc=([]);
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【仙】心魂转化(2级)";
 	picture=name;

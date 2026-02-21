@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【仙】破魔心法";
 	desc="刚烈的仙法，可以增加修炼者的意志，提高对敌人的爆击等级";

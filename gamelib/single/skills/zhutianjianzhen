@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【仙】诛天剑阵";
 	desc="召唤三千灵剑组成的巨大剑阵，对敌人造成致命打击，技能冷却时间3秒，";

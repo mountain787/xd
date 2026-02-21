@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【诅】能量禁锢";
 	desc="使用黑暗之力束缚敌人，降低对方所有属性，技能冷却时间为30秒，持续时间30秒，";

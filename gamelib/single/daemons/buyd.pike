@@ -29,10 +29,10 @@ class buy_item
 }
 
 
-private static mapping(string:buy_item) buy_item_list = ([]);
-private static mapping(string:buy_item) high_level_book = ([]);
-private static mapping(string:array) book_on = ([]);
-private static mapping(string:array(array(int))) package = ([]);
+private protected mapping(string:buy_item) buy_item_list = ([]);
+private protected mapping(string:buy_item) high_level_book = ([]);
+private protected mapping(string:array) book_on = ([]);
+private protected mapping(string:array(array(int))) package = ([]);
 
 protected void create(){
 	load_list();

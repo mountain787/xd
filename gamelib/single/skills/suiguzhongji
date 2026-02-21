@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【斩】碎骨重击";
 	desc="攻击敌人的要害，造成巨大伤害，技能冷却时间为3秒，";

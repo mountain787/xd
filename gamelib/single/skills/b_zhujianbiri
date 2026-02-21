@@ -6,7 +6,7 @@ int performs_attack;
 int performs_per;
 array(string) skill_type=({});
 array(int) performs_mofa_attack=({});
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	boss_skill = 1;
 	name_cn="【竹剑蔽日】";

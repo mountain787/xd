@@ -16,21 +16,21 @@ inherit LOW_DAEMON;
 //格式为:([bangid:({bangname,1级称谓,2级称谓,3级称谓,4级称谓,5级称谓,6级称谓,帮派通告,帮派简介})])
 //                      [0]    [1]     [2]     [3]     [4]     [5]     [6]      [7]    [8] 
 //缺省为:                   小黑屋     会员   精英    官员     副帮主  帮主    
-private static mapping(int:array(string)) bang_list = ([]);
+private protected mapping(int:array(string)) bang_list = ([]);
 
 //帮派人员表，系统启动时从/usr/local/games/usrdata5/bangpai/bang_members中读入数据，以建立帮派人员表bang_members
 //格式为：([bangid:([成员名称:成员等级,...]),])
-private static mapping(int:mapping(string:int)) bang_members = ([]);
+private protected mapping(int:mapping(string:int)) bang_members = ([]);
 //从/usr/local/games/usrdata5/bangpai/name_namecn 中读入数据，以建立帮派人员id与人员名称的映射表
-private static mapping(int:mapping(string:string)) name_namecn = ([]);
+private protected mapping(int:mapping(string:string)) name_namecn = ([]);
 
-private static mapping(int:array(string)) bang_chat = ([]);
+private protected mapping(int:array(string)) bang_chat = ([]);
 
 //记录申请加入帮派的信息
-private static mapping(int:array(string)) bang_apply = ([]);
+private protected mapping(int:array(string)) bang_apply = ([]);
 
 //记录已建立的帮派名称，以免重名
-private static mapping(string:int) bang_exist = ([]);
+private protected mapping(string:int) bang_exist = ([]);
 
 //系统启动时从/usr/local/games/usrdata5/bangpai/bang_size中读入数据，
 //格式为：monster_size

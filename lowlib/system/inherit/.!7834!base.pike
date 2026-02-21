@@ -1,4 +1,4 @@
-// set to 'private static' so that inheritor won't be able to directly
+// set to 'private protected' so that inheritor won't be able to directly
 // access this variable and so that save_object() won't save it to the .o file
 #include <globals.h>
 inherit LOW_F_ACCESS;

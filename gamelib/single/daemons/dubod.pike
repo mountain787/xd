@@ -19,12 +19,12 @@ inherit LOW_DAEMON;
 #define FLUSH_NUM 3
 #define MAX_LEV 55 //最高的装备等级
 
-private static array(array(mixed)) items1_10 = ({});
-private static array(array(mixed)) items11_20 = ({});
-private static array(array(mixed)) items21_30 = ({});
-private static array(array(mixed)) items31_40 = ({});
-private static array(array(mixed)) items41_50 = ({});
-private static array(array(mixed)) items51_60 = ({});
+private protected array(array(mixed)) items1_10 = ({});
+private protected array(array(mixed)) items11_20 = ({});
+private protected array(array(mixed)) items21_30 = ({});
+private protected array(array(mixed)) items31_40 = ({});
+private protected array(array(mixed)) items41_50 = ({});
+private protected array(array(mixed)) items51_60 = ({});
 int half_price = 0;//标识半价的物品范围
 
 

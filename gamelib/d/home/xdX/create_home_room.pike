@@ -13,7 +13,7 @@ int main(int argc, array(string) argv){
 //头部信息
 templates["include"]="#include <globals.h>\n#include <gamelib/include/gamelib.h>\n";
 
-templates["head"]="void create(){\n\tname=object_name(this_object());\n";
+templates["head"]="protected void create(){\n\tname=object_name(this_object());\n";
 
 templates["地点名"]="\tname_cn=\"$1\";\n";
 

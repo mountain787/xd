@@ -6,7 +6,7 @@ mapping(string:string) templates =([]);
 //头部信息
 templates["include"]="#include <gamelib/include/gamelib.h>\n";
 //基本属性
-templates["head"]="inherit GAMELIB_NPC;\nvoid create(){\n\tname=object_name(this_object());\n";
+templates["head"]="inherit GAMELIB_NPC;\nprotected void create(){\n\tname=object_name(this_object());\n";
 templates["名称"]="\tname_cn=\"$1\";\n";
 templates["描述"]="\tdesc=\"$1\\n\";\n";
 templates["阵营"]="\tset_raceId(\"$1\");\n";

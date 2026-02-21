@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【诅】法术禁锢";
 	desc="诅咒敌人，降低对方的法术抵抗能力，技能冷却时间为30秒，持续时间30秒，";

@@ -9,7 +9,7 @@ array(string) skill_type=({});
 mapping(int:array(int)) performs_mofa_attack=([]);
 mapping(int:string) performs_desc=([]);
 mapping(int:int) performs_level_limit=([]);//技能等级限制,之所以重新定义，因为这个技能有时候无法找到这个方法，所以重新定义一个，并设置一个query的方法
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【妖】金蝉魅影";
 	picture=name;

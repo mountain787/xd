@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SKILL;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="【杀】伏击";
 	desc="袭击敌人，直接攻击对方造成伤害，技能冷却时间为3秒，";

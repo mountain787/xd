@@ -29,7 +29,7 @@ int main(int argc, array(string) argv){
 		tempArray = all_lines[i]/",";
 		
 		writeFile += "#include <globals.h>\n#include <gamelib/include/gamelib.h>\ninherit GAMELIB_ROOM;\nstring room_race=\"third\";\n";//头文件信息
-		writeFile += "void create(){\n\tobject room = this_object();\n\tname=object_name(this_object());\n";//物品create()方法头部
+		writeFile += "protected void create(){\n\tobject room = this_object();\n\tname=object_name(this_object());\n";//物品create()方法头部
 		//物品中文名称/////////////////////////
 		writeFile += "\tname_cn=" + "\"" +tempArray[1]+"\";\n";
 		writeFile += "\tdesc=" + "\""+tempArray[2]+"\\n\";\n";

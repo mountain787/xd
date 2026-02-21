@@ -9,7 +9,7 @@ int main(int argc, array(string) argv){
 //头部信息
 templates["include"]="#include <globals.h>\n#include <gamelib/include/gamelib.h>\n";
 
-templates["head"]="inherit WAP_ROOM;\nint clear = 0;\nvoid create(){\n\tname=object_name(this_object());\n\tset_room_type(\"fb\");\n";
+templates["head"]="inherit WAP_ROOM;\nint clear = 0;\nprotected void create(){\n\tname=object_name(this_object());\n\tset_room_type(\"fb\");\n";
 
 templates["地点名"]="\tname_cn=\"$1\";\n";
 

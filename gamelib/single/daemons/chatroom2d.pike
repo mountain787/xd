@@ -21,11 +21,11 @@ inherit LOW_DAEMON;
 根据配置文件的内容来形成对外给用户观察调用的接口，配置文件
 可以动态添加，然后调用外部指令来呼叫内部更新接口来update现存聊天频道
 (配置文件:ROOT/gamelib/data/chat/chatindex)
-private static mapping(string:array) chatIndex = ([]);
+private protected mapping(string:array) chatIndex = ([]);
 ([聊天频道id:({聊天频道名字,主题(可以在作活动时候临时添加注明),房间类型(系统或者自建),其他(创建时间等等)})]);
 m**********************************************************************/
 #define CHATROOM_LIMITTIME 7200 //玩家自创房间的存在时间限制,默认两个小时
-private static mapping(string:array) chatIndex=([]);
+private protected mapping(string:array) chatIndex=([]);
 
 /**********************************************************************
 聊天频道对应内容内存：
@@ -36,7 +36,7 @@ mapping(string:array(string)) chatCont = ([]);
 注意：每一页的聊天信息保留20条，最多60条聊天记录，分页为3页
 ***********************************************************************/
 #define CHATLINE_MAX 60
-private static mapping(string:array(string)) chatCont=([]);
+private protected mapping(string:array(string)) chatCont=([]);
 
 /**********************************************************************
 聊天频道管理功能：

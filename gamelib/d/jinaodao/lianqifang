@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit WAP_ROOM;
 string room_race="monst";
-static int room_level=67;
+protected int room_level=67;
 static int dubo_level_low = 11;//赌博房间级别为1
 static int dubo_level_high = 20;//赌博房间级别为1
 void create(){

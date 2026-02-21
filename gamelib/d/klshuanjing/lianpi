@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit WAP_ROOM;
 string room_race="third";
-static int room_level=10000;
+protected int room_level=10000;
 array(string) flush_monst = ({"klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu",});
 array(string) flush_human = ({"klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing",});
 void create(){

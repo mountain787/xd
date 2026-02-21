@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit WAP_ROOM;
 string room_race="human";
-static int room_level=90;
+protected int room_level=90;
 int store_level_low = 11;
 int store_level_high = 20;
 void create(){

@@ -27,7 +27,7 @@ templates["仙族刷npc"]="array(string) flush_human = ({$1});\n";
 templates["普通npc"]="\tadd_items(({ROOT \"/gamelib/clone/npc/$1\"}));\n";
 
 templates["房间阵营"]="string room_race=\"$1\";\n";
-templates["房间等级"]="static int room_level=$1;\n";
+templates["房间等级"]="protected int room_level=$1;\n";
 
 templates["foot"]="}\n";
 

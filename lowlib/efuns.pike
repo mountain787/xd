@@ -149,6 +149,21 @@ object load_object(string|object file)
 		return ob;
 	}
 	else{
+		// 详细的编译错误日志
+		string file_path = stringp(file) ? file : sprintf("%O", file);
+		werror("\n========== LOAD_OBJECT ERROR ==========\n");
+		werror("File: %s\n", file_path);
+		werror("Error: %s\n", describe_error(err));
+		werror("Backtrace:\n%s\n", describe_backtrace(err));
+		werror("=====================================\n\n");
+
+		// 同时写入错误日志文件
+		string log_file = "/log/compile_errors.log";
+		string timestamp = ctime(time());
+		Stdio.append_file(ROOT + log_file,
+			sprintf("[%s] File: %s\nError: %s\nBacktrace:\n%s\n\n",
+				timestamp, file_path, describe_error(err), describe_backtrace(err)));
+
 		master()->handle_error(err);
 		return 0;
 	}

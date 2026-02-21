@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_ROOM;
 string room_race="third";
-static int room_level=1;
+protected int room_level=1;
 void create(){
 	object room = this_object();
 	name=object_name(this_object());

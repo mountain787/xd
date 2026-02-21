@@ -45,7 +45,7 @@ templates["是复活点"]=/*"string query_links(){\n\tobject player=this_player(
 templates["额外连接"]="\tlinks=\"$1\";\n";
 
 templates["房间阵营"]="string room_race=\"$1\";\n";
-templates["房间等级"]="static int room_level=$1;\n";
+templates["房间等级"]="protected int room_level=$1;\n";
 
 templates["foot"]="}\n";
 

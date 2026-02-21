@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit WAP_ROOM;
 string room_race="monst";
-static int room_level=3;
+protected int room_level=3;
 void create(){
 	name=object_name(this_object());
 	name_cn="羽化村广场";
@@ -52,7 +52,7 @@ void init()
 	add_action(set_pic,"set_pic");
 }
 
-int set_name_cn(string arg)
+int set_name_cn(string|zero arg)
 {
 	string s;
 	object me = this_player();
@@ -118,7 +118,7 @@ int set_name_cn(string arg)
 	return 1;
 }
 
-int set_gender(string arg)
+int set_gender(string|zero arg)
 {
 	string s;
 	object me = this_player();
@@ -149,7 +149,7 @@ int set_gender(string arg)
 	return 1;
 }
 
-int set_pic(string arg)
+int set_pic(string|zero arg)
 {
 	string s = "";
 	object me = this_player();

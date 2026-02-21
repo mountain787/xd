@@ -55,6 +55,7 @@ void run_tests()
 	};
 	if (err) {
 		werror("  ✗ 错误: %s\n", describe_error(err));
+		werror("  ✗ 回溯:\n%s\n", describe_backtrace(err));
 	}
 
 	werror("\n========== 测试完成 ==========\n");

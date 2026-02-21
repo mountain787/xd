@@ -111,7 +111,7 @@
 //附加技能上限
 #define VICESKILL_UP 300
 //玩家等级上限制
-#define MAX_LEVEL 200
+#define MAX_LEVEL 500
 //洞穴刷新出口操作
 #define ROOM_FLUSHD ((object)(ROOT "/gamelib/single/daemons/room_flushd"))
 //兑换物品守护模块

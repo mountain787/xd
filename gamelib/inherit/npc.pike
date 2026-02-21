@@ -1124,16 +1124,16 @@ string query_npc_links(void|int count)
 }
 int query_level_limit(){
 	mapping(string:int) level_limit = ([
-		"xd01":120,
-		"xd02":70,
-		"xd03":70,
-		"xd04":70,
-		"xd05":70,
-		"xd06":70,
-		"xd07":70,
-		"xd08":70,
-		"xd09":70,
-		"xd10":70
+		"xd01":MAX_LEVEL,
+		"xd02":MAX_LEVEL,
+		"xd03":MAX_LEVEL,
+		"xd04":MAX_LEVEL,
+		"xd05":MAX_LEVEL,
+		"xd06":MAX_LEVEL,
+		"xd07":MAX_LEVEL,
+		"xd08":MAX_LEVEL,
+		"xd09":MAX_LEVEL,
+		"xd10":MAX_LEVEL
 	]);
-	return level_limit[GAME_AREA] != 0 ? level_limit[GAME_AREA] : 70;
+	return level_limit[GAME_AREA] != 0 ? level_limit[GAME_AREA] : MAX_LEVEL;
 }

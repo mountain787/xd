@@ -50,6 +50,10 @@ protected void create()
 {
 
 }
+//获取最大等级限制
+int query_max_level(){
+	return MAX_LEVEL;
+}
 /**
 刷新房间npc为玩家等级
 */
@@ -69,7 +73,7 @@ void refresh_room_npc_to_currentlevel(object me,string path){
 				if(first_player){ //第一个进来房间的，刷新怪为玩家自己等级
 					int levelbase = me->level;
 					if(levelbase<=1) levelbase=1 +random(3); //得到上下3级的怪物
-					if(levelbase>=200) levelbase=200;//最大刷新怪物的等级是200级
+					if(levelbase>=MAX_LEVEL) levelbase=MAX_LEVEL;//最大刷新怪物的等级是MAX_LEVEL级
 					npc_player->_npcLevel = levelbase;	
 					npc_player->setup_npc_dongtai(me);
 					//werror("===============refresh_room_npcto_currentlevel monster=["+npc_player->name+"] change level=["+npc_player->level+"]\n");
@@ -81,7 +85,7 @@ void refresh_room_npc_to_currentlevel(object me,string path){
 						object new_npc = new(real_path);
 						int levelbase = me->level+random(3);
 						if(levelbase<=1) levelbase=1; //得到上下3级的怪物
-						if(levelbase>=200) levelbase=200;//最大刷新怪物的等级是200级
+						if(levelbase>=MAX_LEVEL) levelbase=MAX_LEVEL;//最大刷新怪物的等级是MAX_LEVEL级
 						new_npc->_npcLevel = levelbase;	
 						new_npc->setup_npc_dongtai(me);
 						new_npc->move(env);
@@ -117,7 +121,7 @@ object get_npc_level(string orgi_path,int npclevel){
 		int levelbase = npclevel + random(3);//怪的等级比自己高6的随机数
 		if(levelbase<=1) levelbase=1; //得到上下3级的怪物
 		//werror("===============org monster=["+rtn_ob->name+"] org level=["+rtn_ob->level+"]\n");
-		if(levelbase>=200) levelbase=200;//最大刷新怪物的等级是200级
+		if(levelbase>=MAX_LEVEL) levelbase=MAX_LEVEL;//最大刷新怪物的等级是MAX_LEVEL级
 		rtn_ob->_npcLevel = levelbase;
 		//werror("===============change monster=["+rtn_ob->name+"] change level=["+rtn_ob->level+"]\n");
 		int rdm = random(1000);

@@ -39,9 +39,9 @@ void load_daemons()
 	array files = get_dir(ROOT+"/gamelib/single/daemons");
 	werror("[MASTER] get_dir() returned %d files\n", sizeof(files));
 	foreach(files,string s){
-		// 跳过目录和以下划线开头的模块目录
-		if(has_suffix(s, "/") || has_prefix(s, "_")) {
-			werror("[MASTER] Skipping: %s (directory/module)\n", s);
+		// 跳过目录、测试文件和模块目录
+		if(has_suffix(s, "/") || has_prefix(s, "_") || has_prefix(s, "test_")) {
+			werror("[MASTER] Skipping: %s\n", s);
 			continue;
 		}
 		mixed err = catch{

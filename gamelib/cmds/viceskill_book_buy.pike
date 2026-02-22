@@ -1,7 +1,9 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT+"/gamelib/clone/item/book/"
+#endif
 
 //此指令用于技能书的购买
 int main(string|zero arg)

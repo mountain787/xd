@@ -1,6 +1,8 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/other/"
+#endif
 //实现玉石购买千里音符
 //arg =   name       yushi_rareLevel    need_amount       buy_num
 //     宝石文件名    所需玉石的稀有度   玉石的个数  购买的个数

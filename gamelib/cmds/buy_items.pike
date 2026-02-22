@@ -1,7 +1,9 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/"
+#endif
 //该指令用于购买物品调用
 
 int main(string|zero arg)

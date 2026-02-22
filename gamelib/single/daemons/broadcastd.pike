@@ -52,7 +52,9 @@ private array(mixed) bc=({});			  //存放传音符信息 add by caijie 2008/07/
 //add by caijie 2008/07/07
 #define FLUSH_TIME 86400						  //刷新间隔时间
 #define FLUSH_NUM 50							  //千里传音符在间隔时间内可购买的数量
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/other/"//传音符文件的存放路径
+#endif
 //add by caijie and
 
 protected void create(){

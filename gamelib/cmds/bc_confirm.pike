@@ -1,6 +1,8 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/other/" 
+#endif
 int main(string|zero arg)
 {
 	object me = this_player();

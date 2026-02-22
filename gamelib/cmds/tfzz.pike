@@ -1,7 +1,9 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
 
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT+"/gamelib/clone/item/"
+#endif
 
 //此指令用于实现"投放粽子"功能，即玩家放入一个粽子可随机获得《离骚》、《天问》《九歌》或者什么都得不到
 

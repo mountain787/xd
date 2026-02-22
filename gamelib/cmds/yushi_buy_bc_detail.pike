@@ -1,6 +1,8 @@
 #include <command.h>
 #include <gamelib/include/gamelib.h>
+#ifndef ITEM_PATH
 #define ITEM_PATH ROOT "/gamelib/clone/item/other/"
+#endif
 
 //列出千里传音符的具体信息
 

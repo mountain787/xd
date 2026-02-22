@@ -175,8 +175,16 @@ createApp({
             inviteCode: '',  // 邀请码
             qrCodeUrl: '',  // 二维码URL
             // 语言选择
-            selectedLanguage: localStorage.getItem('userLanguage') || 'chinese_simplified'  // 当前选择的语言
+            selectedLanguage: localStorage.getItem('userLanguage') || 'chinese_simplified',  // 当前选择的语言
+            isInitializing: true  // 初始化标志，防止初始化时触发changeLanguage
         };
+    },
+
+    mounted() {
+        // 初始化完成后，重置标志
+        this.$nextTick(() => {
+            this.isInitializing = false;
+        });
     },
 
     watch: {
@@ -2442,8 +2450,21 @@ createApp({
 
         // 语言切换处理
         changeLanguage(event) {
+            // 初始化期间不处理，防止无限循环
+            if (this.isInitializing) {
+                console.log('[Vue] Skipping changeLanguage during initialization');
+                return;
+            }
+
             const lang = event.target.value;
             console.log('[Vue] changeLanguage called with:', lang);
+
+            // 如果语言没有变化，不处理
+            if (lang === this.selectedLanguage) {
+                console.log('[Vue] Language unchanged, skipping');
+                return;
+            }
+
             this.selectedLanguage = lang;  // Vue v-model自动更新select值
 
             // 保存到localStorage

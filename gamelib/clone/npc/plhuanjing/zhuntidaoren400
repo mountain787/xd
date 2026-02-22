@@ -1,6 +1,6 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	desc="左侧乃青色宝莲旗，右侧乃七宝妙树，手捧拂尘，安详和蔼\n";
 	set_raceId("third");

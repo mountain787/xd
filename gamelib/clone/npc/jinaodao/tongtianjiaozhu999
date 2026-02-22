@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	desc="三清之一，金鳌岛主，门下弟子无数。\n";
 	set_raceId("monst");

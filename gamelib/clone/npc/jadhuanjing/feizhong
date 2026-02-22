@@ -1,6 +1,6 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="费仲";
 	desc="纣王佞臣，镇守城池\n";

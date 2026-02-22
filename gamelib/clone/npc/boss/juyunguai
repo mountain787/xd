@@ -1,6 +1,6 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	_boss=1;
 	_flushtime=36000;

@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="巨兽兵";
 	desc="妖魔军镇守城门之重型兽兵\n";

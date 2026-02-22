@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit WAP_SOURCE;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="丁香草";
 	desc="来采我呀~~~\n";

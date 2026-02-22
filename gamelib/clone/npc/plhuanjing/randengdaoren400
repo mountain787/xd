@@ -1,6 +1,6 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	desc="本在灵鹫山元觉洞修行，坐骑梅花鹿，左右持乾坤尺，右手托紫金钵盂游历到此。\n";
 	set_raceId("third");

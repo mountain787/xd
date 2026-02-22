@@ -1,6 +1,6 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="重甲门卫";
 	desc="人类大军守城重兵\n";

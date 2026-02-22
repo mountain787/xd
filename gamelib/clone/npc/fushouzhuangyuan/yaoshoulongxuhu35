@@ -1,7 +1,7 @@
 #include <globals.h>
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_NPC;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	desc="拥有发手生石异能的怪兽，被姜子牙以杏黄旗法宝收服，收作弟子。\n";
 	set_raceId("third");

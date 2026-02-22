@@ -45,7 +45,7 @@ void check_daily(object me)
 		}
 		else//其他情况
 			tmp = 60;
-		me->_m_delete("/plus/daily");
+		me->m_delete_foruser("/plus/daily");
 		//////////////////得到多长时间没上线,作为乘数,乘以每天需要剪去的荣誉值
 		me["/plus/daily/day"]=day;
 		me["/plus/daily/mon"]=month;

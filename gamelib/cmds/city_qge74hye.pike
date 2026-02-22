@@ -21,7 +21,7 @@ int main(string|zero arg)
 		if(env&&!env->is("character")&&!env->is("menu")){
 			me->last_pos=file_name(env)-ROOT;
 		}
-		me->_m_delete("/tmp/tour_pos");
+		me->m_delete_foruser("/tmp/tour_pos");
 		me->move(path);
 		me->reset_view();
 		me->command("look");

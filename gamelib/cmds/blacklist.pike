@@ -37,11 +37,11 @@ int main(string|zero arg)
 				}
 				if(flag == "del"){
 					if(!sig){
-						me->_m_delete("/tmp/blacklist/"+name);
+						me->m_delete_foruser("/tmp/blacklist/"+name);
 						s = ob->name_cn+"已经从临时屏蔽列表删除，可以对其进行信息沟通。\n";
 					}
 					else{
-						me->_m_delete("/plus/blacklist/"+name);
+						me->m_delete_foruser("/plus/blacklist/"+name);
 						s = ob->name_cn+"已经从永久屏蔽列表删除，可以对其进行信息沟通。\n";
 					}
 				}

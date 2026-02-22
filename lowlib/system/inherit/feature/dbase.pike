@@ -73,6 +73,32 @@ protected mixed `[]=(string key, mixed val, void|mixed n)
 	}
 }
 
+// Public method to delete values from the dbase path storage
+int m_delete_foruser(string key)
+{
+	if(key&&sizeof(key)&&key[0]=='/'){
+		array a=key[1..]/"/";
+		if(!data)data=([]);
+		if(!data_tmp)data_tmp=([]);
+		mapping m=data;
+		int start_idx=0;
+		if(sizeof(a)>0&&a[0]=="tmp"){
+			m=data_tmp;
+			start_idx=1;
+		}
+		for(int i=start_idx;i<sizeof(a)-1;i++){
+			string s=a[i];
+			if(!mappingp(m[s])){
+				m[s]=([]);
+			}
+			m=m[s];
+		}
+		m_delete(m,a[-1]);
+		return 1;
+	}
+	return 0;
+}
+
 protected mixed _m_delete(string key)
 {
 	if(key&&sizeof(key)&&key[0]=='/'){

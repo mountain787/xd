@@ -156,17 +156,6 @@ string query_leave(string username){
 void addRemainMSG(string msg,multiset except){
 		remainMSG+=([gethrtime():({msg,except})]);
 }
-/**
-* 得到剩余信息的大小
-*/
-private int getRemainMSGSize(){
-	array names = indices(remainMSG);
-	int size=0;
-	foreach(names,int name){
-		size+=sizeof(remainMSG[name][0]);
-	}
-	return size;
-}
 /*
  * 整理房间离开信息，删除过期信息
 */

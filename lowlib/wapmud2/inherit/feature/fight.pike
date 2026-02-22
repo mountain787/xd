@@ -1630,10 +1630,6 @@ private void attack(int skill_add,int skill_add_per,string type,string skill_nam
 		}
 	}
 }
-//验证该perform是否能用
-private int validate_perform(string arg){
-	return 0;
-}
 private void heart_beat_action(){
 	//在这儿也添加死亡处理过程，是为了处理由于dot而死亡的情况，dot是在自己的心跳中减去自己的血，
 	//要是血减为零了，则表示自己死亡，但不能在自己的心跳中通过语句this_object()->fight_die()来处

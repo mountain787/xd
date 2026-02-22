@@ -3,7 +3,7 @@ mapping data_tmp=([]);
 string tmp;
 
 
-mixed `[](string key, void|mixed n)
+protected mixed `[](string key, void|mixed n)
 {
 	// Pike 9: Second parameter controls access mode
 	// n == "RAW" means bypass operator overload, access raw variable value directly
@@ -39,7 +39,7 @@ mixed `[](string key, void|mixed n)
 	}
 }
 
-mixed `[]=(string key, mixed val, void|mixed n)
+protected mixed `[]=(string key, mixed val, void|mixed n)
 {
 	// Pike 9: Third parameter controls access mode
 	// n == "RAW" means bypass operator overload, set raw variable directly
@@ -73,7 +73,7 @@ mixed `[]=(string key, mixed val, void|mixed n)
 	}
 }
 
-mixed _m_delete(string key)
+protected mixed _m_delete(string key)
 {
 	if(key&&sizeof(key)&&key[0]=='/'){
 		array a=key[1..]/"/";

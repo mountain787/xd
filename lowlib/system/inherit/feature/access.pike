@@ -1,4 +1,4 @@
-mixed `->(string key)
+protected mixed `->(string key)
 {
 	string var;
 	if(zero_type(::`[](key,2))==1){
@@ -22,7 +22,7 @@ mixed `->(string key)
 		return ::`[](key,2);
 	}
 }
-mixed `->=(string key,mixed val)
+protected mixed `->=(string key,mixed val)
 {
 	if(functionp(::`[]("set_"+key,2))){
 		::`[]("set_"+key,2)(val);

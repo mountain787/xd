@@ -41,8 +41,6 @@ int _flushtime;//刷新时间
 read_write(_flushtime);
 int _hate;//仇恨值
 read_write(_hate);
-private array(string) _fightwith;//仇人记忆
-private array(string) _fight_now;//杀戮该Npc的当前玩家列表，然后根据仇恨值来确定攻击哪一个
 int _fury;//狂暴几率
 read_write(_fury);
 int _recovery;//怪物回血设置

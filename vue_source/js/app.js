@@ -175,7 +175,8 @@ createApp({
             inviteCode: '',  // 邀请码
             qrCodeUrl: '',  // 二维码URL
             // 语言选择
-            selectedLanguage: localStorage.getItem('userLanguage') || 'chinese_simplified'  // 当前选择的语言
+            selectedLanguage: localStorage.getItem('userLanguage') || 'chinese_simplified',  // 当前选择的语言
+            isInitializing: true  // 初始化标志，防止初始化时触发changeLanguage
         };
     },
 
@@ -2442,8 +2443,21 @@ createApp({
 
         // 语言切换处理
         changeLanguage(event) {
+            // 初始化期间不处理，防止无限循环
+            if (this.isInitializing) {
+                console.log('[Vue] Skipping changeLanguage during initialization');
+                return;
+            }
+
             const lang = event.target.value;
             console.log('[Vue] changeLanguage called with:', lang);
+
+            // 如果语言没有变化，不处理
+            if (lang === this.selectedLanguage) {
+                console.log('[Vue] Language unchanged, skipping');
+                return;
+            }
+
             this.selectedLanguage = lang;  // Vue v-model自动更新select值
 
             // 保存到localStorage
@@ -2483,6 +2497,11 @@ createApp({
     mounted() {
         // 保存实例到全局以便HTML中的onclick调用
         window.vueInstance = this;
+
+        // 初始化完成后，重置语言切换标志，防止初始化时触发无限循环
+        this.$nextTick(() => {
+            this.isInitializing = false;
+        });
 
         this.apiBase = this.detectApiBase();
         const modeText = this.useJsonMode ? 'JSON模式 (无iframe)' : 'iframe模式';

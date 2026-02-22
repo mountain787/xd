@@ -4,7 +4,7 @@ inherit WAP_ROOM;
 string room_race="third";
 protected int room_level=1;
 //针对外挂玩家输入验证码的房间
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="茶水间";
 }

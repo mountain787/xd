@@ -3,7 +3,7 @@
 inherit WAP_ROOM;
 string room_race="third";
 protected int room_level=72;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="西禅区(普通区)";
 	desc="玩家每天可以在此利用不线时间闭目修炼，所修炼的时间可以提取修为等级哦。\n";

@@ -3,7 +3,7 @@
 inherit GAMELIB_ROOM;
 string room_race="third";
 protected int room_level=1;
-void create(){
+protected void create(){
 	object room = this_object();
 	name=object_name(this_object());
 	name_cn="飞天小屋";

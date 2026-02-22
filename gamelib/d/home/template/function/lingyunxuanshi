@@ -2,7 +2,7 @@
 #include <gamelib/include/gamelib.h>
 inherit GAMELIB_ROOM;
 string room_race="third";
-void create(){
+protected void create(){
 	object room = this_object();
 	name=object_name(this_object());
 	name_cn="灵韵轩室";

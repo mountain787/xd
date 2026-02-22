@@ -5,7 +5,7 @@ string room_race="third";
 protected int room_level=10000;
 array(string) flush_monst = ({"klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu","klshuanjing/mojunshizu",});
 array(string) flush_human = ({"klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing","klshuanjing/jingweiduishibing",});
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	set_room_type("city");
 	name_cn="修仙";

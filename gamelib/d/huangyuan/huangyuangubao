@@ -3,7 +3,7 @@
 inherit WAP_ROOM;
 string room_race="third";
 protected int room_level=805;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="荒原古堡";
 	desc="\n";

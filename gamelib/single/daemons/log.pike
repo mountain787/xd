@@ -1,7 +1,7 @@
 #!/usr/local/bin/pike
 string  log_pre = "project";
 int maxSize = 50*1024*1024;
-void create(string|void logNamePre)
+protected void create(string|void logNamePre)
 {	
 	if(logNamePre)
 	{

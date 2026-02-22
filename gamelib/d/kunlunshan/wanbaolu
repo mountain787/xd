@@ -3,8 +3,8 @@
 inherit WAP_ROOM;
 string room_race="human";
 protected int room_level=91;
-static int dubo_level_low = 11;//赌博房间级别为1
-static int dubo_level_high = 20;//赌博房间级别为1
+protected int dubo_level_low = 11;//赌博房间级别为1
+protected int dubo_level_high = 20;//赌博房间级别为1
 protected void create(){
 	name=object_name(this_object());
 	name_cn="万宝炉";

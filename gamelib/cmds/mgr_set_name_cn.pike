@@ -57,7 +57,7 @@ int main(string|zero arg){
 			return 1; 
 		}
 		else{
-			//uname = Locale.Charset.encoder("iso-8859-1")->feed(uname)->drain();
+			//uname = Charset.encoder("iso-8859-1")->feed(uname)->drain();
 			werror("用户改名=【"+uname+"】\n");
 
 			if(search(uname," ")!=-1) {//这里去重，有起名字老是重复2次，中间有空格

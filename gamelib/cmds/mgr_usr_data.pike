@@ -190,8 +190,8 @@ int set_name_cn(string|zero arg)
 	}
 	if(arg&&arg!=""){
 		//////////////////////////////////////////////////////////////////////////////////
-		//arg = Locale.Charset.encoder("GB18030")->feed(arg)->drain();
-		arg = Locale.Charset.encoder("iso-8859-1")->feed(arg)->drain();
+		//arg = Charset.encoder("GB18030")->feed(arg)->drain();
+		arg = Charset.encoder("iso-8859-1")->feed(arg)->drain();
 		//////////////////////////////////////////////////////////////////////////////////
 		/*
 		if(NAMESD->is_name_reserved(arg)){                                                                         

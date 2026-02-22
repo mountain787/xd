@@ -3,7 +3,7 @@
 inherit WAP_ROOM;
 string room_race="monst";
 protected int room_level=3;
-void create(){
+protected void create(){
 	name=object_name(this_object());
 	name_cn="羽化村广场";
 	desc="\n";
@@ -38,9 +38,9 @@ string query_links(){
 		string cur_pos=file_name(env)-ROOT;
 		if(player->relife){
 			if(player->relife!=cur_pos)
-				tmp+="[设置复活点:relife "+cur_pos+"]\n";
+				tmp+="[设置复活点:set_relife "+cur_pos+"]\n";
 		}else
-			tmp+="[设置复活点:relife "+cur_pos+"]\n";
+			tmp+="[设置复活点:set_relife "+cur_pos+"]\n";
 	}
 	return tmp;
 }
@@ -82,7 +82,7 @@ int set_name_cn(string|zero arg)
 		return 1;
 	}
 	if(arg&&arg!=""){
-		arg = Locale.Charset.encoder("iso-8859-1")->feed(arg)->drain();
+		arg = Charset.encoder("iso-8859-1")->feed(arg)->drain();
 		if(NAMESD->is_name_reserved(arg)){
 			s = "你不能取那种奇怪的名字。\n";
 			me->write_view(WAP_VIEWD["/emote"],0,0,s);

@@ -1,11 +1,16 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
+
+// VIP等级限制开关：1=启用VIP限制，0=关闭限制（所有玩家都可以打怪）
+constant int VIP_KILL_LIMIT = 0;
+
 int main(string arg)
 {
 	object me = this_player();
 	/////////////////////////////////////////////
 
-	/* 100级钻石会员 61-100 白金会员 50-61 黄金 40-50 水晶*/	
+	if(VIP_KILL_LIMIT){
+	/* 100级钻石会员 61-100 白金会员 50-61 黄金 40-50 水晶*/
 	if(me->query_level()>=10 && me->query_level()<50){
 		if(!me->query_vip_flag()){
 			string tipsvip = "";
@@ -76,7 +81,8 @@ int main(string arg)
 			}
 		}
 	}
-	
+	} // VIP_KILL_LIMIT
+
 	//大于50级，必须付费200并获得
 	/*
 	if(me->query_level()>=51){

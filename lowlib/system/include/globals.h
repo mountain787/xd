@@ -68,4 +68,7 @@ void write(mixed s, mixed...args)
 }
 #endif
 
+// VIP等级限制开关：1=启用VIP限制，0=关闭限制（所有玩家都可以打怪/快速战斗）
+#define VIP_KILL_LIMIT 0
+
 #endif

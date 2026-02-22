@@ -1,9 +1,6 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
 
-// VIP等级限制开关：1=启用VIP限制，0=关闭限制（所有玩家都可以打怪）
-constant int VIP_KILL_LIMIT = 0;
-
 int main(string arg)
 {
 	object me = this_player();

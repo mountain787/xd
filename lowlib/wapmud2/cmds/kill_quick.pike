@@ -1,10 +1,14 @@
 #include <command.h>
 #include <wapmud2/include/wapmud2.h>
+
+// VIP等级限制开关：1=启用VIP限制，0=关闭限制（所有玩家都可以快速战斗）
+constant int VIP_KILL_LIMIT = 0;
+
 int main(string arg)
 {
 	object me = this_player();
 	string s = "";
-	/////////////////////////////////////////////////////////////////////////	
+	/////////////////////////////////////////////////////////////////////////
 	//每次需要隔1秒，不能连续刷
 	if(me["/tmp/qkill"]==0)
 		me["/tmp/qkill"] = (System.Time()->usec_full)/1000;//time();
@@ -24,6 +28,7 @@ int main(string arg)
 		s +="<div style=\"color:Orange\">"+tmp+"</div>";//name_cn=query_rare_level()+name_cn;</p>\n";
 	}
 	else{
+		if(VIP_KILL_LIMIT){
 		/* 100级钻石会员 61-100 白金会员 50-61 黄金 40-50 水晶*/	
 		if(me->query_level()>=10 && me->query_level()<50){
 			if(!me->query_vip_flag()){
@@ -95,6 +100,7 @@ int main(string arg)
 				}
 			}
 		}
+		} // VIP_KILL_LIMIT
 	}
 	//////1000元免精力//////
 	int szx=me->all_fee;                                                                                                                  

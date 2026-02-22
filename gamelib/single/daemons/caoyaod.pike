@@ -150,6 +150,12 @@ void flush_caoyao()
 							int roomlev = roomlev_l+random(roomlev_h-roomlev_l+1);
 							string room = ROOMLEVELD->query_room(roomlev);
 							if(room != ""){
+								// 检查房间内已有的物品数量，超过10个则跳过
+								object room_ob = find_object(ROOM_PATH+room);
+								if(room_ob && sizeof(room_ob->all_inventory()) >= 10){
+									// 房间内物品已满，跳过此次刷新
+									continue;
+								}
 								object caoyao_ob = clone(MATERIAL_PATH+caoyaoname);
 								if(caoyao_ob){
 									Stdio.append_file(ROOT+"/log/flush_caoyao.log",now[0..sizeof(now)-2]+":"+tempCaoyao->name_cn+"("+room+")\n");

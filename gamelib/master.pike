@@ -189,9 +189,16 @@ private void _create()
 	mkdir(ROOT+"/gamelib/single/daemons");
 	werror("[MASTER] Loading daemons from: "+ROOT+"/gamelib/single/daemons/\n");
 	foreach(get_dir(ROOT+"/gamelib/single/daemons"),string s){
+		string full_path = ROOT+"/gamelib/single/daemons/"+s;
+		werror("[MASTER] Checking: %s (is_dir=%d)\n", s, Stdio.is_dir(full_path));
+		// Skip directories
+		if(Stdio.is_dir(full_path)) {
+			werror("[MASTER] Skipping directory: %s\n", s);
+			continue;
+		}
 		mixed err = catch{
 			werror("[MASTER] Loading daemon: %s\n", s);
-			object ob=(object)(ROOT+"/gamelib/single/daemons/"+s);
+			object ob=(object)(full_path);
 			werror("[MASTER]   Loaded: %s -> %O\n", s, ob);
 		};
 		if(err) {

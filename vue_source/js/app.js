@@ -2452,14 +2452,6 @@ createApp({
             const lang = event.target.value;
             console.log('[Vue] changeLanguage called with:', lang);
 
-            // 如果语言没有变化，不处理
-            if (lang === this.selectedLanguage) {
-                console.log('[Vue] Language unchanged, skipping');
-                return;
-            }
-
-            this.selectedLanguage = lang;  // Vue v-model自动更新select值
-
             // 保存到localStorage
             localStorage.setItem('userLanguage', lang);
 

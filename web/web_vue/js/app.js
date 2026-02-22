@@ -180,13 +180,6 @@ createApp({
         };
     },
 
-    mounted() {
-        // 初始化完成后，重置标志
-        this.$nextTick(() => {
-            this.isInitializing = false;
-        });
-    },
-
     watch: {
         // 监听 mudLines 变化，更新后重新翻译并滚动到顶部
         mudLines() {
@@ -2459,14 +2452,6 @@ createApp({
             const lang = event.target.value;
             console.log('[Vue] changeLanguage called with:', lang);
 
-            // 如果语言没有变化，不处理
-            if (lang === this.selectedLanguage) {
-                console.log('[Vue] Language unchanged, skipping');
-                return;
-            }
-
-            this.selectedLanguage = lang;  // Vue v-model自动更新select值
-
             // 保存到localStorage
             localStorage.setItem('userLanguage', lang);
 
@@ -2504,6 +2489,11 @@ createApp({
     mounted() {
         // 保存实例到全局以便HTML中的onclick调用
         window.vueInstance = this;
+
+        // 初始化完成后，重置语言切换标志，防止初始化时触发无限循环
+        this.$nextTick(() => {
+            this.isInitializing = false;
+        });
 
         this.apiBase = this.detectApiBase();
         const modeText = this.useJsonMode ? 'JSON模式 (无iframe)' : 'iframe模式';

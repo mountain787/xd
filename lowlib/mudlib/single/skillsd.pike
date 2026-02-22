@@ -7,7 +7,7 @@ void add_skill(object ob)
 {
 	unmapped+=({ob});
 }
-object`[](mixed key)
+protected object`[](mixed key)
 {
 	if(unmapped&&sizeof(unmapped)){
 		foreach(unmapped,object ob){

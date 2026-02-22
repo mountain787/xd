@@ -10,7 +10,7 @@
 #include <gamelib/include/gamelib.h>
 
 
-#define ITEM_PATH  ROOT "/gamelib/clone/item/"
+// ITEM_PATH already defined in globals.h
 #define BOOK_LIST  ROOT "/gamelib/data/can_buy_book_list.csv" //替换路径
 #define FLUSH_TIME 24*3600	//24小时刷新一次
 #define PACKAGE_EXP ROOT "/gamelib/data/package_expand.csv"

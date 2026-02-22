@@ -33,6 +33,7 @@ inherit LOW_DAEMON;
 #define FLUSH_TIME 900 //正式用，6分钟为一单位..
 //#define FLUSH_TIME 300 //2024版正式用，6分钟为一单位，每5分钟增加一次15，也就是说原来15分钟的，压缩到5分钟一次刷新了，60分钟的压缩到20分钟刷新一次
 #define MAX_TIME 360  //刷新时间最长的草药的刷新时间
+#define MAX_ITEMS_PER_ROOM 10  //每个房间最多容纳的物品数量，超过则不再添加草药
 
 class caoyao
 {
@@ -150,11 +151,21 @@ void flush_caoyao()
 							int roomlev = roomlev_l+random(roomlev_h-roomlev_l+1);
 							string room = ROOMLEVELD->query_room(roomlev);
 							if(room != ""){
-								// 检查房间内已有的物品数量，超过10个则跳过
-								object room_ob = find_object(ROOM_PATH+room);
-								if(room_ob && sizeof(room_ob->all_inventory()) >= 10){
-									// 房间内物品已满，跳过此次刷新
-									continue;
+								// 检查房间内已有的物品数量，超过MAX_ITEMS_PER_ROOM则跳过
+								mixed err = catch{
+									string room_path = ROOM_PATH+room;
+									object room_ob = load_object(room_path);
+									if(room_ob){
+										array(object) items = all_inventory(room_ob);
+										int item_count = sizeof(items);
+										if(item_count >= MAX_ITEMS_PER_ROOM){
+											// 房间内物品已满，跳过此次刷新
+											continue;
+										}
+									}
+								};
+								if(err){
+									werror("caoyaod: ERROR checking room %s: %O\n", room, err);
 								}
 								object caoyao_ob = clone(MATERIAL_PATH+caoyaoname);
 								if(caoyao_ob){

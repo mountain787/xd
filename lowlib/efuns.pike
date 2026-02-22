@@ -1528,7 +1528,7 @@ int os_load(object o,string path)
 	return 1;
 }
 #define SIGALRM 14
-private void create(void|string _logfile_prefix)
+protected void create(void|string _logfile_prefix)
 {
 	if(_logfile_prefix)
 		logfile_postfix=_logfile_prefix;

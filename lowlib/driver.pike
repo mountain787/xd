@@ -1,5 +1,5 @@
 #!/usr/local/bin/pike -dt
-#pragma disable_all_warnings
+// #pragma disable_all_warnings  // Pike 9 doesn't support this pragma
 #include "lowlib.h"
 #define PORT 9999
 #define IP "0.0.0.0"

@@ -75,12 +75,6 @@ void get_pf()
 string query_duanzao_peifang_list(int levmin,void|int levmax)
 {
 	string s_rtn = "";
-
-	werror("========== [PEIFANGD query_duanzao_peifang_list] START ==========\n");
-	werror("[PEIFANGD] levmin=%O, levmax=%O\n", levmin, levmax);
-	werror("[PEIFANGD] duanzao_pf size=%d\n", sizeof(duanzao_pf));
-	werror("[PEIFANGD] duanzao_pf keys=%O\n", indices(duanzao_pf));
-
 	if(levmax){
 		foreach(sort(indices(duanzao_pf)),int level){
 			if(level >= levmin && level <= levmax){
@@ -99,20 +93,12 @@ string query_duanzao_peifang_list(int levmin,void|int levmax)
 			s_rtn += "["+tmp2[0]+":viceskill_peifang_buy duanzao "+tmp2[1]+" 0]\n";
 		}
 	}
-	werror("[PEIFANGD query_duanzao_peifang_list] returning s_rtn length=%d\n", sizeof(s_rtn));
-	werror("========== [PEIFANGD query_duanzao_peifang_list] END ==========\n");
 	return s_rtn;
 }
 
 string query_liandan_peifang_list(int levmin,void|int levmax)
 {
 	string s_rtn = "";
-
-	werror("========== [PEIFANGD query_liandan_peifang_list] START ==========\n");
-	werror("[PEIFANGD] levmin=%O, levmax=%O\n", levmin, levmax);
-	werror("[PEIFANGD] liandan_pf size=%d\n", sizeof(liandan_pf));
-	werror("[PEIFANGD] liandan_pf keys=%O\n", indices(liandan_pf));
-
 	if(levmax){
 		foreach(sort(indices(liandan_pf)),int level){
 			if(level >= levmin && level <= levmax){
@@ -131,8 +117,6 @@ string query_liandan_peifang_list(int levmin,void|int levmax)
 			s_rtn += "["+tmp2[0]+":viceskill_peifang_buy liandan "+tmp2[1]+" 0]\n";
 		}
 	}
-	werror("[PEIFANGD query_liandan_peifang_list] returning s_rtn length=%d\n", sizeof(s_rtn));
-	werror("========== [PEIFANGD query_liandan_peifang_list] END ==========\n");
 	return s_rtn;
 }
 

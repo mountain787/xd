@@ -37,7 +37,7 @@ templates["物"]="\tadd_items(({ROOT \"/gamelib/clone/item/$1\"}));\n";
 
 templates["杂货铺"]="\tlinks=\"[卖东西:inventory_sell]\\n\";\n";
 templates["铁匠铺"]="\tlinks=\"[修理装备:repair]\\n\";\n\tlinks+=\"[修理所有装备:repair_all]\\n\";\n\tlinks+=\"[锻造:viceskill_duanzao_list m_weapon]|[熔解:viceskill_rongjie_list]|[熔炼:viceskill_ronglian_list 0]\\n\";\n";
-templates["是复活点"]=/*"string query_links(){\n\tobject player=this_player();\n\tstring tmp="";\n\tif(player->query_raceId()==room_race){\n\t\ttmp+=\"[休息:sleep]\\n\";\n*/"\n\t\tobject env=environment(player);\n\t\tstring cur_pos=file_name(env)-ROOT;\n\t\tif(player->relife){\n\t\t\tif(player->relife!=cur_pos)\n\t\t\t\ttmp+=\"[设置复活点:relife \"+cur_pos+\"]\\n\";\n\t\t}\n\t\telse\n\t\t\ttmp+=\"[设置复活点:relife \"+cur_pos+\"]\\n\";\n";//\t}\n}";
+templates["是复活点"]=/*"string query_links(){\n\tobject player=this_player();\n\tstring tmp="";\n\tif(player->query_raceId()==room_race){\n\t\ttmp+=\"[休息:sleep]\\n\";\n*/"\n\t\tobject env=environment(player);\n\t\tstring cur_pos=file_name(env)-ROOT;\n\t\tif(player->relife){\n\t\t\tif(player->relife!=cur_pos)\n\t\t\t\ttmp+=\"[设置复活点:set_relife \"+cur_pos+\"]\\n\";\n\t\t}\n\t\telse\n\t\t\ttmp+=\"[设置复活点:set_relife \"+cur_pos+\"]\\n\";\n";//\t}\n}";
 
 templates["额外连接"]="\tlinks=\"$1\";\n";
 

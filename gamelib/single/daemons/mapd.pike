@@ -147,7 +147,7 @@ string get_all_kinds_map(){
 
 			// 计算等级费用
 			int level_fee;
-			foreach(level_fly_fee_config; array range; int fee_value) {
+			foreach(level_fly_fee_config; mixed range; mixed fee_value) {
 				if(level >= range[0] && level < range[1]) {
 					level_fee = fee_value;
 					break;

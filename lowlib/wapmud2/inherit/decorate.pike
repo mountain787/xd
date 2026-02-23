@@ -13,12 +13,12 @@ string query_inventory_links(void|int count)
 	string old_link;
 
 	if(!equiped){
-		new_link = "[绌夸笂:wear "+name+" "+count+"]";
-		old_link = "[鑴变笅:unwear "+name+" "+count+"]";
+		new_link = "[戴上:wear "+name+" "+count+"]";
+		old_link = "[脱下:unwear "+name+" "+count+"]";
 	}
 	else{
-		new_link = "[鑴变笅:unwear "+name+" "+count+"]";
-		old_link = "[绌夸笂:wear "+name+" "+count+"]";
+		new_link = "[脱下:unwear "+name+" "+count+"]";
+		old_link = "[戴上:wear "+name+" "+count+"]";
 	}
 
 	// 移除旧的状态链接（避免穿戴按钮同时存在）

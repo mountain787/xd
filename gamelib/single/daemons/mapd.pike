@@ -130,22 +130,33 @@ string get_all_kinds_map(){
 	array(string) block_list = sort(indices(all_map_list));
 	foreach(block_list,string block){
 		if(pinyin_to_cn[block]){
-			int fee;
 			object me = this_player();
 			int vip_level = me->query_vip_flag() || 0;
+			int level = me->query_level();
 
-			// 根据VIP等级获取飞行费用
-			fee = vip_fly_fee_config[vip_level];
+			// 计算VIP费用
+			int vip_fee = vip_fly_fee_config[vip_level];
 
-			// 如果配置为0，则按等级计算
-			if(fee == 0) {
-				int level = me->query_level();
-				foreach(normal_fly_fee_config; array range; int fee_value) {
-					if(level >= range[0] && level < range[1]) {
-						fee = fee_value;
-						break;
-					}
+			// 计算等级费用
+			int level_fee;
+			foreach(normal_fly_fee_config; array range; int fee_value) {
+				if(level >= range[0] && level < range[1]) {
+					level_fee = fee_value;
+					break;
 				}
+			}
+
+			// 两者取其最少
+			int fee;
+			if(vip_fee == 0) {
+				// VIP配置为0表示非会员，使用等级费用
+				fee = level_fee;
+			} else if(vip_fee < level_fee) {
+				// VIP费用更低，使用VIP费用
+				fee = vip_fee;
+			} else {
+				// 等级费用更低，使用等级费用
+				fee = level_fee;
 			}
 
 			string fee_cn = MUD_MONEYD->query_store_money_cn(fee);

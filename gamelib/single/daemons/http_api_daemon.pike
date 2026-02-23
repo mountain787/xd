@@ -1295,7 +1295,7 @@ array(mapping) parse_mud_to_json(string response, string txd, string userid)
         // 处理表单逻辑
         if(has_submit && in_form) {
             // 找到submit segment
-            mapping submit_seg = 0;
+            mapping submit_seg;
             foreach(raw_segments, mapping seg) {
                 if(seg["type"] == "submit") {
                     submit_seg = seg;

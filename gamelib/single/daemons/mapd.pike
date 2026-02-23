@@ -25,16 +25,14 @@ private mapping(int:int) vip_fly_fee_config = ([
 ]);
 // └─────────────┴───────────┴──────────────┘
 
-// ┌───────────┬──────────────┐
-// │  等级范围  │   飞行费用   │
-// ├───────────┼──────────────┤
-private mapping(array:int) level_fly_fee_config = ([
-    ({0, 10}),    100,        // │   0-9级   │    100文     │
-    ({10, 20}),   1000,       // │  10-19级   │   1000文     │
-    ({20, 50}),   2000,       // │  20-49级   │   2000文     │
-    ({50, 999}),  10000000,   // │  50级+     │  1000万      │
-]);
-// └───────────┴──────────────┘
+// 等级费用配置函数（按等级计算）
+// 0-9级: 100文, 10-19级: 1000文, 20-49级: 2000文, 50级+: 1000万
+private int get_level_fee(int level) {
+    if(level < 10) return 100;
+    if(level < 20) return 1000;
+    if(level < 50) return 2000;
+    return 10000000;
+}
 
 // 最终费用 = min(VIP费用, 等级费用)，取两者中较低的
 // ====================================================
@@ -146,15 +144,7 @@ string get_all_kinds_map(){
 			int vip_fee = vip_fly_fee_config[vip_level];
 
 			// 计算等级费用
-			int level_fee;
-			array ranges = indices(level_fly_fee_config);
-			foreach(ranges, array range) {
-				int fee_value = level_fly_fee_config[range];
-				if(level >= range[0] && level < range[1]) {
-					level_fee = fee_value;
-					break;
-				}
-			}
+			int level_fee = get_level_fee(level);
 
 			// 两者取其最少
 			int fee;

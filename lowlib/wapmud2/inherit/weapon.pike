@@ -8,29 +8,27 @@ inherit WAP_F_VIEW_VALUE;
 string query_inventory_links(void|int count)
 {
 	string base_links = ::query_inventory_links(count);
-	string new_link;
-	string old_link;
+	string target_link;
+	string other_link;
 
 	if(!equiped){
-		new_link = "[装配:wield "+name+" "+count+"]";
-		old_link = "[放下:unwield "+name+" "+count+"]";
+		target_link = "[装配:wield "+name+" "+count+"]";
+		other_link = "[放下:unwield "+name+" "+count+"]";
 	}
 	else{
-		new_link = "[放下:unwield "+name+" "+count+"]";
-		old_link = "[装配:wield "+name+" "+count+"]";
+		target_link = "[放下:unwield "+name+" "+count+"]";
+		other_link = "[装配:wield "+name+" "+count+"]";
 	}
 
-	// 移除旧的状态链接（避免装配/放下按钮同时存在）
-	if(search(base_links, old_link) >= 0){
-		base_links = replace(base_links, old_link, "");
+	// 循环清除所有 target_link 和 other_link
+	while(search(base_links, target_link) >= 0) {
+		base_links = replace(base_links, target_link, "");
+	}
+	while(search(base_links, other_link) >= 0) {
+		base_links = replace(base_links, other_link, "");
 	}
 
-	// 检查新链接是否已存在，避免重复
-	if(search(base_links, new_link) < 0){
-		base_links += new_link;
-	}
-
-	return base_links;
+	return base_links + target_link;
 }
 string query_extra_links(void|int count)
 {

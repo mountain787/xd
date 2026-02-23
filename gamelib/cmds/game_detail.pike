@@ -13,6 +13,7 @@ int main(string|zero arg)
 	//s += "[提交建议:diaocha_advice]\n";
 	s += "[配置快捷键:my_toolbar]\n";
 	s += "[图片开关:pic_switch_list]\n";
+	s += "[手动存档:save_game]\n";
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }

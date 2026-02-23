@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>仙道</title>
     <link rel="icon" type="image/x-icon" href="favicon.ico">
-    <link rel="stylesheet" href="css/app.css?v=v1771782949154">
+    <link rel="stylesheet" href="css/app.css?v=v1771811552003">
 </head>
 <body>
     <div id="app">
@@ -240,10 +240,18 @@
                                                    @keyup.enter="submitInput(segment.name, $event)"
                                                    class="mud-input"
                                                    :ref="'input-' + segment.name">
-                                            <a href="#"
+                                            <!-- 不在表单中的输入框显示确定按钮 -->
+                                            <a v-if="!segment.inForm"
+                                               href="#"
                                                @click.prevent="submitInput(segment.name, $event)"
                                                class="mud-btn mud-confirm-btn">确定</a>
                                         </span>
+                                        <!-- 表单提交按钮 (多个输入框共用一个确定按钮) -->
+                                        <a v-else-if="segment.type === 'form-submit'"
+                                           href="#"
+                                           @click.prevent="submitForm(segment)"
+                                           :class="segment.class"
+                                           class="mud-btn mud-form-submit-btn">{{ segment.label }}</a>
                                         <!-- 命令输入框 -->
                                         <span v-else-if="segment.type === 'cmd-input'" class="mud-cmd-input">
                                             <input type="text"
@@ -576,9 +584,9 @@
     </div>
 
     <script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"></script>
-    <script src="js/app.js?v=v1771782949154"></script>
+    <script src="js/app.js?v=v1771811552003"></script>
     <!-- 翻译插件 - 立即执行初始化 -->
-    <script src="../includes/translate.js?v=v1771782949154"></script>
+    <script src="../includes/translate.js?v=v1771811552003"></script>
     <script>
     // 翻译初始化
     translate.service.use('client.edge');

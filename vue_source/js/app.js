@@ -1240,6 +1240,32 @@ createApp({
             this.sendJsonCommand(cmd);
         },
 
+        // JSON模式: 提交表单（多个输入框共用一个提交按钮）
+        submitForm(formSegment) {
+            console.log('[submitForm] 被调用, formSegment:', formSegment);
+
+            const inputs = formSegment.inputs || [];
+            const cmd = formSegment.cmd;
+
+            // 收集所有输入框的值
+            let cmdWithArgs = cmd;
+            for (const input of inputs) {
+                const refName = 'input-' + input.name;
+                const inputRef = this.$refs[refName];
+                let value = '';
+                if (inputRef && inputRef.length) {
+                    value = inputRef[0].value || '';
+                } else if (inputRef) {
+                    value = inputRef.value || '';
+                }
+                // 将输入值追加到命令中，格式：cmd mb=xxx bp=yyy rp=zzz
+                cmdWithArgs += ` ${input.name}=${value}`;
+            }
+
+            console.log('[submitForm] 最终命令:', cmdWithArgs);
+            this.sendJsonCommand(cmdWithArgs);
+        },
+
         // 退出登录
         doLogout() {
             sessionStorage.removeItem('mud_txd');

@@ -2868,6 +2868,17 @@ body {
     justify-content: center;
 }
 
+/* 表单提交按钮 - 多个输入框共用的确定按钮 */
+.mud-form-submit-btn {
+    margin-top: 8px;
+    padding: 8px 16px;
+    font-size: var(--font-base);
+    border-radius: var(--radius-md);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
 /* 加载状态 */
 .mud-loading {
     display: flex;

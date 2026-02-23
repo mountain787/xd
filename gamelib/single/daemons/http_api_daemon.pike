@@ -1215,6 +1215,7 @@ string get_line_text(mapping m)
 /**
  * 解析MUD输出为结构化JSON数组
  * 每行是一个对象，包含type和content
+ * 支持跨行表单：连续的 [string name:...] 输入框后跟 [submit label:cmd ...]
  */
 array(mapping) parse_mud_to_json(string response, string txd, string userid)
 {
@@ -1223,6 +1224,11 @@ array(mapping) parse_mud_to_json(string response, string txd, string userid)
     if(!response) return result;
 
     array raw_lines = response / "\n";
+
+    // 跨行表单状态追踪
+    array(mapping) form_inputs = ({});     // 积累的输入框
+    array(int) form_line_indices = ({});   // 包含输入框的行索引
+    int in_form = 0;
 
     foreach(raw_lines, string line) {
         string original_line = line;
@@ -1254,9 +1260,131 @@ array(mapping) parse_mud_to_json(string response, string txd, string userid)
             continue;
         }
 
-        // 解析一行中的多个元素（文本、按钮、输入框）
-        array(mapping) segments = parse_line_segments(line, txd, userid);
-        result += ({(["type": "line", "segments": segments])});
+        // 先扫描行中是否有输入框或submit按钮
+        int has_input = 0;
+        int has_submit = 0;
+        array(mapping) raw_segments = ({});
+
+        int current = 0;
+        while(current < sizeof(line)) {
+            int start = search(line, "[", current);
+            if(start == -1) break;
+            int end = search(line, "]", start);
+            if(end == -1) break;
+
+            string bracket_content = line[start+1..end-1];
+            mapping parsed = parse_bracket_content(bracket_content, txd, userid);
+
+            if(parsed) {
+                string ptype = parsed["type"];
+                if(ptype == "input") {
+                    has_input = 1;
+                    raw_segments += ({parsed});
+                }
+                else if(ptype == "submit") {
+                    has_submit = 1;
+                    raw_segments += ({parsed});
+                }
+                else if(ptype != "skip") {
+                    raw_segments += ({parsed});
+                }
+            }
+            current = end + 1;
+        }
+
+        // 处理表单逻辑
+        if(has_submit && in_form) {
+            // 找到submit segment
+            mapping submit_seg = 0;
+            foreach(raw_segments, mapping seg) {
+                if(seg["type"] == "submit") {
+                    submit_seg = seg;
+                    break;
+                }
+            }
+
+            if(submit_seg) {
+                // 创建form-submit segment，包含所有积累的输入框
+                mapping form_submit = ([
+                    "type": "form-submit",
+                    "label": submit_seg["label"],
+                    "cmd": submit_seg["cmd"],
+                    "inputs": form_inputs,
+                    "class": submit_seg["class"] || "btn btn-outline-info btn-sm"
+                ]);
+
+                // 更新之前行中的输入框标记
+                foreach(form_line_indices, int line_idx) {
+                    if(result[line_idx] && result[line_idx]["segments"]) {
+                        foreach(result[line_idx]["segments"], mapping seg) {
+                            if(seg["type"] == "input") {
+                                seg["inForm"] = 1;
+                            }
+                        }
+                    }
+                }
+
+                // 当前行：添加form-submit和其他非input元素
+                array final_segments = ({});
+                foreach(raw_segments, mapping seg) {
+                    if(seg["type"] == "submit") {
+                        final_segments += ({form_submit});
+                    } else if(seg["type"] != "input") {
+                        final_segments += ({seg});
+                    }
+                }
+                result += ({(["type": "line", "segments": final_segments])});
+
+                // 重置表单状态
+                form_inputs = ({});
+                form_line_indices = ({});
+                in_form = 0;
+            }
+        }
+        else if(has_input) {
+            // 有输入框，加入表单状态
+            array final_segments = ({});
+            foreach(raw_segments, mapping seg) {
+                if(seg["type"] == "input") {
+                    mapping input_seg = ([
+                        "type": "input",
+                        "name": seg["name"],
+                        "default": seg["default"] || "",
+                        "width": seg["width"] || "",
+                        "isPassword": seg["isPassword"] || 0,
+                        "inForm": 0,  // 后续有submit时会改成1
+                        "txd": txd
+                    ]);
+                    final_segments += ({input_seg});
+                    form_inputs += ({input_seg});
+                    in_form = 1;
+                } else {
+                    final_segments += ({seg});
+                }
+            }
+
+            int line_idx = sizeof(result);
+            result += ({(["type": "line", "segments": final_segments])});
+            form_line_indices += ({line_idx});
+        }
+        else {
+            // 普通行，使用原有解析
+            array segments = parse_line_segments(line, txd, userid);
+            result += ({(["type": "line", "segments": segments])});
+        }
+    }
+
+    // 如果仍有未提交的表单输入，显示独立确定按钮
+    if(in_form && sizeof(form_inputs) > 0) {
+        foreach(form_line_indices, int line_idx) {
+            if(result[line_idx] && result[line_idx]["segments"]) {
+                foreach(result[line_idx]["segments"], mapping seg) {
+                    if(seg["type"] == "input") {
+                        seg["inForm"] = 0;
+                    }
+                }
+            }
+        }
     }
 
     return result;
@@ -1394,11 +1522,20 @@ mapping parse_bracket_content(string content, string txd, string userid)
             "txd": txd
         ]);
     }
-    // submit按钮 [submit 确定:command ...] - HTTP API中跳过不渲染
-    // WAP系统用submit按钮提交前面的输入框，但HTTP API不需要
+    // submit按钮 [submit 确定:command ...] - 返回submit类型用于表单处理
     else if(search(content, "submit ") == 0) {
-        http_werror("[DEBUG] submit button skipped in JSON parser: content='%s'\n", content);
-        // 返回skip类型表示跳过此元素
+        // 解析: submit 标签:命令 ...
+        string submit_label, submit_cmd;
+        if(sscanf(content, "submit %s:%s ...", submit_label, submit_cmd) == 2) {
+            string css_class = get_button_css_class(submit_label);
+            return ([
+                "type": "submit",
+                "label": submit_label,
+                "cmd": submit_cmd,
+                "class": css_class
+            ]);
+        }
+        // 解析失败则跳过
         return (["type": "skip"]);
     }
     else if(sscanf(content, "%s %s:...", type, var_name) == 2) {

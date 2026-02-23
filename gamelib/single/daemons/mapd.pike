@@ -9,6 +9,28 @@
 #include <gamelib/include/gamelib.h>
 #define NUM 5//当前房间的相邻房间的个数
 
+// ==================== 飞行费用配置 ====================
+// VIP会员飞行费用配置（单位：文，100文=1金）
+// 可在此调整各会员等级的飞行费用
+// vip_level -> 飞行费用（0表示使用普通玩家按等级计算）
+private mapping(int:int) vip_fly_fee_config = ([
+    0: 0,       // 非会员：按等级计算（原价）
+    1: 2000000,  // 水晶会员：固定200万（2万金）
+    2: 1000000,  // 黄金会员：固定100万（1万金）
+    3: 500000,   // 白金会员：固定50万（5000金）
+    4: 500000,   // 钻石会员：固定50万（5000金）
+]);
+
+// 普通玩家按等级计算的飞行费用
+// 等级范围 -> 飞行费用
+private mapping(array:int) normal_fly_fee_config = ([
+    ({0, 10}): 100,       // 0-9级：100文
+    ({10, 20}): 1000,     // 10-19级：1000文
+    ({20, 50}): 2000,     // 20-49级：2000文
+    ({50, 999}): 10000000,// 50级以上：1000万
+]);
+// ====================================================
+
 private mapping(string:mapping(string:string)) all_map = ([]);
 /*
 	map=([当前房间英文名:(["east":向东方向的第1个房间-向东方向的第1个房间-...-向东方向的第5个房间,"west":"...","south":"...","north":"..."]),...]);
@@ -108,19 +130,27 @@ string get_all_kinds_map(){
 	array(string) block_list = sort(indices(all_map_list));
 	foreach(block_list,string block){
 		if(pinyin_to_cn[block]){
-			int fee = 1000000;
-			if(this_player()->query_level() >= 50)	
-				fee = 10000000;	
-			else if(this_player()->query_level() >= 20){
-				fee = 2000;	
-			}else if(this_player()->query_level() >= 10){
-				fee = 1000;
-			}else{
-				fee = 100;
+			int fee;
+			object me = this_player();
+			int vip_level = me->query_vip_flag() || 0;
+
+			// 根据VIP等级获取飞行费用
+			fee = vip_fly_fee_config[vip_level];
+
+			// 如果配置为0，则按等级计算
+			if(fee == 0) {
+				int level = me->query_level();
+				foreach(normal_fly_fee_config; array range; int fee_value) {
+					if(level >= range[0] && level < range[1]) {
+						fee = fee_value;
+						break;
+					}
+				}
 			}
-			string fee_cn =MUD_MONEYD->query_store_money_cn(fee);
+
+			string fee_cn = MUD_MONEYD->query_store_money_cn(fee);
 			s+="[支付"+fee_cn+"飞到 "+pinyin_to_cn[block]+":map_display "+block+" "+fee+"]\n";
-		}	
+		}
 
 	}
 	return s;

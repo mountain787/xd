@@ -56,7 +56,9 @@ private string safe_deduplicate(string links_str) {
 	};
 
 	if(err) {
-		// 出错时返回原字符串
+		// 出错时打印错误并返回原字符串
+		werror("[links.pike] safe_deduplicate error: %s\n", describe_error(err));
+		werror("[links.pike] links_str length: %d, content: %O\n", sizeof(links_str), links_str[0..100]);
 		return links_str;
 	}
 	return links_str;

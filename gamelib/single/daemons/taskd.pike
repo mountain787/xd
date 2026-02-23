@@ -649,9 +649,9 @@ string getTaskAward(object player,int taskid)
 				get_exp -= (int)(get_exp*(player->query_level() - tmp_task->level_limit)*10/100);
 			if(get_exp <= 0||player->query_level()>=MAX_LEVEL)
 				get_exp = 1;
-			player->exp += get_exp;
-			player->current_exp += get_exp;
-			s_rtn = "得到了"+get_exp+"点经验。\n";
+			// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
+			int actual_exp = player->add_exp_with_bonus(get_exp);
+			s_rtn = "得到了"+actual_exp+"点经验。\n";
 			player->query_if_levelup();
 			if(player->query_levelFlag())
 				s_rtn += "你的等级提升到了 "+player->query_level()+" 级！\n";	

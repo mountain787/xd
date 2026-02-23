@@ -254,8 +254,28 @@ int query_levelUp_need_exp(){
 	return need_exp; 
 }
 string query_levelUp_need_exp_cn(){
-	int need_exp = query_need_exp(); 
+	int need_exp = query_need_exp();
 	return "距离升级还需要 "+need_exp+" 点经验";
+}
+
+/**
+ * 添加经验值（HTTP API 用户自动获得 50% 加成）
+ * @param base_exp 基础经验值
+ * @return 实际获得的经验值（含加成）
+ */
+int add_exp_with_bonus(int base_exp)
+{
+	object me = this_object();
+	int final_exp = base_exp;
+
+	// HTTP API 用户获得 50% 经验加成
+	if(me->is_http_api_user && base_exp > 0) {
+		final_exp = base_exp * 3 / 2;  // 1.5倍 = 原始 + 50%加成
+	}
+
+	me->exp += final_exp;
+	me->current_exp += final_exp;
+	return final_exp;
 }
 
 //private string initer=(this_object()->add_heart_beat(check_level,5),"");

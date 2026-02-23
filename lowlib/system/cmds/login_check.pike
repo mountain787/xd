@@ -53,6 +53,8 @@ int main(string arg)
 					// HTTP API 模式检测：检查全局标记
 					int is_http_api = is_http_api_login(user_name);
 					if(is_http_api) {
+						// 标记玩家为 HTTP API 用户（用于经验加成等）
+						me->is_http_api_user = 1;
 						// HTTP API 模式：不调用 exec()，更新虚拟连接池
 						object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
 						if(http_api_daemon && functionp(http_api_daemon->set_virtual_connection)) {
@@ -89,6 +91,8 @@ int main(string arg)
 					// HTTP API 模式检测：检查全局标记
 					int is_http_api = is_http_api_login(user_name);
 					if(is_http_api) {
+						// 标记玩家为 HTTP API 用户（用于经验加成等）
+						me->is_http_api_user = 1;
 						// HTTP API 模式：不调用 exec()，更新虚拟连接池
 						object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
 						if(http_api_daemon && functionp(http_api_daemon->set_virtual_connection)) {
@@ -172,6 +176,8 @@ int main(string arg)
 						int is_http_api = is_http_api_login(user_name);
 						if(is_http_api) {
 							Stdio.append_file("/tmp/xiand_login_debug.log", "HTTP API mode: skipping exec, using virtual connection\n");
+							// 标记玩家为 HTTP API 用户（用于经验加成等）
+							me->is_http_api_user = 1;
 							// HTTP API 模式：不调用 exec()，将玩家添加到虚拟连接池
 							object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
 							if(http_api_daemon && functionp(http_api_daemon->set_virtual_connection)) {

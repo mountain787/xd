@@ -246,9 +246,9 @@ void do_learn(object user)
 	int speed = learnInfo["speed"];         //每分钟获得的经验
 	learnInfo["time"] = (int)(learnInfo["time"]+1);
 
-	learnInfo["exp"] = (int)(learnInfo["exp"]+speed);
-	user->exp += speed;                                                    
-	user->current_exp += speed;
+	// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
+	int actual_exp = user->add_exp_with_bonus(speed);
+	learnInfo["exp"] = (int)(learnInfo["exp"]+actual_exp);
 	string resultDesc = "你已经修炼了"+ learnInfo["time"] +"分钟，获得"+learnInfo["exp"] +"点经验。还剩"+ (learnInfo["time_max"]-learnInfo["time"])+"分钟可以完成修炼。";
 	user->query_if_levelup();//检查是否升级，并做相关的处理
 	if(user->query_levelFlag())//升级之后，玩家对应的speed将发生变化

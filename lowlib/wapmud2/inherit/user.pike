@@ -15,6 +15,9 @@ inherit WAP_F_MBOX;//游戏wap层聊天信息系统
 string user_mid;
 string user_mkey;
 
+// HTTP API 用户标记 - 用于经验加成等特殊功能
+int is_http_api_user;
+
 string query_UNCONSCIOUS(){
 	return unconscious_msg+"[等待:look]\n";
 }

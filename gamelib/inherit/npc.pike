@@ -311,19 +311,19 @@ void fight_die()
 							}	
 							
 							extra_dh += exp_gain*2;
-							bs_tips += "<font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";	
+							bs_tips += "<font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";
 							if(exp_gain>0){
 								exp_gain += extra_dh;
-								termer->exp += exp_gain;
-								termer->current_exp += exp_gain;
+								// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
+								int actual_exp = termer->add_exp_with_bonus(exp_gain);
 								string t = "";
 								if(bs_tips&&sizeof(bs_tips))
-									t + "你得到了 "+exp_gain+" 点经验。\n（"+bs_tips+")\n";
+									t + "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
 								else
-									t + "你得到了 "+exp_gain+" 点经验。\n";
+									t + "你得到了 "+actual_exp+" 点经验。\n";
 								termer->query_if_levelup();
 								if(termer->query_levelFlag())
-									t += "你的等级提升到了 "+termer->query_level()+" 级！\n";	
+									t += "你的等级提升到了 "+termer->query_level()+" 级！\n";
 								tell_object(termer,t);
 							}
 							///////////////////////////////////////////////////////////////////////////////////////
@@ -825,7 +825,7 @@ void fight_die_single(object env)
 			}
 		}
 		extra_dh += exp_gain*2;
-		bs_tips += "<br><font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";	
+		bs_tips += "<br><font style=\"color:DARKORANGE\">五一节经验双倍活动，经验倍速开启：2倍，额外获得 "+extra_dh+" 点经验值</font>";
 		if(exp_gain>0){
 			//这里添加经验特药的加成，由liaocheng于07/11/21添加
 			//int te_eff = (int)first->query_buff("te_exp",1);
@@ -834,16 +834,16 @@ void fight_die_single(object env)
 				exp_gain = exp_gain+exp_gain*te_eff/100;
 			}
 			exp_gain += extra_dh;
-			first->exp += exp_gain;
-			first->current_exp += exp_gain;
+			// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
+			int actual_exp = first->add_exp_with_bonus(exp_gain);
 			string t = "";
 			if(bs_tips&&sizeof(bs_tips))
-				t += "你得到了 "+exp_gain+" 点经验。\n（"+bs_tips+")\n";
+				t += "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
 			else
-				t += "你得到了 "+exp_gain+" 点经验。\n";
+				t += "你得到了 "+actual_exp+" 点经验。\n";
 			first->query_if_levelup();
 			if(first->query_levelFlag())
-				t += "你的等级提升到了 "+first->query_level()+" 级！\n";	
+				t += "你的等级提升到了 "+first->query_level()+" 级！\n";
 			tell_object(first,t);
 		}
 		///////////////////////////////////////////////////////////////////////////////////////

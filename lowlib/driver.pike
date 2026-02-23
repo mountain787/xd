@@ -182,8 +182,14 @@ class pikenv_master{
 	}
 	void compile_warning(string file, int line, string msg)
 	{
+		werror("%s:%d: %s\n", file, line, msg);
+		debug_log->write("%s:%d: %s\n", file, line, msg);
+	}
+
+	void compile_error(string file, int line, string msg)
+	{
 		string timestamp = String.trim_all_whites(ctime(time()));
-		string error_msg = sprintf("-----%s-----\nSYNTAX ERROR: %s:%d: %s\n", timestamp, file, line, msg);
+		string error_msg = sprintf("-----%s-----\nCOMPILE ERROR: %s:%d: %s\n", timestamp, file, line, msg);
 		werror("%s:%d: %s\n", file, line, msg);
 		debug_log->write("%s:%d: %s\n", file, line, msg);
 		// 同时写入主错误日志

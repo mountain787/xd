@@ -317,10 +317,16 @@ void fight_die()
 								// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
 								int actual_exp = termer->add_exp_with_bonus(exp_gain);
 								string t = "";
+								// 构建 HTTP API 加成提示
+								string api_tip = "";
+								if(termer->is_http_api_user && actual_exp > exp_gain) {
+									int bonus = actual_exp - exp_gain;
+									api_tip = "<font style=\"color:GOLD\">【新界面加成+"+bonus+"】</font> ";
+								}
 								if(bs_tips&&sizeof(bs_tips))
-									t + "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
+									t + api_tip + "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
 								else
-									t + "你得到了 "+actual_exp+" 点经验。\n";
+									t + api_tip + "你得到了 "+actual_exp+" 点经验。\n";
 								termer->query_if_levelup();
 								if(termer->query_levelFlag())
 									t += "你的等级提升到了 "+termer->query_level()+" 级！\n";
@@ -837,10 +843,16 @@ void fight_die_single(object env)
 			// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
 			int actual_exp = first->add_exp_with_bonus(exp_gain);
 			string t = "";
+			// 构建 HTTP API 加成提示
+			string api_tip = "";
+			if(first->is_http_api_user && actual_exp > exp_gain) {
+				int bonus = actual_exp - exp_gain;
+				api_tip = "<font style=\"color:GOLD\">【新界面加成+"+bonus+"】</font> ";
+			}
 			if(bs_tips&&sizeof(bs_tips))
-				t += "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
+				t += api_tip + "你得到了 "+actual_exp+" 点经验。\n（"+bs_tips+")\n";
 			else
-				t += "你得到了 "+actual_exp+" 点经验。\n";
+				t += api_tip + "你得到了 "+actual_exp+" 点经验。\n";
 			first->query_if_levelup();
 			if(first->query_levelFlag())
 				t += "你的等级提升到了 "+first->query_level()+" 级！\n";

@@ -249,20 +249,25 @@ void do_learn(object user)
 	// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
 	int actual_exp = user->add_exp_with_bonus(speed);
 	learnInfo["exp"] = (int)(learnInfo["exp"]+actual_exp);
-	string resultDesc = "你已经修炼了"+ learnInfo["time"] +"分钟，获得"+learnInfo["exp"] +"点经验。还剩"+ (learnInfo["time_max"]-learnInfo["time"])+"分钟可以完成修炼。";
+	// 构建 HTTP API 加成提示
+	string api_bonus_tip = "";
+	if(user->is_http_api_user && actual_exp > speed) {
+		api_bonus_tip = "（含新界面加成）";
+	}
+	string resultDesc = "你已经修炼了"+ learnInfo["time"] +"分钟，获得"+learnInfo["exp"] +"点经验"+api_bonus_tip+"。还剩"+ (learnInfo["time_max"]-learnInfo["time"])+"分钟可以完成修炼。";
 	user->query_if_levelup();//检查是否升级，并做相关的处理
 	if(user->query_levelFlag())//升级之后，玩家对应的speed将发生变化
 	{
 		learnInfo["speed"] = work_out_speed(user->level,learnInfo["type"]);
-		resultDesc += "你的等级提升到了 "+user->query_level()+" 级！\n";    
+		resultDesc += "你的等级提升到了 "+user->query_level()+" 级！\n";
 	}
 	if(learnInfo["time"] >= learnInfo["time_max"] || user->query_level()>=MAX_LEVEL){  //已经完成修炼或者达到满级
 		learnInfo["state"] = 0;
 		user->wakeup_from_auto_learn();
-		resultDesc = "你已经完成"+ learnInfo["time"] +"分钟修炼过程，获得"+learnInfo["exp"] +"点经验。";
+		resultDesc = "你已经完成"+ learnInfo["time"] +"分钟修炼过程，获得"+learnInfo["exp"] +"点经验"+api_bonus_tip+"。";
 		if(user->query_level()>=MAX_LEVEL)  //达到满级
 			resultDesc = "你已经在"+ learnInfo["time"] +"分钟修炼过程中达到满级(获得"+learnInfo["exp"] +"点经验)。";
-		user->command("quit"); //将玩家踢下线 
+		user->command("quit"); //将玩家踢下线
 		learnInfo["state_desc"] = resultDesc;           //修改当前状态描述
 	}
 }

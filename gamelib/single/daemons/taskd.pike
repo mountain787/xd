@@ -651,7 +651,13 @@ string getTaskAward(object player,int taskid)
 				get_exp = 1;
 			// 使用带加成的经验函数（HTTP API 用户自动获得 50% 加成）
 			int actual_exp = player->add_exp_with_bonus(get_exp);
-			s_rtn = "得到了"+actual_exp+"点经验。\n";
+			// 构建 HTTP API 加成提示
+			if(player->is_http_api_user && actual_exp > get_exp) {
+				int bonus = actual_exp - get_exp;
+				s_rtn = "【新界面加成+"+bonus+"】得到了"+actual_exp+"点经验。\n";
+			} else {
+				s_rtn = "得到了"+actual_exp+"点经验。\n";
+			}
 			player->query_if_levelup();
 			if(player->query_levelFlag())
 				s_rtn += "你的等级提升到了 "+player->query_level()+" 级！\n";	

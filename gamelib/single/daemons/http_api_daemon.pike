@@ -1999,23 +1999,29 @@ void handle_api_battle_status(Protocols.HTTP.Server.Request req)
         }
         enemy_state["is_npc"] = e_is_npc;
 
-        // 仿照玩家血量获取方式：直接访问变量
-        // 参考 html_renderer.pike: int jing = player->jing;
-        int e_jing = enemy_obj->jing;
-        int e_jing_max = enemy_obj->jing_max;
+        // 获取敌人血量：使用 get_cur_life() 和 query_life_max()
+        int e_hp = 0;
+        int e_hp_max = 0;
+
+        if(functionp(enemy_obj->get_cur_life)) {
+            e_hp = enemy_obj->get_cur_life();
+        }
+        if(functionp(enemy_obj->query_life_max)) {
+            e_hp_max = enemy_obj->query_life_max();
+        }
 
         // -1 表示死亡，转为 0
-        if(e_jing < 0) {
-            e_jing = 0;
+        if(e_hp < 0) {
+            e_hp = 0;
         }
 
         // 直接显示真实值
-        enemy_state["hp"] = e_jing;
-        enemy_state["hp_max"] = e_jing_max;
-        enemy_state["is_dead"] = (e_jing <= 0);
+        enemy_state["hp"] = e_hp;
+        enemy_state["hp_max"] = e_hp_max;
+        enemy_state["is_dead"] = (e_hp <= 0);
 
-        http_werror(" Enemy %s HP: %d/%d (jing=%d, jing_max=%d)\n",
-                   e_name, e_jing, e_jing_max, e_jing, e_jing_max);
+        http_werror(" Enemy %s HP: %d/%d (is_npc=%d)\n",
+                   e_name, e_hp, e_hp_max, e_is_npc);
 
         // 如果敌人是玩家，尝试获取userid
         if(!e_is_npc && functionp(enemy_obj->query_userid)) {

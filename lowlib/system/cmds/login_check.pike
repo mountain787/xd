@@ -61,7 +61,8 @@ int main(string arg)
 							http_api_daemon->set_virtual_connection(user_name, ({0, time(), me}));
 						}
 					} else {
-						// Socket 模式：正常调用 exec()
+						// Socket 模式：重置 HTTP API 标记，正常调用 exec()
+						me->is_http_api_user = 0;
 						exec(me,previous_object());
 						destruct(previous_object());
 					}
@@ -99,7 +100,8 @@ int main(string arg)
 							http_api_daemon->set_virtual_connection(user_name, ({0, time(), me}));
 						}
 					} else {
-						// Socket 模式：正常调用 exec()
+						// Socket 模式：重置 HTTP API 标记，正常调用 exec()
+						me->is_http_api_user = 0;
 						exec(me,previous_object());
 						destruct(previous_object());
 					}
@@ -188,7 +190,8 @@ int main(string arg)
 							}
 						} else {
 							Stdio.append_file("/tmp/xiand_login_debug.log", "Socket mode: calling exec...\n");
-							// Socket 模式：正常调用 exec()
+							// Socket 模式：重置 HTTP API 标记，正常调用 exec()
+							me->is_http_api_user = 0;
 							exec(me,previous_object());
 							if(environment(me)==0){
 								me->move(LOW_VOID_OB);

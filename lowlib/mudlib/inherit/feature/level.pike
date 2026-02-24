@@ -259,7 +259,7 @@ string query_levelUp_need_exp_cn(){
 }
 
 /**
- * 添加经验值（HTTP API 用户自动获得 50% 加成）
+ * 添加经验值（HTTP API 用户自动获得 50% 加成，可配置开关）
  * @param base_exp 基础经验值
  * @return 实际获得的经验值（含加成）
  */
@@ -268,9 +268,21 @@ int add_exp_with_bonus(int base_exp)
 	object me = this_object();
 	int final_exp = base_exp;
 
-	// HTTP API 用户获得 50% 经验加成
+	// 检查 HTTP API 经验加成是否启用
 	if(me->is_http_api_user && base_exp > 0) {
-		final_exp = base_exp * 3 / 2;  // 1.5倍 = 原始 + 50%加成
+		// 动态检查加成开关
+		int bonus_enabled = 1;
+		int bonus_rate = 150;  // 默认 1.5倍
+
+		object http_api_daemon = find_object(ROOT + "/gamelib/single/daemons/http_api_daemon.pike");
+		if(http_api_daemon && functionp(http_api_daemon->query_exp_bonus_enabled)) {
+			bonus_enabled = http_api_daemon->query_exp_bonus_enabled();
+			bonus_rate = http_api_daemon->query_exp_bonus_rate();
+		}
+
+		if(bonus_enabled) {
+			final_exp = base_exp * bonus_rate / 100;
+		}
 	}
 
 	me->exp += final_exp;

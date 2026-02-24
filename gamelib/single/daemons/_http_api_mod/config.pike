@@ -70,4 +70,14 @@ constant LOCKOUT_DURATION = 300;
 /** 密码失败追踪窗口 (秒) */
 constant PASSWORD_FAIL_WINDOW = 300;
 
+// ========================================================================
+// 经验加成配置
+// ========================================================================
+
+/** HTTP API 用户经验加成开关 (1=开启 50%加成, 0=关闭) */
+constant HTTP_API_EXP_BONUS_ENABLED = 1;
+
+/** HTTP API 用户经验加成倍率 (100 = 原始, 150 = 1.5倍) */
+constant HTTP_API_EXP_BONUS_RATE = 150;
+
 #endif

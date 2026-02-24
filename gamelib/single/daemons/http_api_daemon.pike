@@ -91,6 +91,26 @@ void clear_http_api_login_pending(string userid) {
 }
 
 // ========================================================================
+// 经验加成配置查询
+// ========================================================================
+
+/**
+ * 查询 HTTP API 经验加成是否启用
+ * @return 1=启用, 0=禁用
+ */
+int query_exp_bonus_enabled() {
+    return HTTP_API_EXP_BONUS_ENABLED;
+}
+
+/**
+ * 查询 HTTP API 经验加成倍率
+ * @return 倍率 (100=原始, 150=1.5倍)
+ */
+int query_exp_bonus_rate() {
+    return HTTP_API_EXP_BONUS_RATE;
+}
+
+// ========================================================================
 // 初始化
 // ========================================================================
 
@@ -100,6 +120,8 @@ protected void create()
     werror("[HTTP_API] Daemon Loading...\n");
     werror("[HTTP_API] HTTP_PORT = %d\n", HTTP_PORT);
     werror("[HTTP_API] HTTP_API_DEBUG = %d\n", HTTP_API_DEBUG);
+    werror("[HTTP_API] EXP_BONUS_ENABLED = %d\n", HTTP_API_EXP_BONUS_ENABLED);
+    werror("[HTTP_API] EXP_BONUS_RATE = %d%%\n", HTTP_API_EXP_BONUS_RATE);
     werror("[HTTP_API] ROOT = %s\n", ROOT);
     werror("[HTTP_API] SROOT = %s\n", SROOT);
     werror("========================================\n");

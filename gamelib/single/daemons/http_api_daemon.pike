@@ -1999,6 +1999,37 @@ void handle_api_battle_status(Protocols.HTTP.Server.Request req)
         }
         enemy_state["is_npc"] = e_is_npc;
 
+        // 获取敌人等级
+        if(functionp(enemy_obj->query_level)) {
+            enemy_state["level"] = enemy_obj->query_level();
+        }
+
+        // 获取敌人职业/种类
+        if(functionp(enemy_obj->query_profeId)) {
+            enemy_state["profe_id"] = enemy_obj->query_profeId();
+        }
+        if(functionp(enemy_obj->query_profe_cn)) {
+            enemy_state["profe"] = enemy_obj->query_profe_cn(enemy_obj->query_profeId());
+        }
+
+        // 获取敌人种族
+        if(functionp(enemy_obj->query_raceId)) {
+            enemy_state["race_id"] = enemy_obj->query_raceId();
+        }
+        if(functionp(enemy_obj->query_race_cn)) {
+            enemy_state["race"] = enemy_obj->query_race_cn(enemy_obj->query_raceId());
+        }
+
+        // 获取敌人攻击力
+        if(functionp(enemy_obj->query_attack_power)) {
+            enemy_state["attack"] = enemy_obj->query_attack_power();
+        }
+
+        // 获取敌人防御力
+        if(functionp(enemy_obj->query_defend_power)) {
+            enemy_state["defend"] = enemy_obj->query_defend_power();
+        }
+
         // 获取敌人血量：使用 get_cur_life() 和 query_life_max()
         int e_hp = 0;
         int e_hp_max = 0;

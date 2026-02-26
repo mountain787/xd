@@ -50,15 +50,74 @@ void set_password(string arg){
 string have_name_cn(){
 	return name_cn;
 }
+
+// 存储原始名称（不含VIP后缀），防止累积
+private string original_name_cn = 0;
+void set_original_name_cn(string s){ original_name_cn = s;}
+string query_original_name_cn(){ return original_name_cn || name_cn; }
+
 string query_name_cn(void|int true_name){
 	if(fake_name_cn&&!true_name)
 		return fake_name_cn;
-	if(name_cn)
+
+	string base_name = name_cn;
+
+	// 清理已累积的(会员专用)后缀，只保留一个
+	if(base_name && sizeof(base_name) > 0){
+		string suffix = "(会员专用)";
+		string suffix_utf8 = "(浼氬憳涓撶敤)";  // 处理乱码版本
+
+		// 检查是否有重复的后缀需要清理
+		int count_suffix = 0;
+		int pos = 0;
+		while((pos = search(base_name, suffix, pos)) != -1){
+			count_suffix++;
+			pos += sizeof(suffix);
+		}
+
+		// 同时检查乱码版本
+		if(count_suffix <= 1){
+			pos = 0;
+			while((pos = search(base_name, suffix_utf8, pos)) != -1){
+				count_suffix++;
+				pos += sizeof(suffix_utf8);
+			}
+		}
+
+		// 如果发现有多个后缀，清理它们
+		if(count_suffix > 1){
+			// 移除所有(会员专用)后缀
+			base_name = replace(base_name, suffix, "");
+			base_name = replace(base_name, suffix_utf8, "");
+			// 保存清理后的原始名称
+			if(!original_name_cn){
+				original_name_cn = base_name;
+			}
+		}
+
+		// 如果没有原始名称，保存清理后的名称
+		if(!original_name_cn){
+			original_name_cn = base_name;
+		}
+	}
+
+	// 使用原始名称（如果已设置）来避免累积
+	if(original_name_cn)
+		base_name = original_name_cn;
+
+	if(base_name)
 	{
-		if(toVip)//add by evan 2008.07.21
-			return name_cn +"(会员专用)";
+		// 检查是否已有(会员专用)后缀，避免重复添加
+		if(toVip){//add by evan 2008.07.21
+			string suffix = "(会员专用)";
+			// 只有当名称不以(会员专用)结尾时才添加
+			if(search(base_name, suffix) != (sizeof(base_name) - sizeof(suffix))){
+				return base_name + suffix;
+			}
+			return base_name;
+		}
 		else
-			return name_cn;
+			return base_name;
 	}
 	else{
 		// Check if query_raceId function exists before calling it

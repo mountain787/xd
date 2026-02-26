@@ -124,6 +124,11 @@ protected string status;//状态
 string query_status(){return status;}
 void set_status(string s){ status= s;}
 
+// 存储原始名称（不含稀有度前缀），防止累积
+private string original_name_cn = 0;
+void set_original_name_cn(string s){ original_name_cn = s;}
+string query_original_name_cn(){ return original_name_cn || ::query_name_cn(); }
+
 protected int add_luck = 0;//增加的幸运值，锻造时宝石需用这个
 int query_add_luck(){return add_luck;}
 void set_add_luck(int s){ add_luck = s;}
@@ -135,7 +140,16 @@ string query_short(){
 	if(status){
 		s="<"+status+">";
 	}
-	return "一"+unit+::query_name_cn()+s;
+	// 优先使用原始名称，避免稀有度前缀累积
+	string display_name = query_original_name_cn();
+	// 动态添加稀有度前缀
+	if(functionp(this_object()->query_rare_level)){
+		string prefix = this_object()->query_rare_level();
+		if(prefix && sizeof(prefix) > 0 && search(display_name, prefix) != 0){
+			display_name = prefix + display_name;
+		}
+	}
+	return "一"+unit+display_name+s;
 }
 void remove(void|int judgement){
 	if(judgement){

@@ -226,8 +226,8 @@
                                              onerror="this.style.display='none'">
                                         <!-- 按钮 -->
                                         <a v-else-if="segment.type === 'button'"
-                                           href="#"
-                                           @click.prevent="sendJsonCommand(segment.cmd)"
+                                           :href="htmlMode ? getDirectUrl(segment.cmd) : '#'"
+                                           @click.prevent="!htmlMode && sendJsonCommand(segment.cmd)"
                                            :class="segment.class"
                                            class="mud-btn"
                                            v-html="segment.label"></a>

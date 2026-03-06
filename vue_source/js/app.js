@@ -146,6 +146,7 @@ createApp({
             useAsyncMode: false,  // 是否使用异步模式（同步更快，无轮询开销）
             // JSON模式 (vue-ui-3: 无iframe，Vue直接渲染)
             useJsonMode: true,  // 使用JSON模式代替iframe
+            htmlMode: false,  // HTML模式：按钮使用href链接（兼容自动浏览器）
             mudLines: [],  // MUD输出行数组
             mudLoading: false,  // MUD加载中状态
             slowLoadingTip: false,  // 慢速加载提示（超过3秒显示）
@@ -291,6 +292,12 @@ createApp({
         getGameFrameUrl() {
             if (!this.txd) return '';
             return `${this.apiBase}/api/html?txd=${encodeURIComponent(this.txd)}&cmd=look`;
+        },
+
+        // 生成传统API链接（HTML模式使用）
+        getDirectUrl(cmd) {
+            if (!this.txd) return '#';
+            return `${this.apiBase}/api/html?txd=${encodeURIComponent(this.txd)}&cmd=${encodeURIComponent(cmd)}`;
         },
 
         // 注册功能
@@ -2529,6 +2536,13 @@ createApp({
         const urlParams = new URLSearchParams(window.location.search);
         const refParam = urlParams.get('ref');
         const txdParam = urlParams.get('txd');
+
+        // 检测HTML模式（兼容自动浏览器）
+        const modeParam = urlParams.get('mode');
+        if (modeParam === 'html') {
+            this.htmlMode = true;
+            console.log('HTML模式已启用：按钮使用href链接');
+        }
         console.log('URL参数解析:', {
             fullUrl: window.location.href,
             pathname: window.location.pathname,

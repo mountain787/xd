@@ -293,6 +293,12 @@ createApp({
             return `${this.apiBase}/api/html?txd=${encodeURIComponent(this.txd)}&cmd=look`;
         },
 
+        // 生成传统 API 链接（兼容自动化浏览器工具）
+        getDirectUrl(cmd) {
+            if (!this.txd) return '#';
+            return `${this.apiBase}/api/html?txd=${encodeURIComponent(this.txd)}&cmd=${encodeURIComponent(cmd)}`;
+        },
+
         // 注册功能
         async doRegister() {
             // 验证输入

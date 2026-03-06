@@ -14,6 +14,11 @@ int main(string|zero arg)
 	s += "[配置快捷键:my_toolbar]\n";
 	s += "[图片开关:pic_switch_list]\n";
 	s += "[手动存档:save_game]\n";
+	// 改名字功能：只有无名开头的玩家可以看到
+	string current_name = me->query_name_cn(1);
+	if(search(current_name, "无名") == 0){
+		s += "[修改名字:set_name]\n";
+	}
 	me->write_view(WAP_VIEWD["/emote"],0,0,s);
 	return 1;
 }

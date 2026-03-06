@@ -102,8 +102,10 @@ void update_connection_time(string userid)
 
 /**
  * 检查并复用已有的玩家连接
+ * @param userid 用户ID
+ * @param update_idle_time 是否更新闲置时间（默认1=更新，0=不更新）
  */
-object get_player_from_connection(string userid)
+object get_player_from_connection(string userid, void|int update_idle_time)
 {
     if(!userid) return 0;
 
@@ -111,7 +113,10 @@ object get_player_from_connection(string userid)
     if(vconn && arrayp(vconn) && sizeof(vconn) >= 3) {
         object player = vconn[2];
         if(player && functionp(player->query_name)) {
-            vconn[1] = time();
+            // 默认更新闲置时间，除非明确传入0
+            if(update_idle_time != 0) {
+                vconn[1] = time();
+            }
             return player;
         }
         vconnections[userid] = 0;
@@ -124,43 +129,56 @@ object get_player_from_connection(string userid)
  */
 void cleanup_idle_connections()
 {
-    int timeout = CONN_TIMEOUT;
-    int now = time();
-    array users = indices(vconnections);
-    int kicked_count = 0;
+    mixed err = catch {
+        int timeout = CONN_TIMEOUT;
+        int now = time();
+        array users = indices(vconnections);
+        int kicked_count = 0;
 
-    foreach(users, string userid) {
-        mixed vconn = vconnections[userid];
-        if(arrayp(vconn) && sizeof(vconn) >= 3) {
-            int last_used = vconn[1];
-            object player = vconn[2];
+        // 调试：每次cleanup都输出日志
+        http_werror("[IDLE_CHECK] Running cleanup, vconnections size=%d, timeout=%d\n", sizeof(vconnections), timeout);
 
-            // 检查是否超时
-            if(now - last_used > timeout) {
-                // 记录日志
+        foreach(users, string userid) {
+            mixed vconn = vconnections[userid];
+            if(arrayp(vconn) && sizeof(vconn) >= 3) {
+                int last_used = vconn[1];
+                object player = vconn[2];
+                int idle_time = now - last_used;
+
+                // 调试：输出每个连接的状态
                 string name = player && functionp(player->query_name) ? player->query_name() : userid;
-                string name_cn = player && functionp(player->query_name_cn) ? player->query_name_cn() : name;
-                int level = player && functionp(player->query_level) ? player->query_level() : 0;
-                int idle_seconds = now - last_used;
+                http_werror("[IDLE_CHECK] User %s: idle=%d/%d seconds\n", name, idle_time, timeout);
 
-                log_idle_kick(name, name_cn, level, idle_seconds, "HTTP_API");
+                // 检查是否超时
+                if(idle_time > timeout) {
+                    // 记录日志
+                    string name_cn = player && functionp(player->query_name_cn) ? player->query_name_cn() : name;
+                    int level = player && functionp(player->query_level) ? player->query_level() : 0;
 
-                // 踢出用户
-                if(player && functionp(player->remove)) {
-                    player->remove();
+                    log_idle_kick(name, name_cn, level, idle_time, "HTTP_API");
+
+                    // 踢出用户
+                    if(player && functionp(player->remove)) {
+                        player->remove();
+                    }
+
+                    // 移除虚拟连接
+                    vconnections[userid] = 0;
+                    kicked_count++;
                 }
-
-                // 移除虚拟连接
-                vconnections[userid] = 0;
-                kicked_count++;
             }
         }
+
+        if(kicked_count > 0) {
+            http_werror("[IDLE_KICK] Kicked %d idle HTTP_API users\n", kicked_count);
+        }
+    };
+
+    if(err) {
+        http_werror("[IDLE_CHECK] ERROR: %s\n", describe_error(err));
     }
 
-    if(kicked_count > 0) {
-        http_werror("[IDLE_KICK] Kicked %d idle HTTP_API users\n", kicked_count);
-    }
-
+    // 无论是否出错，都继续调度
     call_out(cleanup_idle_connections, 60);
 }
 

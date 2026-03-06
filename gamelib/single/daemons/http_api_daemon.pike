@@ -1886,7 +1886,8 @@ void handle_api_status(Protocols.HTTP.Server.Request req)
     }
 
     string userid = auth["userid"];
-    object player = get_player_from_connection(userid);
+    // 只读API：不更新闲置时间
+    object player = get_player_from_connection(userid, 0);
 
     // 如果虚拟连接池中没有，尝试从 find_player 获取
     if(!player) {
@@ -1923,7 +1924,8 @@ void handle_api_battle_status(Protocols.HTTP.Server.Request req)
     }
 
     string userid = auth["userid"];
-    object player = get_player_from_connection(userid);
+    // 只读API：不更新闲置时间
+    object player = get_player_from_connection(userid, 0);
 
     if(!player) {
         send_json(req, ([ "error": "玩家未登录" ]), 401);
@@ -2113,7 +2115,8 @@ void handle_api_autofight(Protocols.HTTP.Server.Request req)
     }
 
     string userid = auth["userid"];
-    object player = get_player_from_connection(userid);
+    // 用户主动操作：更新闲置时间
+    object player = get_player_from_connection(userid, 1);
 
     if(!player) {
         send_json(req, ([ "error": "玩家未登录" ]), 401);
@@ -2500,7 +2503,8 @@ void handle_exits(Protocols.HTTP.Server.Request req)
     }
 
     string userid = auth["userid"];
-    object player = get_player_from_connection(userid);
+    // 只读API：不更新闲置时间
+    object player = get_player_from_connection(userid, 0);
 
     if(!player) {
         send_json(req, ([ "error": "玩家未登录" ]), 401);
@@ -2527,7 +2531,8 @@ void handle_room(Protocols.HTTP.Server.Request req)
     }
 
     string userid = auth["userid"];
-    object player = get_player_from_connection(userid);
+    // 只读API：不更新闲置时间
+    object player = get_player_from_connection(userid, 0);
 
     if(!player) {
         send_json(req, ([ "error": "玩家未登录" ]), 401);
